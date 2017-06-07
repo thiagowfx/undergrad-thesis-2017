@@ -6,7 +6,7 @@ MAKEINDEX = makeindex
 all: $(NAME).pdf
 
 $(NAME).pdf: $(NAME).tex
-	$(LATEXMK) -pdf -pdflatex="pdflatex -shell-escape -synctex=1 -interaction=nonstopmode" -use-make $<
+	$(LATEXMK) -pdf -pdflatex="lualatex -file-line-error -shell-escape -synctex=1 -interaction=nonstopmode" -use-make $<
 
 clean:
 	$(LATEXMK) -CA

@@ -11,8 +11,6 @@
 $pdf_mode = 1;
 
 # Define command to compile with pdfsync support and nonstopmode
-$pdflatex = 'pdflatex -shell-escape -synctex=1 --interaction=nonstopmode';
-
-$latex = 'latex -shell-escape';
+$pdflatex = 'lualatex -file-line-error -shell-escape -synctex=1 --interaction=nonstopmode';
 
 $clean_ext = "los lab bbl nav out snm syx abx pdfsync synctex.gz";
