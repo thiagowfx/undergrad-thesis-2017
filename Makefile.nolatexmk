@@ -1,0 +1,22 @@
+NAME = main
+
+BIBTEX = bibtex
+MAKEINDEX = makeindex
+PDFLATEX = pdflatex
+
+all: project
+
+project:
+	$(PDFLATEX) $(NAME).tex
+	$(BIBTEX) $(NAME)
+	$(MAKEINDEX) -s coppetex/coppe.ist -o $(NAME).lab $(NAME).abx
+	$(PDFLATEX) $(NAME).tex
+	$(PDFLATEX) $(NAME).tex
+
+clean:
+	$(RM) *.ilg *.lab *.out *.syx *.toc *.aux *.abx *.dvi *.ps *.lof *.log *.lot *.bbl *.blg *.fdb_latexmk *.synctex.gz *.fls
+
+clean-all:
+	$(RM) *.ilg *.lab *.out *.syx *.toc *.aux *.abx *.dvi *.ps *.lof *.log *.lot *.bbl *.blg *.fdb_latexmk *.synctex.gz *.fls *.pdf
+
+.PHONY: all project clean clean-all
