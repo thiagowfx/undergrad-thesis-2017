@@ -2,11 +2,12 @@ NAME = main
 
 LATEXMK = latexmk
 MAKEINDEX = makeindex
+PDFLATEX_OPTS = lualatex -file-line-error -shell-escape -synctex=1 -interaction=nonstopmode
 
 all: $(NAME).pdf
 
 $(NAME).pdf: $(NAME).tex
-	$(LATEXMK) -pdf -pdflatex="lualatex -file-line-error -shell-escape -synctex=1 -interaction=nonstopmode" -use-make $<
+	$(LATEXMK) -pdf -pdflatex="$(PDFLATEX_OPTS)" -use-make $<
 
 clean:
 	$(LATEXMK) -CA
@@ -24,8 +25,5 @@ view: $(NAME).pdf
 
 main.lab:
 	$(MAKEINDEX) -s coppetex/coppe.ist -o $@ $(NAME).abx
-
-main.los:
-	touch main.los
 
 .PHONY: $(NAME).pdf all clean view
