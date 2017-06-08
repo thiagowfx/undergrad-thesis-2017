@@ -1,23 +1,14 @@
-NAME = main
+include Makefile.mk
 
-LATEXMK = latexmk
-MAKEINDEX = makeindex
+NAME = thesis
 
 all: $(NAME).pdf
 
 $(NAME).pdf: $(NAME).tex
-	$(LATEXMK)
+	$(LATEXMK) $<
 
 clean:
 	$(LATEXMK) -CA
-
-UNAME := $(shell uname)
-ifeq ($(UNAME), Darwin)
-	OPEN = open
-endif
-ifeq ($(UNAME), Linux)
-	OPEN = xdg-open
-endif
 
 view: $(NAME).pdf
 	$(OPEN) $<

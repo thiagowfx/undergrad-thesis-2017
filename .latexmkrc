@@ -1,4 +1,4 @@
-@default_files = ("main.tex");
+@default_files = ("thesis.tex");
 
 $pdf_mode = 1;
 
