@@ -2,7 +2,7 @@
 
 $pdf_mode = 1;
 
-$use_make_for_missing_files = 1;
+$use_make_for_missing_files = 0;
 
 # useful for debugging: -halt-on-error
 $pdflatex = 'lualatex -halt-on-error -file-line-error -shell-escape -synctex=1 --interaction=nonstopmode %O %S';
