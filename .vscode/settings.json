@@ -2,9 +2,14 @@
 {
     "latex-workshop.chktex.enabled": true,
     "latex-workshop.latex.toolchain": [
-    {
-        "command": "latexmk",
-        "args": []
-    }
-]
+        {
+            "command": "latexmk",
+            "args": []
+        }
+    ],
+    "cSpell.enabled": true,
+    "cSpell.ignoreRegExpList": [
+        "\\\\\\w*(\\[.*?\\])?(\\{.*?\\})?",
+        "\\$.+?\\$"
+    ]
 }
