@@ -11,9 +11,9 @@
 \usepackage{listings}
 \usepackage{longtable}
 \usepackage{placeins}
+\usepackage[obeyFinal,colorinlistoftodos]{todonotes}
 \usepackage{hyperref}
 \hypersetup{pdfencoding=auto}
-\usepackage{todonotes}
 
 % Configure listings package
 % \lstset{ %
@@ -57,9 +57,11 @@
   \date{06}{2017}
 
   \keyword{Bancos de Dados}
+  \keyword{Fluxos de Dados}
   \keyword{Java}
 
   \foreignkeyword{Databases}
+  \foreignkeyword{Dataflows}
   \foreignkeyword{Java}
 
   \listoftodos{}
@@ -67,7 +69,7 @@
   \maketitle
   \frontmatter{}
 
-  \dedication{Dedico esse trabalho aos meus pais}
+  \dedication{Dedico esse trabalho aos meus pais.}
   \include{thanks}
   \include{abstract}
 
@@ -78,16 +80,16 @@
   \printloabbreviations{}
 
   \mainmatter{}
+  \include{introduction}
   \include{chapter01}
+  \include{conclusion}
 
   \backmatter{}
   \bibliographystyle{coppetex/coppe-unsrt}
   \bibliography{thesis}
 
   % \appendix
-
-  % \chapter{Apendice capitulo}
-
-  % Apendice capitulo.
+  % \chapter{appendix chapter}
+  % appendix paragraph
 
 \end{document}
