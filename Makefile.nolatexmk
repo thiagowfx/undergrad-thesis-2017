@@ -8,6 +8,7 @@ $(NAME).pdf:
 	$(PDFLATEX) $(NAME).tex
 	$(BIBTEX) $(NAME)
 	$(MAKEINDEX) -s coppetex/coppe.ist -o $(NAME).lab $(NAME).abx
+	$(MAKEINDEX) -s coppetex/coppe.ist -o $(NAME).los $(NAME).syx
 	$(PDFLATEX) $(NAME).tex
 	$(PDFLATEX) $(NAME).tex
 

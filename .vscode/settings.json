@@ -3,7 +3,7 @@
     "latex-workshop.chktex.enabled": true,
     "latex-workshop.latex.toolchain": [
         {
-            "command": "latexmk",
+            "command": "make",
             "args": []
         }
     ],
