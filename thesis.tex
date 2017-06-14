@@ -1,7 +1,18 @@
 % !TEX encoding = UTF-8 Unicode
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
-\documentclass[grad,numbers]{coppetex/coppe}
+
+% REVIEW: paper structure. Following standards appropriately?
+
+% TODO: use \finaltrue instead of \finalfalse in the latest revision
+% UPSTREAM: https://tex.stackexchange.com/questions/5894/latex-conditional-expression
+\newif\iffinal \finalfalse
+
+\iffinal
+	\documentclass[grad,numbers,final]{coppetex/coppe}
+\else
+	\documentclass[grad,numbers,draft]{coppetex/coppe}
+\fi
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
@@ -11,38 +22,47 @@
 \usepackage{listings}
 \usepackage{longtable}
 \usepackage{placeins}
-\usepackage[obeyFinal,colorinlistoftodos]{todonotes}
 \usepackage{hyperref}
 \hypersetup{pdfencoding=auto}
 
-% Configure listings package
-% \lstset{ %
-% language=Java,                % choose the language of the code
-% basicstyle=\footnotesize\sf,    % the size of the fonts that are used for the code
-% numbers=left,                   % where to put the line-numbers
-% numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
-% stepnumber=1,                   % the step between two line-numbers. If it's 1 each line 
-%                                 % will be numbered
-% numbersep=5pt,                  % how far the line-numbers are from the code
-% showspaces=false,               % show spaces adding particular underscores
-% showstringspaces=false,         % underline spaces within strings
-% showtabs=false,                 % show tabs within strings adding particular underscores
-% frame=single,                   % adds a frame around the code
-% tabsize=4,                      % sets default tabsize to 4 spaces
-% captionpos=t,                   % sets the caption-position to top
-% breaklines=true,                % sets automatic line breaking
-% breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
-% title=\lstname,                 % show the filename of files included with \lstinputlisting;
-%                                 % also try caption instead of title
-% escapeinside={\%*}{*)},         % if you want to add a comment within your code
-% morekeywords={}                 % if you want to add more keywords to the set
-% }
-% \renewcommand{\lstlistingname}{Arquivo}
+\usepackage[obeyDraft,portuguese,colorinlistoftodos,textsize=tiny]{todonotes}
+\presetkeys{todonotes}{inline,color=green!40}{}
+% USAGE: \todo[|noline|inline|fancyline|color=blue!30]{todo note here}
+\newcommand{\mattoso}[1]{\todo[inline,color=pink!70]{#1}}
+\newcommand{\silva}[1]{\todo[inline,color=brown!40]{#1}}
+
+% speed-up typesetting
+\iffinal
+\else
+	\includeonly{introduction}
+\fi
+
+% configure listings package
+\lstset{%
+language=Java,                   % choose the language of the code
+basicstyle=\footnotesize\sf, % the size of the fonts that are used for the code
+numbers=left,                      % where to put the line-numbers
+numberstyle=\footnotesize, % the size of the fonts that are used for the line-numbers
+stepnumber=1,                    % the step between two line-numbers. If it's 1 each line 
+numbersep=5pt,                  % how far the line-numbers are from the code
+showspaces=false,              % show spaces adding particular underscores
+showstringspaces=false,     % underline spaces within strings
+showtabs=false,                  % show tabs within strings adding particular underscores
+frame=single,                      % adds a frame around the code
+tabsize=4,                           % sets default tabsize to 4 spaces
+captionpos=t,                      % sets the caption-position to top
+breaklines=true,                  % sets automatic line breaking
+breakatwhitespace=true,    % sets if automatic breaks should only happen at whitespace
+title=\lstname,                     % show the filename of files included with \lstinputlisting;
+escapeinside={\%*}{*)},      % if you want to add a comment within your code
+morekeywords={}               % if you want to add more keywords to the set
+}
 
 \makelosymbols{}
 \makeloabbreviations{}
 
 \begin{document}
+  % REVIEW: títulos
   \title{Um novo método de proveniência de dados}
   \foreigntitle{A new method for data provenance}
 
@@ -50,12 +70,15 @@
   \advisor{Prof.}{Marta}{Mattoso}{D.Sc.}
   \advisor{}{Vitor}{Silva}{D.Sc. Candidate}
 
-  %\examiner{Prof.}{José Ferreira de Rezende}{Dr.}
-  %\examiner{Prof.}{Aloysio de Castro Pinto Pedroza}{Dr.}
+  % TODO: include examiners in the latest revision
+  \examiner{Prof.}{Foo Bar}{D.Sc.}
+  % \examiner{Prof.}{}{Ph.D.}
 
   \department{PESC}
+  % TODO: update date in the latest revision
   \date{06}{2017}
 
+  %REVIEW: palavras-chave
   \keyword{Bancos de Dados}
   \keyword{Fluxos de Dados}
   \keyword{Java}
@@ -69,7 +92,7 @@
   \maketitle
   \frontmatter{}
 
-  \dedication{Dedico esse trabalho aos meus pais.}
+  % REVIEW: quantidade de agradecimentos. Muito grande? Linguagem suficientemente formal mas não tão enfadonha?
   \include{thanks}
   \include{abstract}
 
@@ -81,15 +104,21 @@
 
   \mainmatter{}
   \include{introduction}
-  \include{chapter01}
+  \include{chapter02}
+  \include{chapter03}
+  \include{chapter04}
+  \include{chapter05}
+  \include{chapter06}
   \include{conclusion}
 
   \backmatter{}
   \bibliographystyle{coppetex/coppe-unsrt}
   \bibliography{thesis}
 
+  % REVIEW: appendix?
   % \appendix
   % \chapter{appendix chapter}
+  %
   % appendix paragraph
 
 \end{document}
