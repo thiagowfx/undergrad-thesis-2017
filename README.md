@@ -15,8 +15,9 @@ How to produce the PDF
 If you don't want to install `texlive` directly, it is pre-installed in the
 `thiagowfx/latex` docker image.
 
-Credits
-=======
+References
+==========
 
 * https://github.com/LeoGardel/ModeloPG_1autor
 * http://coppetex.sourceforge.net/
+* https://www.overleaf.com/help/230-how-do-i-push-a-new-project-to-overleaf-via-git
