@@ -5,20 +5,24 @@
 \begin{abstract}
 
 %REVIEW: resumo em português
-Simulações computacionais potencialmente recebem e geram uma enorme quantidade de dados e arquivos brutos. %[1]
-Esses arquivos usualmente seguem um formato padrão estabelecido pelo domínio da aplicação, %[1]
-tal como o HDF5 em simulações de dinâmica de fluidos. %[2]
-Nessas simulações, usuários geralmente precisam rastrear grandezas de interesse (resíduos, tempo de execução, estimativas de erros) a fim de controlar sua execução ao máximo possível; %[3]
-no entanto, esse rastreio é realizado usualmente somente ao fim da simulação. %[3]
-Esse trabalho apresenta uma solução baseada em dados de proveniência para extrair e relacionar grandezas para consultas \textit{online} (in situ).
+Simulações computacionais potencialmente recebem e geram uma enorme quantidade de dados e arquivos brutos %silva2015analyzing
+apresentados em diversos formatos padrões estabelecidos pelo domínio da aplicação, %silva2017raw
+tal como o \textit{HDF5} em simulações de dinâmica de fluidos. %silva2017raw
+Durante essas simulações, usuários em geral precisam rastrear grandezas de interesse (como resíduos, tempo de execução e estimativas de erros) %silva2016situ
+e dados de domínio com base em elementos relacionados de diversos arquivos, a fim de controlar sua execução ao máximo possível; %silva2016situ
+no entanto, esse rastreio é realizado usualmente somente ao fim da simulação. %silva2016situ
+Apesar dos formatos comuns de arquivo serem suportados por diversas linguagens de programação e bibliotecas, é necessário desenvolver programas para a análise em grande escala dos mesmos, %silva2015analyzing
+o que é custoso se realizado somente com bancos de dados, pois eles exigem que os dados brutos sejam estruturados e carregados em memória. %silva2015analyzing
+No entanto, o gerenciamento dessas simulações com sistemas de gerenciamento de simulação científica (\textit{SWfMS}) com ciência do fluxo de dados cria a habilidade de tirar proveito de dados de proveniência da mesma para relacionar e analisar os dados brutos da aplicação. %silva2015analyzing
+Esse trabalho apresenta uma solução baseada em uma arquitetura de componentes (ARMFUL) que utiliza proveniência de dados para extrair e relacionar grandezas de interesse para a realização de consultas \textit{online} (\textit{in situ}). %silva2016situ
 
 \end{abstract}
 
 \begin{foreignabstract}
 
 %REVIEW: resumo em inglês
-Computer simulations potentially receive and produce lots of raw data files. 
-These files usually follow a standard data format established by the application domain,
+Computer simulations potentially receive and produce lots of raw data files.
+These files usually follow a \textit{de facto} standard data format established by the application domain,
 such as HDF5 in fluid dynamics simulations.
 In these simulations, users often need to track quantities of interest (residuals, execution times, error estimates) in order to control as much as possible its execution.
 However, this tracking is usually done only once the simulation ends.
