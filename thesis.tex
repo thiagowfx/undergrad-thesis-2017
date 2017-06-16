@@ -4,14 +4,12 @@
 
 % REVIEW: paper structure. Following standards appropriately?
 
+% https://tex.stackexchange.com/questions/5894/latex-conditional-expression
 % TODO: use \finaltrue instead of \finalfalse in the latest revision
-% UPSTREAM: https://tex.stackexchange.com/questions/5894/latex-conditional-expression
 \newif\iffinal \finalfalse
 
-\iffinal
-	\documentclass[grad,numbers,final]{coppetex/coppe}
-\else
-	\documentclass[grad,numbers,draft]{coppetex/coppe}
+\iffinal \documentclass[grad,numbers,final]{coppetex/coppe}
+\else \documentclass[grad,numbers,draft]{coppetex/coppe}
 \fi
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
@@ -22,23 +20,19 @@
 \usepackage{listings}
 \usepackage{longtable}
 \usepackage{placeins}
-\usepackage{hyperref}
-\hypersetup{pdfencoding=auto}
+\usepackage{hyperref} \hypersetup{pdfencoding=auto}
+\usepackage{soul} % text highlighting
+\usepackage[obeyDraft,portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes} \setlength{\marginparwidth}{2cm}
 
-\usepackage[obeyDraft,portuguese,colorinlistoftodos,textsize=tiny]{todonotes}
-\presetkeys{todonotes}{inline,color=green!40}{}
-% USAGE: \todo[|noline|inline|fancyline|color=blue!30]{todo note here}
-\newcommand{\mattoso}[1]{\todo[inline,color=pink!70]{#1}}
-\newcommand{\silva}[1]{\todo[inline,color=brown!40]{#1}}
+\newcommand{\mattoso}[2][]{\sethlcolor{pink}\texthl{#1}\todo[author=Marta Mattoso,inline,color=pink]{#2}}
+\newcommand{\perrotta}[2][]{\sethlcolor{yellow}\texthl{#1}\todo[author=Thiago Perrotta,inline,color=yellow]{#2}}
+\newcommand{\silva}[2][]{\sethlcolor{lightgray}\texthl{#1}\todo[author=Vitor Silva,inline,color=lightgray]{#2}}
 
-% speed-up typesetting
-\iffinal
-\else
-	\includeonly{introduction}
+\iffinal \else
+% \includeonly{introduction} % speed-up typesetting
 \fi
 
-% configure listings package
-\lstset{%
+\lstset{% configure listings package
 language=Java,                   % choose the language of the code
 basicstyle=\footnotesize\sf, % the size of the fonts that are used for the code
 numbers=left,                      % where to put the line-numbers
@@ -63,8 +57,10 @@ morekeywords={}               % if you want to add more keywords to the set
 
 \begin{document}
   % REVIEW: títulos
-  \title{Um novo método de proveniência de dados}
-  \foreigntitle{A new method for data provenance}
+  \title{Um novo método de proveniência de dados para simulações científicas}
+  \foreigntitle{A new data provenance method for scientific workflows}
+  % alt: Um novo método de proveniência de dados
+  % alt: A new method for data provenance
 
   \author{Thiago}{Barroso Perrotta}
   \advisor{Prof.}{Marta}{Mattoso}{D.Sc.}
@@ -79,13 +75,19 @@ morekeywords={}               % if you want to add more keywords to the set
   \date{06}{2017}
 
   %REVIEW: palavras-chave
+  % REVIEW: scientific workflow = simulação científica?  Ou fluxo de trabalho científico?
+  % REVIEW: ++ in situ data analysis?
+  \keyword{Fluxos de trabalho científicos}
+  \keyword{Análise de dados brutos}
+  \keyword{Gerenciamento de fluxos de dados}
+  \keyword{Proveniência}
   \keyword{Bancos de Dados}
-  \keyword{Fluxos de Dados}
-  \keyword{Java}
 
+  \foreignkeyword{Scientific workflows}
+  \foreignkeyword{Raw data analysis}
+  \foreignkeyword{Dataflow management}
+  \foreignkeyword{Provenance}
   \foreignkeyword{Databases}
-  \foreignkeyword{Dataflows}
-  \foreignkeyword{Java}
 
   \listoftodos{}
 
