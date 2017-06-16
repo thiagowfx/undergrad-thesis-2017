@@ -99,8 +99,14 @@ morekeywords={}               % if you want to add more keywords to the set
   \include{abstract}
 
   \tableofcontents
+  
   \listoffigures
   \listoftables
+  
+  \renewcommand{\lstlistlistingname}{Lista de Códigos}
+  \addcontentsline{toc}{chapter}{Lista de Códigos}
+  \lstlistoflistings
+  
   \printlosymbols{}
   \printloabbreviations{}
 
