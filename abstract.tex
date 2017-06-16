@@ -5,27 +5,33 @@
 \begin{abstract}
 
 %REVIEW: resumo em português
-Simulações computacionais potencialmente recebem e geram uma enorme quantidade de dados e arquivos brutos %silva2015analyzing
-apresentados em diversos formatos padrões estabelecidos pelo domínio da aplicação, %silva2017raw
-tal como o \textit{HDF5} em simulações de dinâmica de fluidos. %silva2017raw
+Simulações computacionais frequentemente consomem e produzem um grande volume de dados. Parte desses dados é armazenado em arquivos brutos %silva2015analyzing
+, que podem assumir diversos formatos, de acordo com o domínio da aplicação, %silva2017raw
+tal como o \textit{HDF5} em simulações de dinâmica de fluidos computacionais. %silva2017raw
 Durante essas simulações, usuários em geral precisam rastrear grandezas de interesse (como resíduos, tempo de execução e estimativas de erros) %silva2016situ
-e dados de domínio com base em elementos relacionados de diversos arquivos, a fim de controlar sua execução ao máximo possível; %silva2016situ
-no entanto, esse rastreio é realizado usualmente somente ao fim da simulação. %silva2016situ
-Apesar dos formatos comuns de arquivo serem suportados por diversas linguagens de programação e bibliotecas, é necessário desenvolver programas para a análise em grande escala dos mesmos, %silva2015analyzing
-o que é custoso se realizado somente com bancos de dados, pois eles exigem que os dados brutos sejam estruturados e carregados em memória. %silva2015analyzing
-No entanto, o gerenciamento dessas simulações com sistemas de gerenciamento de simulação científica (\textit{SWfMS}) com ciência do fluxo de dados cria a habilidade de tirar proveito de dados de proveniência da mesma para relacionar e analisar os dados brutos da aplicação. %silva2015analyzing
-Esse trabalho apresenta uma solução baseada em uma arquitetura de componentes (ARMFUL) que utiliza proveniência de dados para extrair e relacionar grandezas de interesse para a realização de consultas \textit{online} (\textit{in situ}). %silva2016situ
+com base em elementos de dados relacionados de diversos arquivos, a fim de controlar sua execução ao máximo possível %silva2016situ.
+No entanto, esse rastreio é realizado usualmente somente ao fim da simulação. %silva2016situ
+Apesar dos formatos comuns de arquivo serem apoiados por diversas linguagens de programação e bibliotecas,
+os usuários comumente precisam desenvolver programas \textit{ad-hoc} para a análise em grande escala dos mesmos %silva2015analyzing,
+que pode ser ainda mais custoso se realizado com bancos de dados, pois eles exigem que os dados \silva[brutos]{ao invés de bruto, utilizar dado científico}
+sejam estruturados e carregados em memória. %silva2015analyzing
+Nesse cenário, Sistemas de Gerência de Workflows Científicos (\textit{SGWfC}) com ciência do fluxo de dados têm empregado a abstração de workflows científicos
+para apoiar a execução paralela de simulações computacionais, em que os dados de proveniência podem favorecer a gerência de elementos de dados
+relacionados em múltiplos arquivos de dados científicos (ou seja, produzidos por diferentes programas de simulação) %silva2015analyzing.
+Esse trabalho utiliza a arquitetura de componentes ARMFUL, que utiliza uma abordagem baseada em dados de proveniência para extrair e
+relacionar grandezas de interesse. Mais especificamente, esse trabalho contribui com um mecanismo de processamento de consultas durante a execução de simulações computacionais,
+considerando-se o fluxo de elementos de dados ao longo das simulações computacionais.
 
 \end{abstract}
 
 \begin{foreignabstract}
 
 %REVIEW: resumo em inglês
-Computer simulations potentially receive and produce lots of raw data files.
+\silva[Computer simulations potentially receive and produce lots of raw data files.
 These files usually follow a \textit{de facto} standard data format established by the application domain,
 such as HDF5 in fluid dynamics simulations.
 In these simulations, users often need to track quantities of interest (residuals, execution times, error estimates) in order to control as much as possible its execution.
 However, this tracking is usually done only once the simulation ends.
-This work presents a solution based on provenance data with the purpose of online (\textit{in situ}) extraction and connection among quantities of interest.
+This work presents a solution based on provenance data with the purpose of online (\textit{in situ}) extraction and connection among quantities of interest.]{traduzir novamente}
 
 \end{foreignabstract}
