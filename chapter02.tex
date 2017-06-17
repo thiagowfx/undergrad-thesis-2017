@@ -56,4 +56,20 @@ Uma coleção de dados é definida como \[ c = \{ i_1, i_2, \ldots, i_{\eta} \} 
 
 \subsection{Item de dados}
 
+A especificação de um item de dados é dada por \[ i = (s, T^{\ast}_{\textrm{previous}}, T^{\ast}_{\textrm{next}}, e) \] onde:
+
+\begin{itemize}
+    \item \( s \) é um conjunto de dados
+    \item \( T^{\ast}_{\textrm{previous}} \) é o conjunto com todas as instâncias de todas as transformações que são responsáveis por gerar \( i \)
+    \item \( T^{\ast}_{\textrm{next}} \) é o conjunto com todas as instâncias de todas as transformações que consomem \( i \)
+    \item \( e \) é um elemento de dados
+\end{itemize}
+
 \subsection{Elemento de dados}
+
+Um elemento de dados é definido como
+
+\[ e = \{ v_1, v_2, \ldots, v_{\theta} \} \therefore \#(s.A) = \#(e) \]
+\[ v_{\theta} \; \textrm{é o valor do atributo} \; a_{\theta} \; \textrm{de um item de dados do conjunto de dados} \; s \]
+
+onde \( \#(S) \) representa a cardinalidade do conjunto \( S \), i.e.\ a quantidade de elementos presentes no mesmo.
