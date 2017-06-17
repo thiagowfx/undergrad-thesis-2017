@@ -7,10 +7,10 @@
 Simulações computacionais frequentemente consomem e produzem grandes volumes de dados, parte dos quais é armazenada em arquivos brutos em %silva2015analyzing
 diversos formatos de acordo com o domínio da aplicação, %silva2017raw
 tal como o \textit{HDF5} em simulações de dinâmica de fluidos computacionais. %silva2017raw
-Durante essas simulações, usuários em geral precisam rastrear grandezas de interesse (como resíduos e estimativas de erros) %silva2016situ % +tempo de execução
-com base em elementos de dados relacionados de vários arquivos, a fim de controlar sua execução ao máximo possível. %silva2016situ
+Durante essas simulações, usuários em geral precisam rastrear grandezas de interesse %silva2016situ % +tempo de execução
+com base em elementos de dados relacionados de vários arquivos, a fim de otimizar o controle de sua execução. %silva2016situ
 No entanto, esse rastreio costuma ser feito somente ao fim da simulação. %silva2016situ
-Apesar dos formatos de arquivo serem apoiados por diversas linguagens de programação e bibliotecas,
+Apesar dos formatos de arquivo serem apoiados por diversas bibliotecas,
 os usuários comumente precisam desenvolver programas \textit{ad-hoc} para realizarem uma análise em grande escala, %silva2015analyzing
 a qual pode ser ainda mais custosa se realizada com bancos de dados, pois eles exigem que os dados científicos sejam estruturados e carregados em memória. %silva2015analyzing
 Nesse cenário, Sistemas de Gerência de Workflows Científicos (\textit{SGWfC}) com ciência do fluxo de dados têm empregado a abstração de \textit{workflows} científicos para apoiar a execução paralela dessas simulações, em que os dados de proveniência podem favorecer a gerência de elementos de dados relacionados em múltiplos arquivos de dados científicos (\textit{i.e.}, produzidos por diferentes programas de simulação). %silva2015analyzing
