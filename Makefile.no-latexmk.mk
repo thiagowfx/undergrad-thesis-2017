@@ -13,9 +13,9 @@ $(NAME).pdf:
 	$(PDFLATEX) $(NAME).tex
 
 clean:
-	$(RM) *.ilg *.lab *.out *.syx *.toc *.aux *.abx *.dvi *.ps *.lof *.log *.lot *.bbl *.blg *.fdb_latexmk *.synctex.gz *.fls
+	$(RM) *.nlo *.lol *.lod *.tdo *.ilg *.los *.lab *.out *.syx *.toc *.aux *.abx *.dvi *.ps *.lof *.log *.lot *.bbl *.blg *.fdb_latexmk *.synctex.gz *.fls *.nav *.snm *.pdfsync
 
-clean-all:
-	$(RM) *.ilg *.lab *.out *.syx *.toc *.aux *.abx *.dvi *.ps *.lof *.log *.lot *.bbl *.blg *.fdb_latexmk *.synctex.gz *.fls *.pdf
+clean-all: clean
+	$(RM) *.pdf
 
 .PHONY: all $(NAME).pdf clean clean-all

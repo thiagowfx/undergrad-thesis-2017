@@ -9,6 +9,6 @@ $pdflatex = 'lualatex -halt-on-error -file-line-error -shell-escape -synctex=1 -
 
 $pdf_previewer = "open -a /Applications/Skim.app" if -e "/Applications/Skim.app";
 
-$clean_ext = "log los lab bbl nav out snm syx abx pdfsync synctex.gz";
+$clean_ext = "nlo lol lod tdo ilg los lab out syx toc aux abx dvi ps lof log lot bbl blg fdb_latexmk synctex.gz fls nav snm pdfsync";
 
 # vim: ft=perl
