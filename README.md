@@ -12,8 +12,15 @@ How to produce the PDF
 - Step 1. install `texlive`
 - Step 2. run `make`
 
-If you don't want to install `texlive` directly, it is pre-installed in the
-`thiagowfx/latex` docker image.
+How to edit continuously on macOS
+=================================
+
+- Step 1. install `TextMate.app`, install the `latex` and `latex font settings` bundles
+- Step 2. install `Skim.app`, enable synctex support, set the synctex program to textmate, enable automatic reloading
+- Step 3. run `make watch`
+- Step 4. for synctex, cmd + shift + click on Skim.app
+
+If you don't want to install `texlive` directly, use the pre-installed package in the `thiagowfx/latex` docker image.
 
 References
 ==========

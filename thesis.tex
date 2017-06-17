@@ -4,56 +4,57 @@
 
 % REVIEW: paper structure. Following standards appropriately?
 
-% https://tex.stackexchange.com/questions/5894/latex-conditional-expression
-% TODO: use \finaltrue instead of \finalfalse in the latest revision
-\newif\iffinal \finalfalse
+% TODO: s/draft/final
+\documentclass[grad,numbers,draft]{coppetex/coppe}
 
-\iffinal \documentclass[grad,numbers,final]{coppetex/coppe}
-\else \documentclass[grad,numbers,draft]{coppetex/coppe}
-\fi
-% \usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc} % not needed for LuaTeX, but included anyway
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
+\usepackage{lmodern} % next-gen computer modern fonts
 \usepackage{float}
 \usepackage{multirow}
 \usepackage{subfigure}
-\usepackage{listings}
 \usepackage{longtable}
 \usepackage{placeins}
-\usepackage{hyperref} \hypersetup{pdfencoding=auto}
-\usepackage{soul} % text highlighting
-\usepackage[obeyDraft,portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes} \setlength{\marginparwidth}{2cm}
 
+\usepackage{hyperref}
+\hypersetup{pdfencoding=auto}
+
+\usepackage{epigraph} % quotes
+\setlength{\epigraphrule}{0pt}
+
+\usepackage{soul} % text highlighting
+
+\usepackage[obeyDraft,portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes}
+\setlength{\marginparwidth}{2cm}
 \newcommand{\mattoso}[2][]{\sethlcolor{pink}\texthl{#1}\todo[author=Marta Mattoso,inline,color=pink]{#2}}
 \newcommand{\perrotta}[2][]{\sethlcolor{yellow}\texthl{#1}\todo[author=Thiago Perrotta,inline,color=yellow]{#2}}
 \newcommand{\silva}[2][]{\sethlcolor{lightgray}\texthl{#1}\todo[author=Vitor Silva,inline,color=lightgray]{#2}}
 
-\iffinal \else
-% \includeonly{introduction} % speed-up typesetting
-\fi
-
+\usepackage{listings}
 \lstset{% configure listings package
-language=Java,                   % choose the language of the code
+language=Java,               % choose the language of the code
 basicstyle=\footnotesize\sf, % the size of the fonts that are used for the code
-numbers=left,                      % where to put the line-numbers
-numberstyle=\footnotesize, % the size of the fonts that are used for the line-numbers
-stepnumber=1,                    % the step between two line-numbers. If it's 1 each line 
-numbersep=5pt,                  % how far the line-numbers are from the code
-showspaces=false,              % show spaces adding particular underscores
-showstringspaces=false,     % underline spaces within strings
-showtabs=false,                  % show tabs within strings adding particular underscores
-frame=single,                      % adds a frame around the code
-tabsize=4,                           % sets default tabsize to 4 spaces
-captionpos=t,                      % sets the caption-position to top
-breaklines=true,                  % sets automatic line breaking
-breakatwhitespace=true,    % sets if automatic breaks should only happen at whitespace
-title=\lstname,                     % show the filename of files included with \lstinputlisting;
+numbers=left,                % where to put the line-numbers
+numberstyle=\footnotesize,   % the size of the fonts that are used for the line-numbers
+stepnumber=1,                % the step between two line-numbers. If it's 1 each line 
+numbersep=5pt,               % how far the line-numbers are from the code
+showspaces=false,            % show spaces adding particular underscores
+showstringspaces=false,      % underline spaces within strings
+showtabs=false,              % show tabs within strings adding particular underscores
+frame=single,                % adds a frame around the code
+tabsize=4,                   % sets default tabsize to 4 spaces
+captionpos=t,                % sets the caption-position to top
+breaklines=true,             % sets automatic line breaking
+breakatwhitespace=true,      % sets if automatic breaks should only happen at whitespace
+title=\lstname,              % show the filename of files included with \lstinputlisting;
 escapeinside={\%*}{*)},      % if you want to add a comment within your code
-morekeywords={}               % if you want to add more keywords to the set
+morekeywords={}              % if you want to add more keywords to the set
 }
 
 \makelosymbols{}
 \makeloabbreviations{}
+
+% \includeonly{introduction} % speed-up typesetting
 
 \begin{document}
   % REVIEW: títulos
@@ -63,19 +64,19 @@ morekeywords={}               % if you want to add more keywords to the set
   % alt: A new method for data provenance
 
   \author{Thiago}{Barroso Perrotta}
-  \advisor{Prof.}{Marta}{Mattoso}{D.Sc.}
-  \advisor{}{Vítor}{Silva}{D.Sc. Candidate}
+  \advisor{Prof.}{Marta}{Lima de Queirós Mattoso}{D.Sc.}
+  \advisor{}{Vítor}{Silva Sousa}{D.Sc. Candidate}
 
   % TODO: include examiners in the latest revision
   \examiner{Prof.}{Foo Bar}{D.Sc.}
   % \examiner{Prof.}{}{Ph.D.}
 
   \department{PESC}
+  
   % TODO: update date in the latest revision
   \date{06}{2017}
 
-  %REVIEW: palavras-chave
-  % REVIEW: scientific workflow = simulação científica?  Ou fluxo de trabalho científico?
+  % REVIEW: palavras-chave
   % REVIEW: ++ in situ data analysis?
   \keyword{Fluxos de trabalho científicos}
   \keyword{Análise de dados brutos}
@@ -94,8 +95,8 @@ morekeywords={}               % if you want to add more keywords to the set
   \maketitle
   \frontmatter{}
 
-  % REVIEW: quantidade de agradecimentos. Muito grande? Linguagem suficientemente formal mas não tão enfadonha?
   \include{thanks}
+
   \include{abstract}
 
   \tableofcontents
@@ -106,7 +107,7 @@ morekeywords={}               % if you want to add more keywords to the set
   \renewcommand{\lstlistlistingname}{Lista de Códigos}
   \addcontentsline{toc}{chapter}{Lista de Códigos}
   \lstlistoflistings
-  
+
   \printlosymbols{}
   \printloabbreviations{}
 
@@ -123,10 +124,8 @@ morekeywords={}               % if you want to add more keywords to the set
   \bibliographystyle{coppetex/coppe-unsrt}
   \bibliography{thesis}
 
-  % REVIEW: appendix?
-  % \appendix
-  % \chapter{appendix chapter}
-  %
-  % appendix paragraph
+  % TODO: appendix?
+  \appendix
+  \chapter{Apêndice}
 
 \end{document}

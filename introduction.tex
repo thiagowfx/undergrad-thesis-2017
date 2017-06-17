@@ -6,4 +6,35 @@
 
 \perrotta{Capítulo 01 - Introdução}
 
-Várias simulações computacionais levam um longo tempo para serem executadas, mesmo com a utilização de ambientes de \abbrev{CAD}{Computação de Alto Desempenho} CAD \cite{silva2017raw}. Hello world.
+\section{Visão geral / Contextualização}
+
+Simulações computacionais tornaram-se predominantes e omnipresentes no dia-a-dia de cientistas (daqui em diante denominados \textit{usuários}), sendo necessárias na realização de análises que utilizam modelos computacionais complexos que lidam com grandes volumes de dados \cite{silva2015analyzing}, permitindo a exploração de dados específicos de domínio para apoiar esses usuários na validação de hipóteses científicas ou comportamentos peculiares.
+
+Essas simulações tipicamente envolvem a execução de muitos programas no domínio da aplicação os quais intensivamente consomem e produzem muitos dados, a maior parte dos quais é armazenada em uma miscelânea de formatos de arquivo também no domínio da aplicação \cite{silva2015analyzing}; por exemplo, \abbrev{FITS}{Flexible Image Transport System} FITS \cite{greisen2002representations} em astronomia, ou \abbrev{HDF}{Hierarchical Data Format} HDF5 \cite{hdfgroup2014hdf5} e \abbrev{NetCDF}{Network Common Data Form} NetCDF \cite{rew1990netcdf} em dinâmica de fluidos computacionais.
+
+Uma grande parte dessas simulações computacionais de larga escala leva um longo tempo para ser executada, mesmo com a utilização de ambientes de \abbrev{CAD}{Computação de Alto Desempenho} CAD (Computação de Alto Desempenho) \cite{silva2017raw}, onde o poder de computação é amplificado através da utilização de diversos núcleos computacionais. 
+
+Uma vez que essas simulações são gerenciadas por um \abbrev{SGWfC}{Sistema de Gerência de Workflows Científicos} SGWfC (Sistema de Gerência de Workflows Científicos) paralelo, elas podem-se beneficiar da proveniência e do paralelismo de dados entre os diferentes programas que compõem o \textit{workflow} \cite{bux2013parallelization}.
+
+\perrotta{Falar mais sobre SGWfC}
+
+\perrotta{Falar sobre a challenge disso, tipos de queries, etc}
+
+\perrotta{Mencionar a arquitetura ARMFUL}
+
+\perrotta{Mencionar a minha contribuição}
+
+\section{Motivação / Contribuição} % Objetivos, Relevância, Método
+
+% REVIEW: alt: {estruturação,organização} do {documento,trabalho,texto}
+\section{Estruturação do Texto}
+
+\perrotta{Utilizar refs com sec para interligar os capítulos a la \LaTeX{}}
+
+Este trabalho está organizado da seguinte forma:
+o capítulo 2 apresenta o embasamento teórico, introduzindo e definindo os conceitos e a terminologia que será utilizada ao longo do trabalho.
+No capítulo 3 listamos algumas publicações relacionadas e recentes, algumas dentre as quais serviram como motivação e base para essa.
+O capítulo 4 aborda a arquitetura \abbrev{ARMFUL}{Analysis of Raw Data from Multiple Files} ARMFUL (Analysis of Raw Data from Multiple Files), da qual a aplicação desenvolvida nesse trabalho é um componente.
+No capítulo 5 desenvolvemos a abordagem utilizada para analisar rastros de proveniência dos arquivos e dados de simulações científicas.
+No capítulo 6 são abordados os resultados obtidos através do \textit{QueryProcessor} e os experimentos realizados.
+Finalmente, o capítulo 7 conclui o trabalho com perspectivas de trabalhos futuros.

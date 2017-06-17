@@ -17,11 +17,11 @@ watch:
 	$(LATEXMK) -pvc
 
 # abbreviations
-$(NAME).lab:
+$(NAME).lab: $(NAME).abx
 	$(MAKEINDEX) -s coppetex/coppe.ist -o $@ $(NAME).abx
 
 # symbols
-$(NAME).los:
+$(NAME).los: $(NAME).syx
 	$(MAKEINDEX) -s coppetex/coppe.ist -o $@ $(NAME).syx
 
 .PHONY: $(NAME).pdf all clean view watch
