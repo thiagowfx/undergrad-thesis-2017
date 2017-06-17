@@ -8,7 +8,7 @@
 
 \perrotta{Capítulo 02 --- Referencial Teórico}
 
-Nessa seção serão abordados alguns conceitos e a terminologia que será utilizada ao longo desse trabalho.
+Nessa seção são abordados alguns conceitos e a terminologia que será utilizada ao longo desse trabalho.
 
 \section{Conceitos básicos}
 
@@ -16,27 +16,43 @@ Nessa seção serão abordados alguns conceitos e a terminologia que será utili
 
 \subsection{Dataflow}
 
-Um \textit{dataflow}%
-\footnote{Em tradução livre, ``fluxo de dados''. No entanto, daqui em diante continuaremos a utilizar \textit{dataflow}, por ser um termo mais preciso.}
-$D_F$ é definido como:
-%
-$$ D_F = (T, S, \Phi) $$
-%
-onde:
-%
+Uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (T, S, \Phi) \] onde:
 \begin{itemize}
-    \item $T = \{t_1, t_2, \cdots, t_{\alpha}\}$ \vdots{} transformações
-    \item $S = \{s_1, s_2, \cdots, t_{\beta}\}$ \vdots{} conjuntos de dados
-    \item $\Phi = \{\phi_1, \phi_2, \cdots, \phi_{\gamma}\}$ \vdots{} dependências de dados
+    \item \( T = \{t_1, t_2, \ldots, t_{\alpha}\} \) \vdots{}
+    \( \{t_i \mid i \in \{{1, 2, \ldots, \alpha}\} \} \)
+    é transformação
+    \item \( S = \{s_1, s_2, \ldots, t_{\beta}\} \) \vdots{}
+    \( \{s_i \mid i \in \{{1, 2, \ldots, \beta}\} \} \)
+    é conjunto de dados
+    \item \( \Phi = \{\phi_1, \phi_2, \ldots, \phi_{\gamma}\} \) \vdots{}
+    \( \{\phi_i \mid i \in \{{1, 2, \ldots, \gamma}\} \} \){}
+    é dependência de dados
 \end{itemize}
 
 \subsection{Dependência de dados}
 
+Uma especificação de dependência de dados \( \phi \) é definida como \[ \phi = (s, t_{\textrm{previous}}, t_{\textrm{next}}) \] onde:
+\begin{itemize}
+    \item \( s \) é um conjunto de dados
+    \item \( t_{\textup{previous}} \) é a transformação que {\bf produz} dados para o conjunto de dados \( s \)
+    \item \( t_{\textup{next}} \) é a transformação que {\bf consome} dados do conjunto de dados \( s \)
+\end{itemize}
+
 \subsection{Conjunto de dados}
+
+A especificação de um conjunto de dados \( s \) é dada por \[ s = (A, C) \] onde:
+\begin{itemize}
+    \item \( A = \{a_1, a_2, \ldots, a_{\delta} \} \; \vdots{} \; \{ a_i \mid i \in \{1, 2, \ldots, \delta \} \} \) é atributo
+    \item \( C = \{c_1, c_2, \ldots, c_{\zeta} \} \; \vdots{} \; \{ c_i \mid i \in \{1, 2, \ldots, \zeta \} \} \) é coleção de dados
+\end{itemize}
 
 \subsection{Atributo}
 
+Um atributo é especificado da seguinte forma: \[ a = (\textrm{nome},\textrm{tipo}) \therefore \textrm{tipo} = \{\textup{inteiro}, \textup{ponto flutuante}, \textup{texto}, \textup{arquivo}\} \]
+
 \subsection{Coleção de dados}
+
+Uma coleção de dados é definida como \[ c = \{ i_1, i_2, \ldots, i_{\eta} \} \; \vdots \; \{ i_j \mid j \in \{ 1, 2, \ldots, \eta \} \} \] é item de dados
 
 \subsection{Item de dados}
 

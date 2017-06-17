@@ -10,16 +10,14 @@ Simulações computacionais tornaram-se predominantes e omnipresentes no dia-a-d
 
 Essas simulações geralmente envolvem a execução de muitos programas no domínio da aplicação os quais intensivamente consomem e produzem muitos dados, a maior parte dos quais é armazenada em uma miscelânea de formatos de arquivo também no domínio da aplicação~\cite{silva2015analyzing}; por exemplo, \abbrev{FITS}{Flexible Image Transport System} FITS~\cite{greisen2002representations} em astronomia, ou \abbrev{HDF}{Hierarchical Data Format} HDF5~\cite{hdfgroup2014hdf5} e \abbrev{NetCDF}{Network Common Data Form} NetCDF~\cite{rew1990netcdf} em dinâmica de fluidos computacionais.
 
-Uma grande parte dessas simulações computacionais de larga escala leva um longo tempo para ser executada, mesmo com a utilização de ambientes de \abbrev{CAD}{Computação de Alto Desempenho} CAD (Computação de Alto Desempenho)~\cite{silva2017raw}, onde o poder de computação é amplificado através da utilização de diversos núcleos computacionais.
+Uma grande parte dessas simulações computacionais de larga escala leva um longo tempo para ser executada, mesmo em ambientes de \abbrev{CAD}{Computação de Alto Desempenho} CAD (Computação de Alto Desempenho)~\cite{silva2017raw}, onde o poder de computação é amplificado através da utilização de diversos núcleos computacionais.
 
 Durante as mesmas, usuários comumente precisam rastrear grandezas de interesse, tais como resíduos, tempo de execução e estimativas de erro, baseadas em elementos de dados relacionados de vários arquivos, a fim de controlar a sua execução ao máximo possível~\cite{silva2016situ}.
 Entretanto, esse rastreio costuma ser realizado somente ao fim da simulação, o que \textit{a priori} não é prático para o usuário, já que essas simulações levam um tempo considerável de execução mesmo em CAD, como mencionado anteriormente~\cite{silva2017raw}; além disso, mesmo considerando que os arquivos produzidos sejam tipicamente apoiados por diversas linguagens de programação e bibliotecas, programas \textit{ad-hoc} precisam comumente ser desenvolvidos a fim de fazer análises em grande escala, as quais se tornam ainda mais custosas se realizadas com \abbrev{SGBD}{Sistema de Gerenciamento de Banco de Dados} SGBDs (Sistemas de Gerenciamento de Banco de Dados), pois eles aumentam a complexidade de execução em termos de estruturação de dados e carregamento na memória~\cite{silva2015analyzing}.
 
 \section{Contextualização}
 
-
-
-Para amenizar o custo de tempo de execução, as simulações computacionais citadas anteriormente podem ser gerenciadas por um \abbrev{SGWfC}{Sistema de Gerência de Workflows Científicos} SGWfC (Sistema de Gerência de Workflows Científicos) paralelo, o que faz com que se beneficiem da proveniência e do paralelismo de dados entre os diferentes programas que compõem o seu \textit{workflow}~\cite{bux2013parallelization}.
+Para amenizar o custo de tempo de execução, as simulações computacionais citadas anteriormente podem ser gerenciadas por um \abbrev{SGWfC}{Sistema de Gerência de \textit{Workflows} Científicos} SGWfC (Sistema de Gerência de \textit{Workflows} Científicos) paralelo, o que faz com que se beneficiem da proveniência e do paralelismo de dados entre os diferentes programas que compõem o seu \textit{workflow}\footnote{Em tradução livre, ``fluxo de trabalho''. No entanto, daqui em diante continuaremos a utilizar \textit{workflow}, por ser um termo mais preciso.}~\cite{bux2013parallelization}.
 
 \perrotta{Falar mais sobre SGWfC, sem mencionar ARMFUL;\@ apenas com trabalhos pré-existentes}
 
