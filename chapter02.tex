@@ -8,11 +8,12 @@
 
 \perrotta{Capítulo 02 --- Referencial Teórico}
 
-Nessa seção são abordados alguns conceitos e a terminologia que será utilizada ao longo desse trabalho.
+Nessa seção serão abordados alguns conceitos e a terminologia que será utilizada ao longo desse trabalho.
 
 \section{Conceitos básicos}
 
-\section{Especificações}
+\section{Especificações}%
+\label{sec:especificacoes}
 
 \subsection{Dataflow}
 
@@ -73,3 +74,21 @@ Um elemento de dados é definido como
 \[ v_{\theta} \; \textrm{é o valor do atributo} \; a_{\theta} \; \textrm{de um item de dados do conjunto de dados} \; s \]
 
 onde \( \#(S) \) representa a cardinalidade do conjunto \( S \), i.e.\ a quantidade de elementos presentes no mesmo.
+
+\section{Um exemplo}
+
+Para ilustrar as definições e especificações da \autoref{sec:especificacoes}, vamos utilizar uma pequena amostra do conjunto de dados de sedimentação.
+
+\missingfigure{Incluir um exemplo, com figuras, de um pequeno dataflow.}
+
+\[
+\begin{aligned}
+D_F = && (T, S, \Phi) \\
+T = && \{ \textrm{inputmesh} \} \\
+S = && \{ \textrm{iinputmesh}, \textrm{oinputmesh} \} \\
+\Phi = && \{ (\textrm{nil}, \textrm{iinputmesh}, \textrm{inputmesh}),
+(\textrm{inputmesh}, \textrm{oinputmesh}, \textrm{nil})
+\} \\
+\end{aligned}
+\]
+

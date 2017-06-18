@@ -1,11 +1,14 @@
 % Encoding: UTF-8
 
 @Article{mcphillips2015yesworkflow,
-  author  = {McPhillips, Timothy and Song, Tianhong and Kolisnik, Tyler and Aulenbach, Steve and Belhajjame, Khalid and Bocinsky, Kyle and Cao, Yang and Chirigati, Fernando and Dey, Saumen and Freire, Juliana and others},
-  title   = {YesWorkflow: a user-oriented, language-independent tool for recovering workflow information from scripts},
-  journal = {arXiv preprint arXiv:1502.02403},
-  year    = {2015},
-  doi     = {10.2218/ijdc.v10i1.370},
+  author   = {McPhillips, Timothy and Song, Tianhong and Kolisnik, Tyler and Aulenbach, Steve and Belhajjame, Khalid and Bocinsky, Kyle and Cao, Yang and Chirigati, Fernando and Dey, Saumen and Freire, Juliana and others},
+  title    = {YesWorkflow: a user-oriented, language-independent tool for recovering workflow information from scripts},
+  journal  = {arXiv preprint arXiv:1502.02403},
+  year     = {2015},
+  doi      = {10.2218/ijdc.v10i1.370},
+  url      = {https://arxiv.org/abs/1502.02403},
+  abstract = {Scientific workflow management systems offer features for composing complex computational pipelines from modular building blocks, for executing the resulting automated workflows, and for recording the provenance of data products resulting from workflow runs. Despite the advantages such features provide, many automated workflows continue to be implemented and executed outside of scientific workflow systems due to the convenience and familiarity of scripting languages (such as Perl, Python, R, and MATLAB), and to the high productivity many scientists experience when using these languages. YesWorkflow is a set of software tools that aim to provide such users of scripting languages with many of the benefits of scientific workflow systems. YesWorkflow requires neither the use of a workflow engine nor the overhead of adapting code to run effectively in such a system. Instead, YesWorkflow enables scientists to annotate existing scripts with special comments that reveal the computational modules and dataflows otherwise implicit in these scripts. YesWorkflow tools extract and analyze these comments, represent the scripts in terms of entities based on the typical scientific workflow model, and provide graphical renderings of this workflow-like view of the scripts. Future versions of YesWorkflow also will allow the prospective provenance of the data products of these scripts to be queried in ways similar to those available to users of scientific workflow systems.},
+  file     = {online:https\://arxiv.org/pdf/1502.02403.pdf:PDF},
 }
 
 @InProceedings{murta2014noworkflow,
@@ -13,22 +16,47 @@
   title        = {noWorkflow: capturing and analyzing provenance of scripts},
   booktitle    = {International Provenance and Annotation Workshop},
   year         = {2014},
-  pages        = {71--83},
   organization = {Springer},
+  pages        = {71--83},
+  doi          = {10.1007/978-3-319-16462-5_6},
+  url          = {https://link.springer.com/chapter/10.1007/978-3-319-16462-5_6},
+  abstract     = {We propose noWorkflow, a tool that transparently captures
+provenance of scripts and enables reproducibility. Unlike existing approaches,
+noWorkflow is non-intrusive and does not require users to
+change the way they work – users need not wrap their experiments in
+scientific workflow systems, install version control systems, or instrument
+their scripts. The tool leverages Software Engineering techniques, such as
+abstract syntax tree analysis, reflection, and profiling, to collect different
+types of provenance, including detailed information about the underlying
+libraries. We describe how noWorkflow captures multiple kinds of
+provenance and the different classes of analyses it supports: graph-based
+visualization; differencing over provenance trails; and inference queries.},
+  file         = {online:https\://vgc.poly.edu/~fchirigati/papers/murta-ipaw2014.pdf:PDF},
 }
 
 @InBook{Pimentel2016,
-  pages     = {161--165},
-  title     = {Yin {\&} Yang: Demonstrating Complementary Provenance from noWorkflow {\&} YesWorkflow},
-  publisher = {Springer International Publishing},
-  year      = {2016},
   author    = {Pimentel, Jo{\~a}o Felipe and Dey, Saumen and McPhillips, Timothy and Belhajjame, Khalid and Koop, David and Murta, Leonardo and Braganholo, Vanessa and Lud{\"a}scher, Bertram},
-  editor    = {Mattoso, Marta and Glavic, Boris},
-  address   = {Cham},
-  isbn      = {978-3-319-40593-3},
+  title     = {Yin {\&} Yang: Demonstrating Complementary Provenance from noWorkflow {\&} YesWorkflow},
   booktitle = {Provenance and Annotation of Data and Processes: 6th International Provenance and Annotation Workshop, IPAW 2016, McLean, VA, USA, June 7-8, 2016, Proceedings},
+  year      = {2016},
+  editor    = {Mattoso, Marta and Glavic, Boris},
+  publisher = {Springer International Publishing},
+  isbn      = {978-3-319-40593-3},
+  pages     = {161--165},
   doi       = {10.1007/978-3-319-40593-3_13},
   url       = {http://dx.doi.org/10.1007/978-3-319-40593-3_13},
+  abstract  = {The noWorkflow and YesWorkflow toolkits both enable researchers to
+capture, store, query, and visualize the provenance of results produced by scripts
+that process scientific data. noWorkflow captures prospective provenance representing
+the program structure of Python scripts, and retrospective provenance
+representing key events observed during script execution. YesWorkflow captures
+prospective provenance declared through annotations in the comments of scripts,
+and supports key retrospective provenance queries by observing what files were
+used or produced by the script. We demonstrate how combining complementary
+information gathered by noWorkflow and YesWorkflow enables provenance
+queries and data lineage visualizations neither tool can provide on its own.},
+  address   = {Cham},
+  file      = {online:https\://www.researchgate.net/profile/Vanessa_Braganholo/publication/301650411_Yin_Yang_Demonstrating_Complementary_Provenance_from_noWorkflow_YesWorkflow/links/571fe59d08aeaced788acd1f.pdf:PDF},
 }
 
 @InProceedings{silva2016situ,
@@ -36,6 +64,20 @@
   title     = {In Situ Data Steering on Sedimentation Simulation with Provenance Data},
   booktitle = {SC: High Performance Computing, Networking, Storage and Analysis},
   year      = {2016},
+  url       = {https://hal-lirmm.ccsd.cnrs.fr/lirmm-01400532/},
+  abstract  = {Parallel adaptive mesh refinement and coarsening
+(AMR) are optimal strategies for tackling large-scale simulations.
+libMesh is an open-source finite-element library that supports
+parallel AMR and is used in multiphysics applications. In
+complex simulation runs, users have to track quantities of
+interest (residuals, errors estimates, etc.) to control as much as
+possible the execution. However, this tracking is typically done
+only after the simulation ends. This paper presents DfAnalyzer, a
+solution based on provenance data to extract and relate strategic
+simulation data for online queries. We integrate DfAnalyzer to
+libMesh and ParaView Catalyst, so that queries on quantities of
+interest are enhanced by in situ visualization.},
+  file      = {online:https\://hal-lirmm.ccsd.cnrs.fr/lirmm-01400532/document:PDF},
 }
 
 @Article{silva2015analyzing,
@@ -43,6 +85,9 @@
   title     = {Analyzing related raw data files through dataflows},
   journal   = {Concurrency and Computation: Practice and Experience},
   year      = {2015},
+  doi       = {10.1002/cpe.3616},
+  url       = {http://onlinelibrary.wiley.com/doi/10.1002/cpe.3616/abstract},
+  abstract  = {Computer simulations may ingest and generate high numbers of raw data files. Most of these files follow a de facto standard format established by the application domain, for example, Flexible Image Transport System for astronomy. Although these formats are supported by a variety of programming languages, libraries, and programs, analyzing thousands or millions of files requires developing specific programs. Database management systems (DBMS) are not suited for this, because they require loading the raw data and structuring it, which becomes heavy at large scale. Systems like NoDB, RAW, and FastBit have been proposed to index and query raw data files without the overhead of using a database management system. However, these solutions are focused on analyzing one single large file instead of several related files. In this case, when related files are produced and required for analysis, the relationship among elements within file contents must be managed manually, with specific programs to access raw data. Thus, this data management may be time-consuming and error-prone. When computer simulations are managed by a scientific workflow management system (SWfMS), they can take advantage of provenance data to relate and analyze raw data files produced during workflow execution. However, SWfMS registers provenance at a coarse grain, with limited analysis on elements from raw data files. When the SWfMS is dataflow-aware, it can register provenance data and the relationships among elements of raw data files altogether in a database, which is useful to access the contents of a large number of files. In this paper, we propose a dataflow approach for analyzing element data from several related raw data files. Our approach is complementary to the existing single raw data file analysis approaches. We use the Montage workflow from astronomy and a workflow from Oil and Gas domain as data-intensive case studies. Our experimental results for the Montage workflow explore different types of raw data flows like showing all linear transformations involved in projection simulation programs, considering specific mosaic elements from input repositories. The cost for raw data extraction is approximately 3.7% of the total application execution time. Copyright © 2015 John Wiley & Sons, Ltd.},
   publisher = {Wiley Online Library},
 }
 
@@ -51,6 +96,18 @@
   title     = {UP \& DOWN: Improving Provenance Precision by Combining Workflow-and Trace-Level Information.},
   booktitle = {TAPP},
   year      = {2014},
+  url       = {https://www.usenix.org/system/files/conference/tapp2014/tapp14_paper_dey.pdf},
+  abstract  = {Workflow-level provenance declarations can improve
+the precision of coarse provenance traces by reducing the
+number of “false” dependencies (not every output of a
+step depends on every input). Conversely, fine-grained
+execution provenance can be used to improve the precision
+of input-output dependencies of workflow actors.
+We present a new logic-based approach for improving
+provenance precision by combining downward and upward
+inference, i.e., from workflows to traces and vice
+versa},
+  file      = {online:https\://www.usenix.org/system/files/conference/tapp2014/tapp14_paper_dey.pdf:PDF},
 }
 
 @Article{silva2017raw,
@@ -58,6 +115,9 @@
   title     = {Raw data queries during data-intensive parallel workflow execution},
   journal   = {Future Generation Computer Systems},
   year      = {2017},
+  doi       = {10.1016/j.future.2017.01.016},
+  url       = {http://www.sciencedirect.com/science/article/pii/S0167739X17300237},
+  abstract  = {Computer simulations consume and produce huge amounts of raw data files presented in different formats, e.g., HDF5 in computational fluid dynamics simulations. Users often need to analyze domain-specific data based on related data elements from multiple files during the execution of computer simulations. In a raw data analysis, one should identify regions of interest in the data space and retrieve the content of specific related raw data files. Existing solutions, such as FastBit and RAW, are limited to a single raw data file analysis and can only be used after the execution of computer simulations. Scientific Workflow Management Systems (SWMS) can manage the dataflow of computer simulations and register related raw data files at a provenance database. This paper aims to combine the advantages of a dataflow-aware SWMS and the raw data file analysis techniques to allow for queries on raw data file elements that are related, but reside in separate files. We propose a component-based architecture, named as ARMFUL (Analysis of Raw data from Multiple Files) with raw data extraction and indexing techniques, which allows for a direct access to specific elements or regions of raw data space. ARMFUL innovates by using a SWMS provenance database to add a dataflow access path to raw data files. ARMFUL facilitates the invocation of ad-hoc programs and third party tools (e.g., FastBit tool) for raw data analyses. In our experiments, a real parallel computational fluid dynamics is executed, exploring different alternatives of raw data extraction, indexing and analysis.},
   publisher = {Elsevier},
 }
 
@@ -65,10 +125,12 @@
   author      = {Bux, Marc and Leser, Ulf},
   title       = {Parallelization in Scientific Workflow Management Systems},
   journal     = {arXiv preprint arXiv:1303.7195},
+  year        = {2013},
   date        = {2013-03-28},
   eprint      = {1303.7195v1},
   eprintclass = {cs.DC},
   eprinttype  = {arXiv},
+  url         = {https://arxiv.org/abs/1303.7195},
   abstract    = {Over the last two decades, scientific workflow management systems (SWfMS) have emerged as a means to facilitate the design, execution, and monitoring of reusable scientific data processing pipelines. At the same time, the amounts of data generated in various areas of science outpaced enhancements in computational power and storage capabilities. This is especially true for the life sciences, where new technologies increased the sequencing throughput from kilobytes to terabytes per day. This trend requires current SWfMS to adapt: Native support for parallel workflow execution must be provided to increase performance; dynamically scalable "pay-per-use" compute infrastructures have to be integrated to diminish hardware costs; adaptive scheduling of workflows in distributed compute environments is required to optimize resource utilization. In this survey we give an overview of parallelization techniques for SWfMS, both in theory and in their realization in concrete systems. We find that current systems leave considerable room for improvement and we propose key advancements to the landscape of SWfMS.},
   file        = {online:http\://arxiv.org/pdf/1303.7195v1:PDF},
   keywords    = {cs.DC, 68N19, C.1.4; D.1.3; D.3.2; J.3},
@@ -100,6 +162,7 @@
   doi       = {10.1109/38.56302},
   url       = {http://ieeexplore.ieee.org/abstract/document/56302/},
   urldate   = {2017-06-16},
+  abstract  = {The network common data form (NetCDF), a data abstraction for storing and retrieving multidimensional data, is described. NetCDF is distributed as a software library that provides a concrete implementation of that abstraction. The implementation provides a machine-independent format for representing scientific data. Together, the abstraction, library, and data format support the creation, access, and sharing of scientific information. NetCDF is useful for supporting objects that contain dissimilar kinds of data in a heterogeneous network environment and for writing application software that does not depend on application-specific formats. Independence from particular machine representations is achieved by using a nonproprietary standard for external data representation. The discussion covers NetCDF data abstraction and interface; dimensions, variables, and attributes; direct access and hyperslab access, the NetCDF library; the data format; ncdump and ncgen utilities; experience, usability, and performance; limitations of NetCDF; and future plans.},
   publisher = {IEEE},
 }
 
@@ -109,6 +172,38 @@
   year    = {2014},
   url     = {https://support.hdfgroup.org/HDF5/},
   urldate = {2017-06-16},
+}
+
+@Article{ludascher2006scientific,
+  author    = {Ludäscher, Bertram and Altintas, Ilkay and Berkley, Chad and Higgins, Dan and Jaeger, Efrat and Jones, Matthew and Lee, Edward A. and Tao, Jing and Zhao, Yang},
+  title     = {Scientific workflow management and the Kepler system},
+  journal   = {Concurrency and Computation: Practice and Experience},
+  year      = {2006},
+  volume    = {18},
+  number    = {10},
+  pages     = {1039--1065},
+  issn      = {1532-0634},
+  doi       = {10.1002/cpe.994},
+  url       = {http://dx.doi.org/10.1002/cpe.994},
+  abstract  = {Many scientific disciplines are now data and information driven, and new scientific knowledge is often gained by scientists putting together data analysis and knowledge discovery ‘pipelines’. A related trend is that more and more scientific communities realize the benefits of sharing their data and computational services, and are thus contributing to a distributed data and computational community infrastructure (a.k.a. ‘the Grid’). However, this infrastructure is only a means to an end and ideally scientists should not be too concerned with its existence. The goal is for scientists to focus on development and use of what we call scientific workflows. These are networks of analytical steps that may involve, e.g., database access and querying steps, data analysis and mining steps, and many other steps including computationally intensive jobs on high-performance cluster computers. In this paper we describe characteristics of and requirements for scientific workflows as identified in a number of our application projects. We then elaborate on Kepler, a particular scientific workflow system, currently under development across a number of scientific data management projects. We describe some key features of Kepler and its underlying Ptolemy II system, planned extensions, and areas of future research. Kepler is a community-driven, open source project, and we always welcome related projects and new contributors to join. Copyright © 2005 John Wiley & Sons, Ltd.},
+  file      = {online:https\://www.cct.lsu.edu/~sidhanti/classes/csc7700/papers/Ledashner05.pdf:PDF},
+  keywords  = {scientific workflows, Grid workflows, scientific data management, problem-solving environments, dataflow networks},
+  publisher = {John Wiley \& Sons, Ltd.},
+}
+
+@Article{deelman2005pegasus,
+  author    = {Deelman, Ewa and Singh, Gurmeet and Su, Mei-Hui and Blythe, James and Gil, Yolanda and Kesselman, Carl and Mehta, Gaurang and Vahi, Karan and Berriman, G Bruce and Good, John and others},
+  title     = {Pegasus: A framework for mapping complex scientific workflows onto distributed systems},
+  journal   = {Scientific Programming},
+  year      = {2005},
+  volume    = {13},
+  number    = {3},
+  pages     = {219--237},
+  doi       = {10.1155/2005/128026},
+  url       = {https://www.hindawi.com/journals/sp/2005/128026/abs/},
+  abstract  = {This paper describes the Pegasus framework that can be used to map complex scientific workflows onto distributed resources. Pegasus enables users to represent the workflows at an abstract level without needing to worry about the particulars of the target execution systems. The paper describes general issues in mapping applications and the functionality of Pegasus. We present the results of improving application performance through workflow restructuring which clusters multiple tasks in a workflow into single entities. A real-life astronomy application is used as the basis for the study.},
+  file      = {online:http\://downloads.hindawi.com/journals/sp/2005/128026.pdf:PDF},
+  publisher = {Hindawi Publishing Corporation},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}
