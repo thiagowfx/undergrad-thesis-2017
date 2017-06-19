@@ -27,8 +27,6 @@ Para amenizar o custo de tempo de execução, as simulações computacionais cit
 % Workflows...dataflows(dt, ds, phi)...DAG...
 Tais \textit{workflows} científicos são composições de tarefas de processamento de dados sequenciais e concorrentes, cuja ordem de execução é determinada com base nas interdependências entre os dados~\cite{bux2013parallelization}. Eles podem ser modelados através de um fluxo de dados (\textit{dataflow}) que descreve todos os conjuntos de dados, atributos, transformações e dependências entre os mesmos~\cite{silva2017raw}. Esses fluxos de dados são usualmente especificados na forma de um \abbrev{DAG}{Directed Acyclic Graph --- Grafo Direcionado Acíclico} DAG (grafo direcionado acíclico), em que tarefas (transformações) individuais são representadas como nós, e conjuntos de dados são modelados como arestas direcionadas.
 
-\missingfigure{Exemplo de -> o ->, i.e., transformação com dataset de entrada e de saída}
-
 % Trade-offs entre usabilidade e poder de controle...
 Os SGWfCs citados anteriormente são usualmente difíceis de serem configurados e utilizados pelos usuários; alguns deles tais como o Taverna~\cite{hull2006taverna} possuem uma boa ênfase em usabilidade, porém não compensam na paralelização e utilização de recursos computacionais distribuídos; perdendo, assim, sua efetividade.
 
@@ -47,25 +45,29 @@ O dilema é que --- até onde se tem conhecimento durante a publicação deste d
 
 \section{Contribuição} % {Objetivos, Relevância, Método}
 
-Para preencher esse gargalo, \perrotta[...]{ARMFUL}
+Desse modo, como vimos na última seção, a capacidade de realizar todos os três tipos de consultas citados ainda é um problema em aberto, e é especialmente importante em situações de larga escala, onde muitos dados são manipulados intensivamente.
 
-\perrotta{Falar sobre a challenge disso, tipos de queries, etc}
+É para preencher esse gargalo que a arquitetura \abbrev{ARMFUL}{Analysis of Raw Data from Multiple Files} ARMFUL (Analysis of Raw Data from Multiple Files)\cite{silva2017raw,silva2016situ} foi proposta: com ela, todos os três tipos de consultas podem ser realizados. Ela funciona estendendo um SGWfC que suporta os tipos de consulta \( 1 \) e \( 2 \) com uma base de dados de proveniência cujo objetivo é guardar referências aos dados e elementos do domínio da aplicação selecionados pelos usuários para que eles possam ser devidamente rastreados suportando, assim, consultas do tipo 3~\cite{silva2015analyzing}.
 
-\perrotta{Finalmente, introduzir o QueryProcessor}
+Dessa forma, os usuários podem submeter consultas para selecionar dados científicos de suas simulações científicas não apenas \textbf{após} mas também \textbf{durante} a execução da simulação; o objetivo é a possibilidade de captação os elementos de dados de interesse no momento em que eles são gerados~\cite{silva2015analyzing}. O benefício dessa abordagem é evitar que a a ação da extração (\textit{parsing}) dos dados tenha que ocorrer por completo; em vez disso, ela pode ser realizada dinamicamente (\textit{on-the-fly}), sem ter que fazer todo o carregamento dos dados em memória ou em um SGBD, o que evita a duplicação e a manutenção de dados no SGBD, e também reduz o custo computacional da consulta, que passa a ser realizada em menos tempo.
 
-\perrotta{Mencionar a arquitetura ARMFUL}
+Mais especificamente, a contribuição desse trabalho é uma extensão da arquitetura ARMFUL apresentada em~\cite{silva2016situ,silva2017raw} com a introdução de um processador de consultas\footnote{Daqui em diante nomeado \textit{Query Processor} (QP).}.
 
-\perrotta{Mencionar a minha contribuição}
+O \abbrev{QP}{Query Processor --- Processador de Consultas} \textit{Query Processor} (QP) atua como um componente do ARMFUL que é responsável pela interação do usuário com os conjuntos de dados de suas simulações. A partir dele, o usuário é capaz de escrever uma consulta sem ter que aprender \abbrev{SQL}{Structured Query Language} SQL (Structured Query Language), pois ela é representada em alto nível, em um formato que é posteriormente traduzido (convertido) para SQL de forma transparente para o usuário. O benefício imediato disso é diminuir a curva de aprendizado para que uma consulta possa ser realizada, pois o usuário precisa se preocupar \textit{a priori} apenas com o domínio da aplicação da simulação computacional e com os dados e grandezas de interesse que ele deseja consultar.
 
-% TODO: expandir SWfMSs ++ citar minha contribuição (a. facilitar a query; b. desempenho (pré-processar); c. fazer a query sem saber escrever ela) 
+Outro benefício é o desempenho atingido com as consultas: o \textit{Query Processor} faz o pré-processamento --- que só precisa ser realizado uma única vez, sempre que o QP é executado durante uma sessão --- em estruturas de dados eficientes de toda a proveniência gerada pelo \textit{ProvenanceGatherer}, de modo que consultas consecutivas beneficiam-se da proveniência já carregada na memória; agilizando, portanto, a velocidade da consulta.
+
+% TODO: Se realizada de forma mais tradicional, somente com a utilização de um SGWfC, tal consulta seria relativamente mais custosa: primeiro, seria necessário... (explicar isso mais adiante)
 
 % REVIEW: alt: {estruturação,organização} do {documento,trabalho,texto}
 \section{Estruturação do Texto}
 
-Este trabalho está organizado da seguinte forma:
+O principal objetivo desse trabalho é apresentar o \textit{Query Processor}: como ele foi criado, como ele se integra à arquitetura ARMFUL previamente apresentada, e quais são os benefícios --- qualitativamente e quantitativamente --- que ele acrescenta à mesma.
+
+Assim, ele está organizado da seguinte forma:
 o \autoref{chap:referencial-teorico} apresenta o embasamento teórico, introduzindo e definindo os conceitos e a terminologia que será utilizada ao longo do trabalho.
 No \autoref{chap:trabalhos-relacionados} listamos algumas publicações relacionadas e recentes, algumas dentre as quais serviram como motivação e base para essa.
-O \autoref{chap:arquitetura-armful} aborda a arquitetura \abbrev{ARMFUL}{Analysis of Raw Data from Multiple Files} ARMFUL (Analysis of Raw Data from Multiple Files), da qual a aplicação desenvolvida nesse trabalho é um componente.
+O \autoref{chap:arquitetura-armful} aborda a arquitetura ARMFUL, da qual a aplicação desenvolvida nesse trabalho é um componente.
 No \autoref{chap:rastros-de-proveniencia} desenvolvemos a abordagem utilizada para analisar rastros de proveniência dos arquivos e dados de simulações científicas.
-No \autoref{chap:experimentos} são abordados os resultados obtidos através do \textit{QueryProcessor} e os experimentos realizados com o mesmo.
+No \autoref{chap:experimentos} são abordados os resultados obtidos através do \textit{Query Processor} e os experimentos realizados com o mesmo.
 Finalmente, o \autoref{chap:conclusao} conclui o trabalho com perspectivas de trabalhos futuros.

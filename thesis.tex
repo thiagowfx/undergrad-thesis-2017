@@ -5,62 +5,79 @@
 % REVIEW: paper structure. Following standards appropriately?
 
 % TODO: s/draft/final
-\documentclass[grad,numbers,draft]{coppetex/coppe}
+\documentclass[grad,numbers,final]{coppetex/coppe}
 
-\usepackage[utf8]{inputenc} % not needed for LuaTeX, but included anyway
+% not needed for LuaLaTeX or XeLaTeX, but included anyway
+\usepackage[utf8]{inputenc}
+
+% math and symbols
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern} % next-gen computer modern fonts
-\usepackage{float}
+
+ % next-gen computer modern fonts
+\usepackage{lmodern}
+
 \usepackage{multirow}
 \usepackage{subfigure}
 \usepackage{longtable}
 \usepackage{placeins}
 
-\usepackage{epigraph} % quotes
+% https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
+% figures with borders
+\usepackage{float}
+\floatstyle{boxed} 
+\restylefloat{figure}
+
+ % quotes
+\usepackage{epigraph}
 \setlength{\epigraphrule}{0pt}
 
+% text highlighting, underlining, spacing
+\usepackage{soul}
 
-\usepackage{soul} % text highlighting, underlining, spacing
-
+% todo notes
 \usepackage[obeyDraft,portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes}
 \setlength{\marginparwidth}{2cm}
 \newcommand{\mattoso}[2][]{\sethlcolor{pink}\texthl{#1}\todo[author=Marta Mattoso,inline,color=pink]{#2}}
 \newcommand{\perrotta}[2][]{\sethlcolor{yellow}\texthl{#1}\todo[author=Thiago Perrotta,inline,color=yellow]{#2}}
 \newcommand{\silva}[2][]{\sethlcolor{lightgray}\texthl{#1}\todo[author=Vitor Silva,inline,color=lightgray]{#2}}
 
+% source code listings
 \usepackage{listings}
-\lstset{% configure listings package
-language=Java,               % choose the language of the code
-basicstyle=\footnotesize\sf, % the size of the fonts that are used for the code
-numbers=left,                % where to put the line-numbers
-numberstyle=\footnotesize,   % the size of the fonts that are used for the line-numbers
-stepnumber=1,                % the step between two line-numbers. If it's 1 each line 
-numbersep=5pt,               % how far the line-numbers are from the code
-showspaces=false,            % show spaces adding particular underscores
-showstringspaces=false,      % underline spaces within strings
-showtabs=false,              % show tabs within strings adding particular underscores
-frame=single,                % adds a frame around the code
-tabsize=4,                   % sets default tabsize to 4 spaces
-captionpos=t,                % sets the caption-position to top
-breaklines=true,             % sets automatic line breaking
-breakatwhitespace=true,      % sets if automatic breaks should only happen at whitespace
-title=\lstname,              % show the filename of files included with \lstinputlisting;
-% escapeinside={\%*}{*)},      % if you want to add a comment within your code
-morekeywords={}              % if you want to add more keywords to the set
+\lstset{
+  language=Java,               % choose the language of the code
+  basicstyle=\footnotesize\sf, % the size of the fonts that are used for the code
+  numbers=left,                % where to put the line-numbers
+  numberstyle=\footnotesize,   % the size of the fonts that are used for the line-numbers
+  stepnumber=1,                % the step between two line-numbers. If it's 1 each line 
+  numbersep=5pt,               % how far the line-numbers are from the code
+  showspaces=false,            % show spaces adding particular underscores
+  showstringspaces=false,      % underline spaces within strings
+  showtabs=false,              % show tabs within strings adding particular underscores
+  frame=single,                % adds a frame around the code
+  tabsize=4,                   % sets default tabsize to 4 spaces
+  captionpos=t,                % sets the caption-position to top
+  breaklines=true,             % sets automatic line breaking
+  breakatwhitespace=true,      % sets if automatic breaks should only happen at whitespace
+  title=\lstname,              % show the filename of files included with \lstinputlisting;
+% escapeinside={\%*}{*)},    % if you want to add a comment within your code
+  morekeywords={}              % if you want to add more keywords to the set
 }
 
+% hyperlinks
 \usepackage{hyperref}
 \hypersetup{%
-	portuguese,
-	pdfencoding=auto,
-	breaklinks=true,
-	bookmarksopen=true,
+  portuguese,
+  pdfencoding=auto,
+  breaklinks=true,
+  bookmarksopen=true,
+  % colorlinks=true,
 }
 
 \makelosymbols{}
 \makeloabbreviations{}
 
-% \includeonly{introduction} % speed-up typesetting
+% speed-up typesetting --- put in the following list only the chapters you want to be typeset
+% \includeonly{introduction,chapter02}
 
 \begin{document}
   % REVIEW: títulos

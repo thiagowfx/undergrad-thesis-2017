@@ -30,6 +30,10 @@ Uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (T, S,
     é dependência de dados
 \end{itemize}
 
+\missingfigure{Exemplo de -> o ->, i.e., transformação com dataset de entrada e de saída}
+
+\perrotta{Acho que falta definir o que é uma transformação.}
+
 \subsection{Dependência de dados}
 
 Uma especificação de dependência de dados \( \phi \) é definida como \[ \phi = (s, t_{\textrm{previous}}, t_{\textrm{next}}) \] onde:
@@ -77,7 +81,14 @@ onde \( \#(S) \) representa a cardinalidade do conjunto \( S \), i.e.\ a quantid
 
 \section{Um exemplo}
 
-Para ilustrar as definições e especificações da \autoref{sec:especificacoes}, vamos utilizar uma pequena amostra do conjunto de dados de sedimentação.
+Para ilustrar as definições e especificações da \autoref{sec:especificacoes}, vamos utilizar uma pequena amostra do conjunto de dados de sedimentação. \perrotta[Na \autoref{fig:example-dataflow-specification},]{expandir comentário sobre a figura}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.35\textwidth]{img/example-dataflow-specification}
+    \caption[Exemplo de especificação de fluxo de dados]{Exemplo de especificação de fluxo de dados, com duas transformações e três conjuntos de dados.}%
+    \label{fig:example-dataflow-specification}
+\end{figure}
 
 \missingfigure{Incluir um exemplo, com figuras, de um pequeno dataflow.}
 
