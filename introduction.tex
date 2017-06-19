@@ -12,10 +12,10 @@ Simulações computacionais tornaram-se predominantes e omnipresentes no dia-a-d
 % Muitos programas...consumem e produzem muitos dados...
 Essas simulações geralmente envolvem a execução de muitos programas no domínio da aplicação os quais intensivamente consomem e produzem muitos dados, a maior parte dos quais é armazenada em uma miscelânea de formatos de arquivo também no domínio da aplicação~\cite{silva2015analyzing}; por exemplo, \abbrev{FITS}{Flexible Image Transport System} FITS~\cite{greisen2002representations} em astronomia, ou \abbrev{HDF}{Hierarchical Data Format} HDF5~\cite{hdfgroup2014hdf5} e \abbrev{NetCDF}{Network Common Data Form} NetCDF~\cite{rew1990netcdf} em dinâmica de fluidos computacionais.
 
-% Longo tempo para ser executada...mesmo em CAD
+% Longo tempo para ser executada...mesmo em CAD...
 Uma grande parte dessas simulações computacionais de larga escala leva um longo tempo para ser executada, mesmo em ambientes de \abbrev{CAD}{Computação de Alto Desempenho} CAD (Computação de Alto Desempenho)~\cite{silva2017raw}, onde o poder de computação é amplificado através da utilização de diversos núcleos computacionais.
 
-% Rastrear grandezas...somente no fim...programas ad-hoc...SGBD
+% Rastrear grandezas...somente no fim...programas ad-hoc...SGBD...
 Durante as mesmas, usuários comumente precisam rastrear grandezas de interesse, tais como resíduos, tempo de execução e estimativas de erro, baseadas em elementos de dados relacionados de vários arquivos, a fim de controlar a sua execução ao máximo possível~\cite{silva2016situ}.
 Entretanto, esse rastreio costuma ser realizado somente ao fim da simulação, o que \textit{a priori} não é prático para o usuário, já que essas simulações levam um tempo considerável de execução mesmo em CAD, como mencionado anteriormente~\cite{silva2017raw}; além disso, mesmo considerando que os arquivos produzidos sejam tipicamente apoiados por diversas linguagens de programação e bibliotecas, programas \textit{ad-hoc} precisam comumente ser desenvolvidos a fim de fazer análises em grande escala, as quais se tornam ainda mais custosas se realizadas com \abbrev{SGBD}{Sistema de Gerenciamento de Banco de Dados} SGBDs (Sistemas de Gerenciamento de Banco de Dados), pois eles aumentam a complexidade de execução em termos de estruturação de dados e carregamento na memória~\cite{silva2015analyzing}.
 
@@ -27,11 +27,23 @@ Para amenizar o custo de tempo de execução, as simulações computacionais cit
 % Workflows...dataflows(dt, ds, phi)...DAG...
 Tais \textit{workflows} científicos são composições de tarefas de processamento de dados sequenciais e concorrentes, cuja ordem de execução é determinada com base nas interdependências entre os dados~\cite{bux2013parallelization}. Eles podem ser modelados através de um fluxo de dados (\textit{dataflow}) que descreve todos os conjuntos de dados, atributos, transformações e dependências entre os mesmos~\cite{silva2017raw}. Esses fluxos de dados são usualmente especificados na forma de um \abbrev{DAG}{Directed Acyclic Graph --- Grafo Direcionado Acíclico} DAG (grafo direcionado acíclico), em que tarefas (transformações) individuais são representadas como nós, e conjuntos de dados são modelados como arestas direcionadas.
 
-Os SGWfCs citados anteriormente são usualmente difíceis de serem configurados e utilizados pelos usuários; alguns deles tais como o Taverna possuem uma boa ênfase em usabilidade, porém não compensam na paralelização e utilização de recursos computacionais distribuídos; perdendo, assim, sua efetividade.
-
 \missingfigure{Exemplo de -> o ->, i.e., transformação com dataset de entrada e de saída}
 
-Os SGWfCs facilitam o \textit{design}, a manutenção, a execução e o monitoramento de processamento de dados científicos
+% Trade-offs entre usabilidade e poder de controle...
+Os SGWfCs citados anteriormente são usualmente difíceis de serem configurados e utilizados pelos usuários; alguns deles tais como o Taverna~\cite{hull2006taverna} possuem uma boa ênfase em usabilidade, porém não compensam na paralelização e utilização de recursos computacionais distribuídos; perdendo, assim, sua efetividade.
+
+% Dificuldade em não utilizar SGWfCs...
+Os SGWfCs facilitam o \textit{design}, a manutenção, a execução, o monitoramento e o rastreio do processamento de dados científicos. Sem suporte a rastreio, o desafio é analisar a propagação de dados de conjuntos de arquivos ao longo da execução da simulação, o que é bastante propenso a erros se realizado manualmente~\cite{silva2015analyzing}, pois são necessárioas: \( i) \) a nomenclatura de arquivos de forma apropriada; \( ii) \) escrever e gerenciar programas \textit{ad-hoc} para gerenciar cada transformação de dados e arquivos; \( iii) \) mapear o fluxo das transformações.
+
+No entanto, eis um dilema: existem três tipos básicos de consultas\footnote{Isso será mais aprofundado na~\autoref{sec:tipos-de-consultas}.} que são rotineiramente utilizadas:
+
+\begin{enumerate}
+    \item conteúdo de arquivo específico de domínio;
+    \item múltiplos arquivos relacionados através de transformações / programas de simulação; e
+    \item elementos de dados relacionados de múltiplos arquivos
+\end{enumerate}
+
+O dilema é que --- até onde se tem conhecimento durante a publicação deste documento --- todos os SGWfCs conhecidos realizam apenas consultas do tipo \( 1 \) ou \( 2 \), como o FastBit~\cite{wu2009fastbit} que realiza apenas consultas do tipo 1, e como o Chiron~\cite{ogasawara2013chiron} que é capaz de realizar ambos os tipos de consulta. Nenhum deles é capaz de realizar consultas do tipo 3.
 
 \section{Contribuição} % {Objetivos, Relevância, Método}
 
