@@ -6,10 +6,5 @@
             "command": "make",
             "args": []
         }
-    ],
-    "cSpell.enabled": true,
-    "cSpell.ignoreRegExpList": [
-        "\\\\\\w*(\\[.*?\\])?(\\{.*?\\})?",
-        "\\$.+?\\$"
     ]
 }
