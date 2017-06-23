@@ -3,10 +3,14 @@
 % vim: set fenc=utf-8
 
 % TODO: s/draft/final
+% use coppetex style class
 \documentclass[grad,numbers,final]{coppetex/coppe}
 
-% not needed for LuaLaTeX or XeLaTeX, but included anyway
-\usepackage[utf8]{inputenc}
+\usepackage{iftex}
+\ifPDFTeX
+  % use UTF-8 in pdftex (not needed in LuaTeX and XeTeX)
+  \usepackage[utf8]{inputenc}
+\fi
 
 % math and symbols
 \usepackage{amsmath,amssymb}
@@ -14,14 +18,13 @@
  % next-gen computer modern fonts
 \usepackage{lmodern}
 
-\usepackage{multirow}
-\usepackage{subfigure}
-\usepackage{longtable}
-\usepackage{placeins}
+% better placement of images in sections
+\usepackage[section]{placeins}
 
 % https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
-% figures with borders
 \usepackage{float}
+
+% images with borders
 \floatstyle{boxed} 
 \restylefloat{figure}
 
@@ -35,6 +38,7 @@
 % todo notes
 \usepackage[obeyDraft,portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes}
 \setlength{\marginparwidth}{2cm}
+
 \newcommand{\mattoso}[2][]{\sethlcolor{pink}\texthl{#1}\todo[author=Marta Mattoso,inline,color=pink]{#2}}
 \newcommand{\perrotta}[2][]{\sethlcolor{yellow}\texthl{#1}\todo[author=Thiago Perrotta,inline,color=yellow]{#2}}
 \newcommand{\silva}[2][]{\sethlcolor{lightgray}\texthl{#1}\todo[author=Vitor Silva,inline,color=lightgray]{#2}}
@@ -68,17 +72,16 @@
   pdfencoding=auto,
   breaklinks=true,
   bookmarksopen=true,
-  % colorlinks=true,
+  colorlinks=true,
 }
 
 \makelosymbols{}
 \makeloabbreviations{}
 
-% speed-up typesetting --- put in the following list only the chapters you want to be typeset
-% \includeonly{introduction,chapter02}
+% typeset only the following chapters for faster typsetting times
+\includeonly{introduction,chapter02}
 
 \begin{document}
-  % REVIEW: títulos
   \title{Análise do Rastro de Proveniência em Simulações Computacionais em Larga Escala}
   \foreigntitle{Provenance Tracing Analysis on Computer Simulations in large-scale}
 
