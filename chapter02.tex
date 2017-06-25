@@ -8,11 +8,12 @@
 
 \perrotta{Capítulo 02 --- Referencial Teórico}
 
-Nessa seção serão abordados alguns conceitos e a terminologia que será utilizada ao longo desse trabalho.
+Nesse capítulo serão abordados alguns conceitos e a terminologia que será utilizada ao longo do trabalho.
 
 \section{Simulação Computacional}
 
-\section{Dataflow}
+\section{Dataflow}%
+\label{sec:dataflow}
 
 Uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (T, S, \Phi) \] onde:
 \begin{itemize}
@@ -76,9 +77,10 @@ Um elemento de dados é definido como
 
 onde \( \#(S) \) representa a cardinalidade do conjunto \( S \), i.e.\ a quantidade de elementos presentes no mesmo.
 
-\subsection{Um exemplo}
+\subsection{Um exemplo}%
+\label{sec:um-exemplo-de-dataflow}
 
-Para ilustrar as definições e especificações da \autoref{sec:especificacoes}, vamos utilizar uma pequena amostra do conjunto de dados de sedimentação. Na \autoref{fig:example-dataflow-specification} \perrotta{expandir comentário sobre a figura}
+Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamos utilizar uma pequena amostra do conjunto de dados de sedimentação. Na \autoref{fig:example-dataflow-specification} \perrotta{expandir comentário sobre a figura}
 
 \begin{figure}[ht]
     \centering
@@ -106,10 +108,77 @@ S = && \{ \textrm{iinputmesh}, \textrm{oinputmesh} \} \\
 % Simulações computacionais
 % (OK) Fluxo de dados = dataflow - definições {d,n}o outro google docs
 \section{Proveniência de dados}
+
+% REVIEW: {conceito, definição}
+\subsection{Conceito}
+
+% upstream: http://www.aulete.com.br/proveni%C3%AAncia
+O dicionário Aulete Digital~\cite{auletedigitalonline} define \textbf{proveniência} como
+``lugar de onde alguém ou alguma coisa provém; origem; FONTE;''. Em experimentos científicos, a proveniência nos ajuda a interpretar e entender resultados. Através da examinação e da cadeia de passos que criaram um certo resultado, nós podemos verificar que o experimento foi: (i) realizado de acordo com os procedimentos aceitáveis; (ii) inspecionar as suas entradas; e, em alguns casos, (iii) reproduzir os mesmos resultados~\cite{freire2008provenance}.
+
+Questões básicas sobre dados científicos podem ser respondidas através do conhecimento e da introspecção de sua proveniência, tais como
+
+\begin{enumerate}
+    \item quem criou o dado, e quando foi essa criação?
+    \item quem modificou o dado, e quando essa modificação ocorreu?
+    \item que processo criou o dado?
+    \item que outros dados foram produzidos a partir dos dados originais?
+\end{enumerate}
+
+Um dos componentes mais importantes que podemos obter com proveniência são suas informações sobre \textbf{causalidade}, isto é, a relação de dados de entrada que, associados a um processo, levam a um determinado conjunto de dados de saída~\cite{freire2008provenance}. A causalidade pode ser representada através de \textit{workflows} e de grafos --- onde nós correspondem a processos e arestas correspondem a dados científicos ---, como no exemplo da \autoref{sec:um-exemplo-de-dataflow}.
+
+Um segundo exemplo relevante de componente de proveniência são as informações definidas e providas pelo usuário, as quais não podem ser capturadas automaticamente~\cite{freire2008provenance}.  Esse tipo de informação é usualmente provido em níveis de granularidade arbitrários através de anotações e observações do usuário.
+
 \subsection{Categorias de dados de proveniência}
+
+Existem dois tipos de proveniência para \textit{workflows} científicos: \textbf{prospectiva} e \textbf{retrospectiva}~\cite{murta2014noworkflow,freire2008provenance}:
+
+\begin{itemize}
+% murta2014noworkflow ++ freire2008provenance
+    \item A \textbf{proveniência prospectiva} captura a especificação e a estrutura de uma tarefa computacional --- por exemplo, um \textit{script}, ou um \textit{workflow} --- e associa a ela os passos que precisam ser seguidos para gerar um conjunto de dados. Ela corresponde à definição de um \textit{workflow} e ao seu grafo de atividades, processos e de dados científicos relacionados.
+% murta2014noworkflow ++ freire2008provenance
+    \item Por outro lado, a \textbf{proveniência retrospectiva} captura não apenas os passos executados de uma tarefa computacional, mas também informações relacionadas ao ambiente e tempo de execução da mesma - por exemplo, quais parâmetros foram passados aos programas, qual \abbrev{PID}{Process ID} processo (PID) do sistema operacional foi executado, por quem o PID foi executado, qual foi a duração total (incluindo seu instante de início e de fim) do mesmo, ou quais variáveis de ambiente do sistema operacional estavam definidas. Sua estrutura do grafos é similar à da proveniência prospectiva.
+\end{itemize}
+
+Através dos dois tipos citados de proveniência, um SGWfC é capaz de orquestrar e prover diferentes níveis de abstração para a execução de uma simulação científica~\cite{murta2014noworkflow}, os quais são inexistentes em programas \textit{ad-hoc} tais como \textit{scripts}. Além disso, mecanismos básicos de captura de proveniência podem ser classificados em três classes, de acordo com o tipo de captura em que são baseados~\cite{freire2008provenance}:
+
+\begin{itemize}
+    \item \textit{workflows}: SGWfCs, por exemplo, sistemas tais como Kepler~\cite{ludascher2006scientific} e Taverna~\cite{hull2006taverna};
+    \item processos: PID, comunicação entre processos (IPC);
+    \item sistema operacional: por exemplo, através de chamadas de sistema.
+\end{itemize}
+
+\subsubsection{Um exemplo}
+
+Para ilustrar a diferença entre os dois tipos de proveniência apresentados, considere o clássico exemplo de contagem de palavras (\textit{word counting}), no qual o conjunto de dados inicial é um arquivo de texto em \abbrev{ASCII}{American Standard Code for Information Interchange} ASCII\footnote{Cujo objetivo é obter a ordem decrescente de frequência das palavras que aparecem no texto}. A primeira tarefa de processamento é a leitura e subsequente análise do arquivo de texto a fim de extrair palavras do mesmo. A segunda etapa é realizar a contagem das palavras a partir da lista de palavras obtida no passo anterior. Finalmente, o último passo de processamento é ordenar em ordem descrescente a frequência de palavras obtida no passo anterior.
+
+A proveniência prospectiva desse experimento poderia ser representada através do grafo da \autoref{fig:word-count-prospective}. Por outro lado, a proveniência retrospectiva do último passo (ordenação) poderia ter capturado em tempo de execução algumas das informações presentes na \autoref{tab:word-count-retrospective}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/word-count-prospective}
+    \caption[Proveniência prospectiva do exemplo de contagem de palavras]{Proveniência prospectiva do exemplo de contagem de palavras.}%
+    \label{fig:word-count-prospective}
+\end{figure}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{r|l}
+        \hline
+        \textit{Timestamp} de início & 2017-06-25 03:11:05.231                         \\
+        \textit{Timestamp} de fim    & 2017-06-25 03:11:09.586                         \\
+        PID                          & 4671                                            \\
+        Linha de comando             & \texttt{./sort --order=desc --in=freq-list.csv} \\
+        Variáveis de ambiente        & \texttt{PWD=/home/tperrotta;PATH=/usr/bin:/bin} \\
+        Usuário                      & tperrotta                                       \\
+        \hline
+    \end{tabular}
+    \caption[Proveniência retrospectiva do exemplo de contagem de palavras]{Proveniência retrospectiva do exemplo de contagem de palavras da etapa de ordenação decrescente.}%
+    \label{tab:word-count-retrospective}
+\end{table}
 
 \section{Gerência do fluxo de dados}
 \subsection{Físico}
 \subsection{Lógico}
-% Gerência do fluxo de dados
+
 % Mecanismos para processamento de consultas

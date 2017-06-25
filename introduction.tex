@@ -52,8 +52,6 @@ O \abbrev{QP}{Query Processor --- Processador de Consultas} \textit{Query Proces
 
 Outro benefício é o desempenho atingido com as consultas: o \textit{Query Processor} faz o pré-processamento --- que só precisa ser realizado uma única vez, sempre que o QP é executado durante uma sessão --- em estruturas de dados eficientes de toda a proveniência gerada pelo \textit{ProvenanceGatherer}, de modo que consultas consecutivas beneficiam-se da proveniência já carregada na memória; agilizando, portanto, a velocidade da consulta.
 
-% TODO: Se realizada de forma mais tradicional, somente com a utilização de um SGWfC, tal consulta seria relativamente mais custosa: primeiro, seria necessário... (explicar isso mais adiante)
-
 \section{Estruturação do Texto}
 
 O principal objetivo desse trabalho é apresentar o \textit{Query Processor}: como ele foi criado, como ele se integra à arquitetura ARMFUL previamente apresentada, e quais são os benefícios --- qualitativamente e quantitativamente --- que ele acrescenta à mesma.
