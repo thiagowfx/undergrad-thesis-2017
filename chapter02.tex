@@ -8,24 +8,33 @@
 
 \perrotta{Capítulo 02 --- Referencial Teórico}
 
-Nesse capítulo serão abordados alguns conceitos e a terminologia que será utilizada ao longo do trabalho.
+Nesse capítulo serão abordados alguns conceitos e a terminologia que será utilizada ao longo do trabalho. Parte desse conteúdo, que será referenciado por~\cite{silva2015propostadoutorado}, é baseada na proposta de doutorado do \textsf{M. Sc. Vítor Silva Sousa}, um dos orientadores desse trabalho.
 
 \section{Simulação Computacional}
 
-\section{Dataflow}%
+Uma \textbf{simulação computacional}, também chamada de \textbf{simulação científica}, é um ``método de abstração e sistematização do processo experimental ou parte dele''~\cite{silva2015propostadoutorado,dias2015data}. Ela consiste de um ou vários programas \textit{ad-hoc} de simulação específicos, sendo representados como \textit{atividades} em um \textit{workflow}; tais atividades, em particular, são encadeadas para formar uma dependência de dados entre as mesmas, isto é, de forma que os dados produzidos por uma delas sejam consumidos pela outra.
+
+Uma simulação computacional pode ser representada através de um fluxo de dados (elucidado na~\autoref{sec:dataflow}), no qual ``as atividades correspondem às transformações de dados e as dependências de dados correspondem ao fluxo de dados entre duas transformações de dados''~\cite{silva2015propostadoutorado,ogasawara2011algebraic}.
+
+\subsection{SGWfC}
+
+Devido à complexidade das simulações computacionais, um SGWfC --- Sistema de Gerência de \textit{Workflows} Científicos ---, costuma ser empregado para gerenciá-las; em particular, aspectos tais como a composição (\textit{i.e.}, definição da estrutura do fluxo de dados), a execução e a análise (\textit{i.e.}, mecanismo para processamento de consultas e~/~ou ferramentas de visualização) de simulações são administrados pelo SGWfC~\cite{silva2015propostadoutorado}. Eles também proveem abstração para o usuário.
+
+Exemplos de SGWfCs incluem o Chiron~\cite{ogasawara2013chiron}, o Kepler~\cite{ludascher2006scientific} e o Pegasus~\cite{deelman2005pegasus}.
+
+% REVIEW: dataflow
+\section{Fluxo de dados}%
 \label{sec:dataflow}
 
-Uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (T, S, \Phi) \] onde:
+\subsection{Conceito de fluxo de dados} % REVIEW: escrever apenas 'conceito'?
+
+Um \textbf{fluxo de dados} (do inglês \textit{dataflow}) é modelado como um grafo direcionado acíclico (DAG), no qual os vértices (nós) representam as atividades / transformações de uma simulação computacional, e as arestas representam o fluxo de dados (conjuntos de dados) entre as atividades~\cite{ogasawara2011algebraic}.
+
+Formalmente, uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (T, S, \Phi) \] onde:
 \begin{itemize}
-    \item \( T = \{t_1, t_2, \ldots, t_{\alpha}\} \) \vdots{}
-    \( \{t_i \mid i \in \{{1, 2, \ldots, \alpha}\} \} \)
-    é transformação
-    \item \( S = \{s_1, s_2, \ldots, t_{\beta}\} \) \vdots{}
-    \( \{s_i \mid i \in \{{1, 2, \ldots, \beta}\} \} \)
-    é conjunto de dados
-    \item \( \Phi = \{\phi_1, \phi_2, \ldots, \phi_{\gamma}\} \) \vdots{}
-    \( \{\phi_i \mid i \in \{{1, 2, \ldots, \gamma}\} \} \){}
-    é dependência de dados
+    \item \( T = \{t_1, t_2, \ldots, t_{\alpha}\} \) é um conjunto de transformações
+    \item \( S = \{s_1, s_2, \ldots, t_{\beta}\} \) é um conjunto de dados
+    \item \( \Phi = \{\phi_1, \phi_2, \ldots, \phi_{\gamma}\} \) é um conjunto de dependência de dados
 \end{itemize}
 
 \missingfigure{Exemplo de -> o ->, i.e., transformação com dataset de entrada e de saída}
@@ -110,7 +119,7 @@ S = && \{ \textrm{iinputmesh}, \textrm{oinputmesh} \} \\
 \section{Proveniência de dados}
 
 % REVIEW: {conceito, definição}
-\subsection{Conceito}
+\subsection{Conceito de proveniência}  % REVIEW: escrever apenas 'conceito'?
 
 % upstream: http://www.aulete.com.br/proveni%C3%AAncia
 O dicionário Aulete Digital~\cite{auletedigitalonline} define \textbf{proveniência} como
@@ -127,7 +136,7 @@ Questões básicas sobre dados científicos podem ser respondidas através do co
 
 Um dos componentes mais importantes que podemos obter com proveniência são suas informações sobre \textbf{causalidade}, isto é, a relação de dados de entrada que, associados a um processo, levam a um determinado conjunto de dados de saída~\cite{freire2008provenance}. A causalidade pode ser representada através de \textit{workflows} e de grafos --- onde nós correspondem a processos e arestas correspondem a dados científicos ---, como no exemplo da \autoref{sec:um-exemplo-de-dataflow}.
 
-Um segundo exemplo relevante de componente de proveniência são as informações definidas e providas pelo usuário, as quais não podem ser capturadas automaticamente~\cite{freire2008provenance}.  Esse tipo de informação é usualmente provido em níveis de granularidade arbitrários através de anotações e observações do usuário.
+Um segundo exemplo relevante de componente de proveniência são as informações definidas e providas pelo usuário, as quais não podem ser capturadas automaticamente~\cite{freire2008provenance}. Esse tipo de informação é usualmente provido em níveis de granularidade arbitrários através de anotações e observações do usuário.
 
 \subsection{Categorias de dados de proveniência}
 
@@ -147,6 +156,11 @@ Através dos dois tipos citados de proveniência, um SGWfC é capaz de orquestra
     \item processos: PID, comunicação entre processos (IPC);
     \item sistema operacional: por exemplo, através de chamadas de sistema.
 \end{itemize}
+
+Ademais, a captura de proveniência de dados pode ser realizada de duas formas distintas, \textit{offline} e \textit{online}~\cite{silva2015propostadoutorado}. A captura \textit{offline} consiste em armazenar os dados de uma simulação científica em um determinado repositório logo \textbf{após} a execução da mesma --- por exemplo, como realizado pelo Kepler~\cite{ludascher2006scientific}. Em contrapartida, a captura \textit{online} consiste na obtenção e no armazenamento de dados \textbf{em tempo de execução}, como realizado no Pegasus~\cite{deelman2005pegasus} e no Swift/T~\cite{zhao2007swift}.
+% /\ REVIEW: Swift ou Swift/T? Citação está correta?
+
+Uma simples observação é que o desempenho da captura de proveniência \textit{online} tende a ser ligeiramente pior do que a \textit{offline}, devido à possível sobrecarga do armazenamento de dados de proveniência concorrentemente ao processamento dos programas de simulação. Em outra perspectiva, vale enfatizar que a captura \textit{online} é mais flexível e tem um potencial analítico maior, pois permite que os usuários realizem consultas mesmo antes do término da simulação, o que possui um valor inestimável, uma vez que simulações computacionais são comumente realizadas em larga escala sendo, portanto, custosas e demoradas.
 
 \subsubsection{Um exemplo}
 

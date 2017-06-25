@@ -289,4 +289,67 @@ interactive exploration on terabytes of data.},
   urldate = {2017-06-25},
 }
 
+@Unpublished{silva2015propostadoutorado,
+  author  = {Vítor Silva},
+  title   = {Análise de dados científicos sobre múltiplos arquivos ao longo da geração dos dados},
+  year    = {2015},
+  date    = {2015-12},
+  comment = {https://carinercrs.blogspot.com.br/2011/04/tipos-de-entradas-dos-arquivos-bibtex.html},
+}
+
+@Article{dias2015data,
+  author    = {Dias, Jonas and Guerra, Gabriel and Rochinha, Fernando and Coutinho, Alvaro LGA and Valduriez, Patrick and Mattoso, Marta},
+  title     = {Data-centric iteration in dynamic workflows},
+  journal   = {Future Generation Computer Systems},
+  year      = {2015},
+  volume    = {46},
+  pages     = {114--126},
+  doi       = {10.1016/j.future.2014.10.021},
+  url       = {http://www.sciencedirect.com/science/article/pii/S0167739X14002155},
+  abstract  = {Dynamic workflows are scientific workflows to support computational science simulations, typically using dynamic processes based on runtime scientific data analyses. They require the ability of adapting the workflow, at runtime, based on user input and dynamic steering. Supporting data-centric iteration is an important step towards dynamic workflows because user interaction with workflows is iterative. However, current support for iteration in scientific workflows is static and does not allow for changing data at runtime. In this paper, we propose a solution based on algebraic operators and a dynamic execution model to enable workflow adaptation based on user input and dynamic steering. We introduce the concept of iteration lineage that makes provenance data management consistent with dynamic iterative workflow changes. Lineage enables scientists to interact with workflow data and configuration at runtime through an API that triggers steering. We evaluate our approach using a novel and real large-scale workflow for uncertainty quantification on a 640-core cluster. The results show impressive execution time savings from 2.5 to 24 days, compared to non-iterative workflow execution. We verify that the maximum overhead introduced by our iterative model is less than 5% of execution time. Also, our proposed steering algorithms are very efficient and run in less than 1 millisecond, in the worst-case scenario.},
+  file      = {online:https\://hal-lirmm.ccsd.cnrs.fr/lirmm-01073638/document:PDF},
+  publisher = {Elsevier},
+}
+
+@Article{ogasawara2011algebraic,
+  author   = {Ogasawara, Eduardo and Dias, Jonas and Oliveira, Daniel and Porto, F{\'a}bio and Valduriez, Patrick and Mattoso, Marta},
+  title    = {An algebraic approach for data-centric scientific workflows},
+  journal  = {Proc. of VLDB Endowment},
+  year     = {2011},
+  volume   = {4},
+  number   = {12},
+  pages    = {1328--1339},
+  url      = {http://vldb.org/pvldb/vol4/p1328-ogasawara.pdf},
+  abstract = {Scientific workflows have emerged as a basic abstraction for
+structuring and executing scientific experiments in computational
+environments. In many situations, these workflows are
+computationally and data intensive, thus requiring execution in
+large-scale parallel computers. However, parallelization of
+scientific workflows remains low-level, ad-hoc and laborintensive,
+which makes it hard to exploit optimization
+opportunities. To address this problem, we propose an algebraic
+approach (inspired by relational algebra) and a parallel execution
+model that enable automatic optimization of scientific workflows.
+We conducted a thorough validation of our approach using both a
+real oil exploitation application and synthetic data scenarios. The
+experiments were run in Chiron, a data-centric scientific
+workflow engine implemented to support our algebraic approach.
+Our experiments demonstrate performance improvements of up to
+226% compared to an ad-hoc workflow implementation.},
+  file     = {online:http\://vldb.org/pvldb/vol4/p1328-ogasawara.pdf:PDF},
+}
+
+@InProceedings{zhao2007swift,
+  author       = {Zhao, Yong and Hategan, Mihael and Clifford, Ben and Foster, Ian and Von Laszewski, Gregor and Nefedova, Veronika and Raicu, Ioan and Stef-Praun, Tiberiu and Wilde, Michael},
+  title        = {Swift: Fast, reliable, loosely coupled parallel computation},
+  booktitle    = {Services, 2007 IEEE Congress on},
+  year         = {2007},
+  organization = {IEEE},
+  pages        = {199--206},
+  doi          = {10.1109/services.2007.63},
+  url          = {http://ieeexplore.ieee.org/abstract/document/4278797/},
+  abstract     = {We present Swift, a system that combines a novel scripting language called SwiftScript with a powerful runtime system based on CoG Karajan, Falkon, and Globus to allow for the concise specification, and reliable and efficient execution, of large loosely coupled computations. Swift adopts and adapts ideas first explored in the GriPhyN virtual data system, improving on that system in many regards. We describe the SwiftScript language and its use of XDTM to describe the logical structure of complex file system structures. We also present the Swift runtime system and its use of CoG Karajan, Falkon, and Globus services to dispatch and manage the execution of many tasks in parallel and grid environments. We describe application experiences and performance experiments that quantify the cost of Swift operations.},
+  file         = {online:http\://swift-lang.org/papers/pdfs/Swift-SWF07.pdf:PDF},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}
