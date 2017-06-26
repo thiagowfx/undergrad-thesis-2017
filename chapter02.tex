@@ -6,15 +6,17 @@
 \chapter{Referencial Teórico}%
 \label{chap:referencial-teorico}
 
-\perrotta{Capítulo 02 --- Referencial Teórico}
-
 Nesse capítulo serão abordados alguns conceitos e a terminologia que será utilizada ao longo do trabalho. Parte desse conteúdo, que será referenciado por~\cite{silva2015propostadoutorado}, é baseada na proposta de doutorado do \textsf{M. Sc. Vítor Silva Sousa}, um dos orientadores desse trabalho.
 
 \section{Simulação Computacional}
 
-Uma \textbf{simulação computacional}, também chamada de \textbf{simulação científica}, é um ``método de abstração e sistematização do processo experimental ou parte dele''~\cite{silva2015propostadoutorado,dias2015data}. Ela consiste de um ou vários programas \textit{ad-hoc} de simulação específicos, sendo representados como \textit{atividades} em um \textit{workflow}; tais atividades, em particular, são encadeadas para formar uma dependência de dados entre as mesmas, isto é, de forma que os dados produzidos por uma delas sejam consumidos pela outra.
+Uma \textbf{simulação computacional}, também chamada de \textbf{simulação científica}, é um ``método de abstração e sistematização do processo experimental ou parte dele''~\cite{silva2015propostadoutorado,dias2015data}. Ela emergiu como um meio de executar experimentos científicos em ambientes computacionais~\cite{ogasawara2011algebraic}, e consiste de um ou vários programas \textit{ad-hoc} de simulação específicos, sendo representados como \textit{atividades} em um \textit{workflow}; tais atividades, em particular, são encadeadas para formar uma dependência de dados entre as mesmas, isto é, de forma que os dados produzidos por uma delas sejam consumidos pela outra.
 
-Uma simulação computacional pode ser representada através de um fluxo de dados (elucidado na~\autoref{sec:dataflow}), no qual ``as atividades correspondem às transformações de dados e as dependências de dados correspondem ao fluxo de dados entre duas transformações de dados''~\cite{silva2015propostadoutorado,ogasawara2011algebraic}.
+Uma simulação computacional pode ser representada através de um fluxo de dados (elucidado na~\autoref{sec:dataflow}), no qual ``as atividades correspondem às transformações de dados e as dependências de dados correspondem ao fluxo de dados entre duas transformações de dados''~\cite{silva2015propostadoutorado,ogasawara2011algebraic}. Uma \textbf{atividade} é definida como um componente do \textit{workflow} que é capaz de executar programas, com parâmetros de entrada e de saída, os quais são utilizados para representar dependências entre cada uma das atividades.
+
+% REVIEW: map, reduce, etc @ http://vldb.org/pvldb/vol4/p1328-ogasawara.pdf ??
+
+\perrotta{Expandir SGWfC}.
 
 \subsection{SGWfC}
 
@@ -191,8 +193,22 @@ A proveniência prospectiva desse experimento poderia ser representada através 
     \label{tab:word-count-retrospective}
 \end{table}
 
-\section{Gerência do fluxo de dados}
+% REVIEW: \section{Gerência do fluxo de dados}
+\section{Rastreamento de dados de proveniência}
+
 \subsection{Físico}
+
+O \textbf{rastreamento físico} de dados de proveniência gerencia a proveniência de \emph{elementos de dados} individuais, isto é, num nível de granularidade fino. Nessa abordagem é necessário etiquetar cada elemento de dado com identificadores, de forma a habilitar o gerenciamento do fluxo de dados. Esse tipo de proveniência captura muitos detalhes, os quais podem ser úteis na depuração de simulações devido ao seu gerenciamento fino de \perrotta[elementos de dados.]{citation needed: dataflow technical report from Victor et al}
+
 \subsection{Lógico}
+
+O \textbf{rastreamento lógico} de dados de proveniência, de forma análoga ao rastreamento físico, também rastreia o fluxo de elementos de dados, só que a captura é realizada através de \emph{transformações}, em vez de elementos de dados. Dessa maneira, menos dados de proveniência precisam ser armazenados, já que um fluxo de dados costuma ter bem menos transformações do que elementos de dados. Além disso, o rastreamento lógico pode ser \emph{automaticamente} derivado das especificações das transformações de dados, uma vez que elas já apresentam propriedades sobre conjuntos de dados consumidos e produzidos~\cite{ikeda2013logical}.
+
+\perrotta{citation needed: dataflow technical report from Victor et al}
+
+\subsubsection{Exemplo}
+
+\perrotta{Exemplo para ilustrar: diferença entre físico e lógico}
+\missingfigure{Exemplo para ilustrar: diferença entre físico e lógico}
 
 % Mecanismos para processamento de consultas

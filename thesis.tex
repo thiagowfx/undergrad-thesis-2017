@@ -40,7 +40,8 @@
 \usepackage{soul}
 
 % todo notes
-\usepackage[obeyDraft,portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes}
+% additional option: obeyDraft
+\usepackage[portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes}
 \setlength{\marginparwidth}{2cm}
 
 \newcommand{\mattoso}[2][]{\sethlcolor{pink}\texthl{#1}\todo[author=Marta Mattoso,inline,color=pink]{#2}}
@@ -131,7 +132,8 @@
   \printloabbreviations{}
   
   \renewcommand{\lstlistlistingname}{Lista de Códigos}
-  \addcontentsline{toc}{chapter}{Lista de Códigos}
+  \clearpage
+  \addcontentsline{toc}{chapter}{\lstlistlistingname}
   \lstlistoflistings{}
 
   \mainmatter{}
