@@ -51,7 +51,7 @@
 \def\fileversion{v2.1.1}
 \def\filedate{2009/11/17}
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{coppe}[\filedate\ \fileversion\ COPPE Dissertations and Thesis]
+\ProvidesClass{coppetex/coppe}[\filedate\ \fileversion\ COPPE Dissertations and Thesis]
 \LoadClass[12pt,a4paper,oneside]{book}
 \RequirePackage[sort&compress]{natbib}
 \RequirePackage{hyphenat}
