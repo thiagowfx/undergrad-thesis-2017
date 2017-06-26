@@ -30,20 +30,47 @@ Exemplos de SGWfCs incluem o Chiron~\cite{ogasawara2013chiron}, o Kepler~\cite{l
 \section{Fluxo de dados}%
 \label{sec:dataflow}
 
+% REVIEW: conflito entre:
+% i) fluxo de dados = o schema inteiro, o grafo inteiro vs
+% ii) fluxo de dados = um único "caminho"
+
+% REVIEW: conflito entre:
+% i) conjuntos de dados = compostos por elementos de dados apenas vs
+% ii) conjuntos de dados = compostos por coleções de dados, que por sua vez são compostas por elementos de dados
+
+% REVIEW: realmente preciso da definição de item de dados?
+
 \subsection{Conceito de fluxo de dados} % REVIEW: escrever apenas 'conceito'?
 
-Um \textbf{fluxo de dados} (do inglês \textit{dataflow}) é modelado como um grafo direcionado acíclico (DAG), no qual os vértices (nós) representam as atividades / transformações de uma simulação computacional, e as arestas representam o fluxo de dados (conjuntos de dados) entre as atividades~\cite{ogasawara2011algebraic}.
+Um \textbf{fluxo de dados} (do inglês \textit{dataflow}) é modelado como um grafo direcionado acíclico (DAG), no qual os vértices (nós) representam as atividades\footnote{Isto é, quaisquer \emph{programas} de uma simulação computacional.} / transformações de uma simulação computacional, e as arestas direcionadas representam o fluxo de dados (conjuntos de dados) entre as transformações~\cite{ogasawara2011algebraic}.
 
-Formalmente, uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (T, S, \Phi) \] onde:
+Formalmente, uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (S, T, \Phi) \] onde:
 \begin{itemize}
+    \item \( S = \{s_1, s_2, \ldots, t_{\beta}\} \) é o conjunto de conjuntos de dados
     \item \( T = \{t_1, t_2, \ldots, t_{\alpha}\} \) é um conjunto de transformações
-    \item \( S = \{s_1, s_2, \ldots, t_{\beta}\} \) é um conjunto de dados
     \item \( \Phi = \{\phi_1, \phi_2, \ldots, \phi_{\gamma}\} \) é um conjunto de dependência de dados
 \end{itemize}
 
-\missingfigure{Exemplo de -> o ->, i.e., transformação com dataset de entrada e de saída}
+\subsection{Conjunto de dados}
 
-\perrotta{Acho que falta definir o que é uma transformação.}
+A especificação de um conjunto de dados \( ds \) é dada por \[ ds = (A, C) \] onde:
+\begin{itemize}
+    \item \( A = \{a_1, a_2, \ldots, a_{\delta} \} \) é um conjunto de atributos
+    \item \( C = \{c_1, c_2, \ldots, c_{\zeta} \} \) é um conjunto de coleções de dados
+\end{itemize}
+
+\subsection{Transformação de dados}
+
+% REVIEW: preciso falar dos tipos de transformação?
+
+Uma \textbf{transformação de dados} \( dt \) é caracterizada pelo consumo de um ou mais conjuntos de dados de entrada e pela produção de um ou mais conjuntos de dados de saída. O exemplo da \autoref{fig:example-transformation} ilustra essa definição.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.35\textwidth]{img/example-transformation}
+    \caption[Exemplo de transformação de dados]{Exemplo de transformação de dados, \( dt \), com dois conjuntos de dados de entrada, \( ds_1 \) e \( ds_2 \), e dois conjuntos de dados de saída, \( ds_3 \) e \( ds_4 \).}%
+    \label{fig:example-transformation}
+\end{figure}
 
 \subsection{Dependência de dados}
 
@@ -54,21 +81,13 @@ Uma especificação de dependência de dados \( \phi \) é definida como \[ \phi
     \item \( t_{\textup{next}} \) é a transformação que {\bf consome} dados do conjunto de dados \( s \)
 \end{itemize}
 
-\subsection{Conjunto de dados}
-
-A especificação de um conjunto de dados \( s \) é dada por \[ s = (A, C) \] onde:
-\begin{itemize}
-    \item \( A = \{a_1, a_2, \ldots, a_{\delta} \} \; \vdots{} \; \{ a_i \mid i \in \{1, 2, \ldots, \delta \} \} \) é atributo
-    \item \( C = \{c_1, c_2, \ldots, c_{\zeta} \} \; \vdots{} \; \{ c_i \mid i \in \{1, 2, \ldots, \zeta \} \} \) é coleção de dados
-\end{itemize}
-
 \subsection{Atributo}
 
 Um atributo é especificado da seguinte forma: \[ a = (\textrm{nome},\textrm{tipo}) \therefore \textrm{tipo} = \{\textup{inteiro}, \textup{ponto flutuante}, \textup{texto}, \textup{arquivo}\} \]
 
 \subsection{Coleção de dados}
 
-Uma coleção de dados é definida como \[ c = \{ i_1, i_2, \ldots, i_{\eta} \} \; \vdots \; \{ i_j \mid j \in \{ 1, 2, \ldots, \eta \} \} \] é item de dados
+Uma coleção de dados é definida como \[ c = \{ i_1, i_2, \ldots, i_{\eta} \} \] é um conjunto de item de dados
 
 \subsection{Item de dados}
 
@@ -213,4 +232,5 @@ O \textbf{rastreamento lógico} de dados de proveniência, de forma análoga ao 
 \perrotta{Exemplo para ilustrar: diferença entre físico e lógico}
 \missingfigure{Exemplo para ilustrar: diferença entre físico e lógico}
 
-% Mecanismos para processamento de consultas
+% REVIEW: devo falar de mapeamento de atributos no contexto de proveniência lógica aqui??
+% REVIEW: Mecanismos para processamento de consultas ??
