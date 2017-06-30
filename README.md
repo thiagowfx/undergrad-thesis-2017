@@ -22,6 +22,8 @@ How to edit continuously on macOS
 
 If you don't want to install `texlive` directly, use the pre-installed package in the `thiagowfx/latex` docker image.
 
+Alternative text editing setup: VSCode + LaTeX extension + Built-in preview.
+
 References
 ==========
 
