@@ -51,27 +51,30 @@
 \newcommand{\perrotta}[2][]{\sethlcolor{orange}\texthl{#1}\todo[author=Thiago Perrotta,inline,color=orange]{#2}}
 \newcommand{\silva}[2][]{\sethlcolor{lightgray}\texthl{#1}\todo[author=Vitor Silva,inline,color=lightgray]{#2}}
 
+% captions for floats
+\usepackage[labelfont=bf]{caption}
+
 % source code listings
 \usepackage{listings}
 \lstset{
-  % language=Java,             % choose the language of the code
   basicstyle=\footnotesize\sf, % the size of the fonts that are used for the code
+  breakatwhitespace=true,      % sets if automatic breaks should only happen at whitespace
+  breaklines=true,             % sets automatic line breaking
+  captionpos=b,                % sets the caption-position
+  commentstyle=\color{gray},   % sets the comments color
+  frame=single,                % adds a frame around the code
   numbers=left,                % where to put the line-numbers
   numberstyle=\footnotesize,   % the size of the fonts that are used for the line-numbers
-  stepnumber=1,                % the step between two line-numbers. If it's 1 each line 
-  numbersep=5pt,               % how far the line-numbers are from the code
   showspaces=false,            % show spaces adding particular underscores
   showstringspaces=false,      % underline spaces within strings
   showtabs=false,              % show tabs within strings adding particular underscores
-  frame=single,                % adds a frame around the code
+  stepnumber=1,                % the step between two line-numbers. If it's 1 each line
   tabsize=4,                   % sets default tabsize to 4 spaces
-  captionpos=t,                % sets the caption-position to top
-  breaklines=true,             % sets automatic line breaking
-  breakatwhitespace=true,      % sets if automatic breaks should only happen at whitespace
   title=\lstname,              % show the filename of files included with \lstinputlisting;
-% escapeinside={\%*}{*)},      % if you want to add a comment within your code
-  morekeywords={}              % if you want to add more keywords to the set
 }
+
+% display list of figures, tables or listings only if at least one component is present
+\usepackage[figure,table,lstlisting]{totalcount}
 
 % hyperlinks
 \usepackage{hyperref}
@@ -82,9 +85,6 @@
   bookmarksopen=true,
   colorlinks=true,
 }
-
-% display list of figures, tables or listings only if at least one component is present
-\usepackage[figure,table,lstlisting]{totalcount}
 
 \makelosymbols{}
 \makeloabbreviations{}

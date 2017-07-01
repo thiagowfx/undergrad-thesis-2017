@@ -239,13 +239,13 @@ A proveniência prospectiva desse experimento poderia ser representada através 
 
 \section{Rastreamento de dados de proveniência}
 
-\subsection{Mapeamento de atributos de dados}
-
-\perrotta{TODO}
+As soluções precisam ser capazes de \textbf{rastrear} e \textbf{monitorar} o fluxo de dados que são consumidos e produzidos por cada transformação de dados (programa científico) durante a sua execução. Nesse contexto, dois níveis de abstração existem para tratar a \textbf{gerência do fluxo de dados}: o físico e o lógico~\cite{silva2015propostadoutorado}.
 
 \subsection{Gerência do fluxo de dados no nível físico}
 
-O \textbf{rastreamento físico} de dados de proveniência gerencia a proveniência de \emph{elementos de dados} individuais, isto é, num nível de granularidade fino. Nessa abordagem é necessário etiquetar cada elemento de dado com identificadores, de forma a habilitar a gerência do fluxo de dados. Esse tipo de proveniência captura muitos detalhes, os quais podem ser úteis na depuração de simulações devido à sua gerência em um nível de granularidade fina dos elementos de dados~\cite{silva2017raw}.
+A \textbf{gerência do fluxo de dados no nível físico}, ou \textbf{rastreamento físico de dados de proveniência}, consiste no apoio às transformações de dados no nível do sistema de arquivos, i.e., rastreando \textbf{elementos de dados} individuais. Nessa abordagem, é necessário etiquetar cada elemento de dado com um identificador único dentro do mesmo conjunto de dados~\cite{silva2015propostadoutorado}. Esse tipo de proveniência captura muitos detalhes, os quais podem ser úteis na depuração de simulações computacionais devido à sua gerência em um nível de granularidade fino dos elementos de dados~\cite{silva2017raw}.
+
+Nesse contexto, as transformações de dados são analisadas apenas no que tange o consumo e a produção de arquivos (e elementos de dados) por cada programa científico, sem considerar dados de domínio da simulação. Assim, essas transformações de dados são análogas a caixas-pretas (do inglês, \textit{black box}), desde que não existem índices ou qualquer tipo de suporte à consulta em termos de conteúdo de domínio da simulação. Assim, os usuários limitam-se apenas a ponteiros para os elementos de dados nos arquivos envolvidos no fluxo de dados, requerendo-se que os mesmos façam análises individuais de cada arquivo para poder extrair algum significado semântico deles.
 
 \subsection{Gerência do fluxo de dados no nível lógico}
 
@@ -253,12 +253,17 @@ O \textbf{rastreamento físico} de dados de proveniência gerencia a proveniênc
 
 O \textbf{rastreamento lógico} de dados de proveniência, de forma análoga ao rastreamento físico, também rastreia o fluxo de elementos de dados, só que a investigação do rastro é realizada em relação ao \emph{conjunto de dados}, em vez de elementos de dados. Dessa maneira, menos dados de proveniência precisam ser armazenados, já que um fluxo de dados costuma ter bem menos transformações do que elementos de dados. Além disso, o rastreamento lógico pode ser \emph{automaticamente} derivado das especificações das transformações de dados, uma vez que elas já apresentam propriedades sobre conjuntos de dados consumidos e produzidos~\cite{ikeda2013logical,silva2017raw}.
 
+\subsection{Mapeamento de atributos de dados}
+
+\perrotta{TODO}
+
 \subsubsection{Exemplo}
+
+\begin{lstlisting}[language=SQL,caption={},label=]
+SELECT * FROM table;
+\end{lstlisting}
 
 \perrotta{Exemplo para ilustrar: diferença entre físico e lógico}
 \missingfigure{Exemplo para ilustrar: diferença entre físico e lógico}
 
-% 
-
-% REVIEW: devo falar de mapeamento de atributos no contexto de proveniência lógica aqui??
 % REVIEW: Mecanismos para processamento de consultas ??
