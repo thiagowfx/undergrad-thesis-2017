@@ -2,9 +2,9 @@
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
 
-% TODO: s/draft/final
 % use coppetex style class
-\documentclass[grad,numbers,final]{coppetex/coppe}
+% TODO: add final option
+\documentclass[grad,numbers]{coppetex/coppe}
 
 \usepackage{iftex}
 \ifPDFTeX
@@ -44,8 +44,7 @@
 \usepackage{soul}
 
 % todo notes
-% additional option: obeyDraft
-\usepackage[portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes}
+\usepackage[obeyFinal,portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes}
 \setlength{\marginparwidth}{2cm}
 
 \newcommand{\mattoso}[2][]{\sethlcolor{pink}\texthl{#1}\todo[author=Marta Mattoso,inline,color=pink]{#2}}
@@ -55,7 +54,7 @@
 % source code listings
 \usepackage{listings}
 \lstset{
-  language=Java,               % choose the language of the code
+  % language=Java,             % choose the language of the code
   basicstyle=\footnotesize\sf, % the size of the fonts that are used for the code
   numbers=left,                % where to put the line-numbers
   numberstyle=\footnotesize,   % the size of the fonts that are used for the line-numbers
@@ -70,7 +69,7 @@
   breaklines=true,             % sets automatic line breaking
   breakatwhitespace=true,      % sets if automatic breaks should only happen at whitespace
   title=\lstname,              % show the filename of files included with \lstinputlisting;
-% escapeinside={\%*}{*)},    % if you want to add a comment within your code
+% escapeinside={\%*}{*)},      % if you want to add a comment within your code
   morekeywords={}              % if you want to add more keywords to the set
 }
 

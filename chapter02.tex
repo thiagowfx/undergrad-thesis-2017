@@ -202,9 +202,7 @@ Existem dois tipos de proveniência envolvidos na gerência de fluxo de dados: \
     \item Por outro lado, a \textbf{proveniência retrospectiva} captura não apenas os passos executados de uma tarefa computacional, mas também informações relacionadas ao ambiente e tempo de execução da mesma - por exemplo, quais parâmetros foram passados aos programas, qual \abbrev{PID}{Process ID} processo (PID) do sistema operacional foi executado, por quem o PID foi executado, qual foi a duração total (incluindo seu instante de início e de fim) do mesmo, ou quais variáveis de ambiente do sistema operacional estavam definidas. Sua estrutura do grafos é similar à da proveniência prospectiva.
 \end{itemize}
 
-Através dos dois tipos citados de proveniência, um sistema de fluxo de dados é capaz de orquestrar e prover diferentes níveis de abstração para a execução de uma simulação científica~\cite{murta2014noworkflow}, os quais são inexistentes em programas de simulação, tais como \textit{scripts}. Como iniciativas para a gerência de dados de proveniência, pode-se citar o NoWorkflow, o YesWorkflow, o DfAnalyzer e a biblioteca Tigres.
-
-\silva{referências de noworkflow, yesworkflow, dfanalyzer e tigres}
+Através dos dois tipos citados de proveniência, um sistema de fluxo de dados é capaz de orquestrar e prover diferentes níveis de abstração para a execução de uma simulação científica~\cite{murta2014noworkflow}, os quais são inexistentes em programas de simulação, tais como \textit{scripts}. Como iniciativas para a gerência de dados de proveniência, pode-se citar o NoWorkflow~\cite{murta2014noworkflow}, o YesWorkflow~\cite{mcphillips2015yesworkflow}, o DfAnalyzer~\cite{silva2016situ} e a biblioteca Tigres~\cite{hendrix2016tigres}.
 
 Ademais, a captura de proveniência de dados pode ser realizada de duas formas distintas, \textit{offline} e \textit{online}~\cite{silva2015propostadoutorado}. A captura \textit{offline} consiste em armazenar os dados de uma simulação computacional em um determinado repositório logo \textbf{após} a execução da mesma --- por exemplo, como realizado pelo Kepler~\cite{ludascher2006scientific}. Em contrapartida, a captura \textit{online} consiste na obtenção e no armazenamento de dados \textbf{em tempo de execução}, como realizado no Pegasus~\cite{deelman2005pegasus} e no Swift/T~\cite{zhao2007swift}.
 
@@ -212,7 +210,7 @@ Uma simples observação é que o desempenho da captura de proveniência \textit
 
 \subsubsection{Um exemplo}
 
-Para ilustrar a diferença entre os dois tipos de proveniência apresentados, considere o clássico exemplo de contagem de palavras (\textit{word counting}), no qual o conjunto de dados inicial é um arquivo de texto em \abbrev{ASCII}{American Standard Code for Information Interchange} ASCII\footnote{Cujo objetivo é obter a ordem decrescente de frequência das palavras que aparecem no texto}. A primeira tarefa de processamento é a leitura e subsequente análise do arquivo de texto a fim de extrair palavras do mesmo. A segunda etapa é realizar a contagem das palavras a partir da lista de palavras obtida no passo anterior. Finalmente, o último passo de processamento é ordenar em ordem descrescente a frequência de palavras obtida no passo anterior.
+Para ilustrar a diferença entre os dois tipos de proveniência apresentados, considere o clássico exemplo de contagem de palavras\footnote{Cujo objetivo é obter a ordem decrescente de frequência das palavras que aparecem no texto.} (\textit{word counting}), no qual o conjunto de dados inicial é um arquivo de texto em \abbrev{ASCII}{American Standard Code for Information Interchange} ASCII. A primeira tarefa de processamento é a leitura e subsequente análise do arquivo de texto a fim de extrair palavras do mesmo. A segunda etapa é realizar a contagem das palavras a partir da lista de palavras obtida no passo anterior. Finalmente, o último passo de processamento é ordenar em ordem descrescente a frequência de palavras obtida no passo anterior.
 
 A proveniência prospectiva desse experimento poderia ser representada através do grafo da \autoref{fig:word-count-prospective}. Por outro lado, a proveniência retrospectiva do último passo (ordenação) poderia ter capturado em tempo de execução algumas das informações presentes na \autoref{tab:word-count-retrospective}.
 
@@ -243,11 +241,15 @@ A proveniência prospectiva desse experimento poderia ser representada através 
 
 \subsection{Mapeamento de atributos de dados}
 
+\perrotta{TODO}
+
 \subsection{Gerência do fluxo de dados no nível físico}
 
 O \textbf{rastreamento físico} de dados de proveniência gerencia a proveniência de \emph{elementos de dados} individuais, isto é, num nível de granularidade fino. Nessa abordagem é necessário etiquetar cada elemento de dado com identificadores, de forma a habilitar a gerência do fluxo de dados. Esse tipo de proveniência captura muitos detalhes, os quais podem ser úteis na depuração de simulações devido à sua gerência em um nível de granularidade fina dos elementos de dados~\cite{silva2017raw}.
 
 \subsection{Gerência do fluxo de dados no nível lógico}
+
+\perrotta{REESCREVER}
 
 O \textbf{rastreamento lógico} de dados de proveniência, de forma análoga ao rastreamento físico, também rastreia o fluxo de elementos de dados, só que a investigação do rastro é realizada em relação ao \emph{conjunto de dados}, em vez de elementos de dados. Dessa maneira, menos dados de proveniência precisam ser armazenados, já que um fluxo de dados costuma ter bem menos transformações do que elementos de dados. Além disso, o rastreamento lógico pode ser \emph{automaticamente} derivado das especificações das transformações de dados, uma vez que elas já apresentam propriedades sobre conjuntos de dados consumidos e produzidos~\cite{ikeda2013logical,silva2017raw}.
 
