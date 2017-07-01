@@ -24,12 +24,14 @@
 % https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
 \usepackage{float}
 
-% images with borders
+% figures with borders
 \floatstyle{boxed} 
 \restylefloat{figure}
 
-% required
+% required for better figures
 \usepackage{subfigure}
+
+% required for better tables
 \usepackage{longtable}
 \usepackage{multirow}
 
@@ -45,8 +47,6 @@
 
 % todo notes
 \usepackage[obeyFinal,portuguese,colorinlistoftodos,textsize=footnotesize]{todonotes}
-\setlength{\marginparwidth}{2cm}
-
 \newcommand{\mattoso}[2][]{\sethlcolor{pink}\texthl{#1}\todo[author=Marta Mattoso,inline,color=pink]{#2}}
 \newcommand{\perrotta}[2][]{\sethlcolor{yellow}\texthl{#1}\todo[author=Thiago Perrotta,inline,color=yellow]{#2}}
 \newcommand{\silva}[2][]{\sethlcolor{lightgray}\texthl{#1}\todo[author=Vitor Silva,inline,color=lightgray]{#2}}
@@ -83,10 +83,13 @@
   colorlinks=true,
 }
 
+% display list of figures, tables or listings only if at least one component is present
+\usepackage[figure,table,lstlisting]{totalcount}
+
 \makelosymbols{}
 \makeloabbreviations{}
 
-% typeset only the following chapters for faster typsetting times
+% typeset only the following chapters for faster typesetting times
 % \includeonly{chapter02,chapter03}
 
 \begin{document}
@@ -128,25 +131,32 @@
 
   \tableofcontents
   
+  \iftotalfigures
   \listoffigures
+  \fi
+  
+  \iftotaltables
   \listoftables
+  \fi
 
   \printlosymbols{}
   \printloabbreviations{}
   
+  \iftotallstlistings
   \renewcommand{\lstlistlistingname}{Lista de Códigos}
   \clearpage
   \addcontentsline{toc}{chapter}{\lstlistlistingname}
   \lstlistoflistings{}
+  \fi
 
   \mainmatter{}
-  \include{introduction}
+  \include{chapter01} % Introduction
   \include{chapter02}
   \include{chapter03}
   \include{chapter04}
   \include{chapter05}
   \include{chapter06}
-  \include{conclusion}
+  \include{chapter07} % Conclusion
 
   \backmatter{}
   \bibliographystyle{coppetex/coppe-unsrt}
