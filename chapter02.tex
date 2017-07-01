@@ -11,7 +11,7 @@ Nesse capítulo serão abordados alguns conceitos e a terminologia que será uti
 
 Uma \textbf{simulação computacional}, também chamada de \textbf{simulação científica}, é um ``método de abstração e sistematização do processo experimental ou parte dele''~\cite{silva2015propostadoutorado,dias2015data}. Ela emergiu como um meio de executar experimentos científicos em ambientes computacionais~\cite{ogasawara2011algebraic}, e consiste de um ou vários programas de simulação específicos. Tais programas de simulação, em particular, são encadeados para realizar o processamento de dados necessários na condução do experimento científico de interesse.
 
-Dessa forma, uma simulação computacional pode ser representada por meio de um fluxo de dados (elucidado na~\autoref{sec:dataflow}), no qual ``os programas de simulação correspondem às transformações de dados e as dependências de dados correspondem ao fluxo de dados entre duas transformações de dados''~\cite{silva2015propostadoutorado,ogasawara2011algebraic}. Uma \textbf{transformação de dados} é definida como um componente da simulação computacional que é capaz de executar programas, com parâmetros de entrada e de saída, os quais são utilizados para representar dependências entre cada uma das transformações de dados. Os dados consumidos ou produzidos pelos programas de simulação são representados por \textbf{conjuntos de dados} de entrada ou de saída, respectivamente. Cada conjunto de dados assume um conjunto pré-definido de \textbf{atributos de dados}, enquanto cada elemento de dados desse conjunto apresenta valores para cada atributo de dados pré-definido.
+Dessa forma, uma simulação computacional pode ser representada por meio de um fluxo de dados (elucidado na \autoref{sec:dataflow}), no qual ``os programas de simulação correspondem às transformações de dados e as dependências de dados correspondem ao fluxo de dados entre duas transformações de dados''~\cite{silva2015propostadoutorado,ogasawara2011algebraic}. Uma \textbf{transformação de dados} é definida como um componente da simulação computacional que é capaz de executar programas, com parâmetros de entrada e de saída, os quais são utilizados para representar dependências entre cada uma das transformações de dados. Os dados consumidos ou produzidos pelos programas de simulação são representados por \textbf{conjuntos de dados} de entrada ou de saída, respectivamente. Cada conjunto de dados assume um conjunto pré-definido de \textbf{atributos de dados}, enquanto cada elemento de dados desse conjunto apresenta valores para cada atributo de dados pré-definido.
 
 \section{Fluxo de dados}%
 \label{sec:dataflow}
@@ -23,7 +23,7 @@ Dessa forma, uma simulação computacional pode ser representada por meio de um 
 
 Um \textbf{fluxo de dados} (do inglês \textit{dataflow}) é modelado como um grafo direcionado acíclico (DAG), no qual os vértices (nós) representam as transformações de dados\footnote{Isto é, quaisquer \emph{programas} de uma simulação computacional.} de uma simulação computacional, e as arestas direcionadas representam o conjuntos de dados entre as transformações~\cite{silva2017raw}.
 
-Formalmente, uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (S, T, \Phi) \] onde:
+Formalmente, uma especificação de fluxo de dados \( D \) é definida como \[ D = (S, T, \Phi) \] onde:
 \begin{itemize}
     \item \( S = \{ds_1, ds_2, \ldots, ds_{\alpha}\} \) é um conjunto de conjuntos de dados
     \item \( T = \{dt_1, dt_2, \ldots, dt_{\beta}\} \) é um conjunto de transformações
@@ -64,15 +64,13 @@ Uma especificação de \textbf{dependência de dados} \( \phi \) é definida com
 
 \subsection{Atributo de dados}
 
-Um \textbf{atributo de dados} é especificado da seguinte forma: \[ da = (\textrm{nome},\textrm{tipo}) \therefore \textrm{tipo} \in \{\textup{inteiro}, \textup{ponto flutuante}, \textup{texto}, \textup{arquivo}\} \]
+Um \textbf{atributo de dados} é especificado da seguinte forma: \[ da = (\textrm{nome},\textrm{tipo}) \therefore \textrm{tipo} \in \{\textup{inteiro}, \textup{ponto flutuante}, \textup{texto}, \textup{arquivo}, \textup{booleano}\} \]
 
-O nome do atributo de dados é um identificador que deve ser único em um mesmo conjunto de dados. O tipo do atributo provê um significado semântico ao mesmo. O exemplo da~\autoref{tab:dataset-attributes-example} ilustra essa definição.
+O nome do atributo de dados é um identificador que deve ser único em um mesmo conjunto de dados. O tipo do atributo provê um significado semântico ao mesmo. O exemplo da \autoref{tab:dataset-attributes-example} ilustra essa definição.
 
 \begin{table}[ht]
     \centering
     \begin{tabular}{|c|c|}
-        \hline
-        \multicolumn{2}{|c|}{Conjunto de dados: usuários} \\
         \hline
         \textbf{Nome do atributo} & \textbf{Tipo do atributo} \\
         \hline
@@ -99,7 +97,7 @@ Um \textbf{elemento de dados} é definido como
 
 onde o i-ésimo \( v \) é o valor do i-ésimo atributo de dados \( da \) de um conjunto de dados \( ds \). \( \#(S) \) representa a cardinalidade do conjunto \( S \), i.e., a quantidade de elementos presentes no mesmo. Note que a quantidade de atributos do conjunto de dados \( ds \) deve ser igual à quantidade de valores presentes no elemento de dados \( de \).
 
-Para exemplificar a relação entre coleção de dados e elemento de dados, considere a~\autoref{tab:data-collections-and-data-elements}.
+Para exemplificar a relação entre coleção de dados e elemento de dados, considere a \autoref{tab:data-collections-and-data-elements}.
 
 \begin{table}[ht]
     \centering
@@ -109,34 +107,68 @@ Para exemplificar a relação entre coleção de dados e elemento de dados, cons
         \( de_{2} \) & Bob     & 25 & \( 1,79 \) \\
         \( de_{3} \) & Charlie & 42 & \( 1,85 \) & \rdelim\}{1}{.1mm}[\( dc_{2} \)] \\
     \end{tabular}
-    \caption[Relação entre coleção de dados e elemento de dados]{Relação entre coleção de dados e elemento de dados. Estes elementos de dados são instâncias do conjunto de dados de usuários da~\autoref{tab:dataset-attributes-example}. Cada linha numerada da tabela é um elemento de dados; e existem duas coleções de dados: \( dc_{1} = \{de_{1}, de_{2}\} \) e \( dc_{2} = \{ de_{3} \} \).}%
+    \caption[Relação entre coleção de dados e elemento de dados]{Relação entre coleção de dados e elemento de dados. Estes elementos de dados são instâncias do conjunto de dados de usuários da \autoref{tab:dataset-attributes-example}. Cada linha numerada da tabela é um elemento de dados; e existem duas coleções de dados: \( dc_{1} = \{de_{1}, de_{2}\} \) e \( dc_{2} = \{ de_{3} \} \).}%
     \label{tab:data-collections-and-data-elements}
 \end{table}
 
 \subsection{Um exemplo}%
 \label{sec:um-exemplo-de-dataflow}
 
-Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamos utilizar uma pequena amostra do conjunto de dados de sedimentação. Na \autoref{fig:example-dataflow-specification} \perrotta{expandir comentário sobre a figura}
+Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamos utilizar uma pequena amostra de um fluxo de dados real, de um conjunto de dados de um experimento de sedimentação de fluidos. Na \autoref{fig:example-dataflow-specification} podemos ver o DAG correspondente a esse fluxo de dados \( D \): ele contém duas transformações de dados, \textsc{inputmesh} e \textsc{createequationsystems}, e três conjuntos de dados, \textsc{iinputmesh}, \textsc{oinputmesh} e \textsc{ocreateequationsystems}, assim como três dependências de dados. Eis a especificação de \( D \):
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.35\textwidth]{img/example-dataflow-specification}
-    \caption[Exemplo de especificação de fluxo de dados]{Exemplo de especificação de fluxo de dados, com duas transformações e três conjuntos de dados.}%
+    \caption[Exemplo de especificação de fluxo de dados]{Exemplo de especificação de fluxo de dados, com duas transformações de dados e três conjuntos de dados.}%
     \label{fig:example-dataflow-specification}
 \end{figure}
 
-\missingfigure{Incluir um exemplo, com figuras, de um pequeno dataflow.}
-
 \[
-\begin{aligned}
-D_F = && (T, S, \Phi) \\
-T = && \{ \textrm{inputmesh} \} \\
-S = && \{ \textrm{iinputmesh}, \textrm{oinputmesh} \} \\
-\Phi = && \{ (\textrm{nil}, \textrm{iinputmesh}, \textrm{inputmesh}),
-(\textrm{inputmesh}, \textrm{oinputmesh}, \textrm{nil})
-\} \\
-\end{aligned}
+    \begin{array}{rl}
+    % \begin{cases}
+        D = & (S, T, \Phi) \\
+        S = & \{ \textsc{iinputmesh}, \textsc{oinputmesh}, \textsc{ocreateequationsystems} \} \\
+        T = & \{ \textsc{inputmesh}, \textsc{outputmesh} \} \\
+        \multirow{3}{*}{\Phi{} =}
+            & \{ (\varnothing, \textsc{iinputmesh}, \textsc{inputmesh}), \\
+            & (\textsc{inputmesh}, \textsc{oinputmesh}, \textsc{createequationsystems}), \\
+            & (\textsc{createequationsystems}, \textsc{ocreateequationsystems}, \varnothing) \}
+    \end{array}
+    % \end{cases}
 \]
+
+\textbf{Observação:} o símbolo \( \varnothing \) denota \emph{nulo}, indicando que uma das transformações de dados correspondente à dependência de dados não existe.
+
+Além disso, podemos ver alguns dos atributos de dados do conjunto de dados \textsc{iinputmesh} na \autoref{tab:iinputmesh-attributes}, assim como alguns de seus valores na \autoref{tab:iinputmesh-values}. Cada uma das linhas da \autoref{tab:iinputmesh-values} corresponde a um elemento de dados diferente, e todo o conjunto desses elementos de dados compõe toda a coleção de dados do conjunto de dados.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Nome do atributo} & \textbf{Tipo do atributo} \\
+        \hline
+        id & inteiro \\
+        mesh{\_}file & arquivo \\
+        dim & inteiro \\
+        simulationid & inteiro \\
+        restart{\_}control & booleano \\
+        \hline
+    \end{tabular}
+    \caption[Atributos de dados do conjunto de dados \textsc{iinputmesh}]{Alguns dos atributos de dados do conjunto de dados \textsc{iinputmesh}.}%
+    \label{tab:iinputmesh-attributes}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{c|c|c|c|c}
+        \textbf{id} & \textbf{mesh{\_}file} & \textbf{dim} & \textbf{simulationid} & \textbf{restart{\_}control} \\
+        \hline
+        1 & \texttt{/sedimentation/necker3d.msh} & 3 & 1 & \textrm{falso} \\
+        2 & \texttt{/sedimentation/necker3d-2.msh} & 3 & 2 & \textrm{verdadeiro} \\
+    \end{tabular}
+    \caption[Valores dos atributos de dados de \textsc{iinputmesh}]{Alguns dos valores dos atributos de dados de \textsc{iinputmesh}.}%
+    \label{tab:iinputmesh-values}
+\end{table}
 
 \section{Proveniência de dados}
 
