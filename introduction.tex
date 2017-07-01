@@ -4,6 +4,8 @@
 
 \chapter{Introdução}
 
+Neste capítulo serão apresentadas a visão geral e a motivação dessa monografia, além da contribuição proposta.
+
 \section{Visão geral e Contextualização}
 
 % Simulações computacionais...análises...hipóteses científicas...
@@ -23,24 +25,24 @@ Entretanto, esse rastreio costuma ser realizado somente ao fim da simulação, o
 % SGWfCs...paralelização...proveniência...
 Para amenizar o custo de tempo de execução, as simulações computacionais citadas anteriormente podem ser gerenciadas por um \abbrev{SGWfC}{Sistema de Gerência de \textit{Workflows} Científicos} SGWfC (Sistema de Gerência de \textit{Workflows} Científicos) paralelo, tal como o Kepler~\cite{ludascher2006scientific} e o Pegasus~\cite{deelman2005pegasus}, o que faz com que se beneficiem da proveniência e do paralelismo de dados entre os diferentes programas que compõem o seu \textit{workflow}\footnote{Em tradução livre, ``fluxo de trabalho''. No entanto, daqui em diante continuaremos a utilizar \textit{workflow}, por ser um termo mais preciso.}~\cite{bux2013parallelization}.
 % Workflows...dataflows(dt, ds, phi)...DAG...
-Tais \textit{workflows} científicos são composições de tarefas de processamento de dados sequenciais e concorrentes, cuja ordem de execução é determinada com base nas interdependências entre os dados~\cite{bux2013parallelization}. Eles podem ser modelados através de um fluxo de dados (\textit{dataflow}) que descreve todos os conjuntos de dados, atributos, transformações e dependências entre os mesmos~\cite{silva2017raw}. Esses fluxos de dados são usualmente especificados na forma de um \abbrev{DAG}{Directed Acyclic Graph --- Grafo Direcionado Acíclico} DAG (grafo direcionado acíclico), em que tarefas (transformações) individuais são representadas como nós, e conjuntos de dados são modelados como arestas direcionadas.
+Tais \textit{workflows} científicos são composições de tarefas de processamento de dados sequenciais e concorrentes, cuja ordem de execução é determinada com base nas interdependências entre os dados~\cite{bux2013parallelization}. Eles podem ser modelados através de um fluxo de dados (\textit{dataflow}) que descreve todos os conjuntos de dados, atributos de dados, transformações de dados e dependências entre os mesmos~\cite{silva2017raw}. Esses fluxos de dados são usualmente especificados na forma de um \abbrev{DAG}{Directed Acyclic Graph --- Grafo Direcionado Acíclico} DAG (grafo direcionado acíclico), em que tarefas (transformações de dados) individuais são representadas como nós, e conjuntos de dados são modelados como arestas direcionadas.
 
 % Trade-offs entre usabilidade e poder de controle...
 Os SGWfCs citados anteriormente são usualmente difíceis de serem configurados e utilizados pelos usuários; alguns deles tais como o Taverna~\cite{hull2006taverna} possuem uma boa ênfase em usabilidade, porém não compensam na paralelização e utilização de recursos computacionais distribuídos; perdendo, assim, sua efetividade.
 % Dificuldade em não utilizar SGWfCs...
-Eles facilitam o \textit{design}, a manutenção, a execução, o monitoramento e o rastreio do processamento de dados científicos. Sem suporte a rastreio, o desafio é analisar a propagação de dados de conjuntos de arquivos ao longo da execução da simulação, o que é bastante propenso a erros se realizado manualmente~\cite{silva2015analyzing}, pois são necessárioas: \( (i) \) a nomenclatura de arquivos de forma apropriada; \( (ii) \) escrever e gerenciar programas \textit{ad-hoc} para gerenciar cada transformação de dados e arquivos; \( (iii) \) mapear o fluxo das transformações.
+Eles facilitam o \textit{design}, a manutenção, a execução, o monitoramento e o rastreio do processamento de dados científicos. Sem suporte a rastreio, o desafio é analisar a propagação de dados de conjuntos de arquivos ao longo da execução da simulação, o que é bastante propenso a erros se realizado manualmente~\cite{silva2015analyzing}, pois são necessárioas: \( (i) \) a nomenclatura de arquivos de forma apropriada; \( (ii) \) escrever e gerenciar programas \textit{ad-hoc} para gerenciar cada transformação de dados e arquivos; \( (iii) \) mapear o fluxo das transformações de dados.
 
 No entanto, eis um dilema: existem três tipos básicos de consultas\footnote{Isso será mais aprofundado no~\autoref{chap:trabalhos-relacionados}.} que são rotineiramente utilizadas:
 
 \begin{enumerate}
     \item conteúdo de arquivo específico de domínio;
-    \item múltiplos arquivos relacionados através de transformações / programas de simulação; e
+    \item múltiplos arquivos relacionados através de transformações de dados / programas de simulação; e
     \item elementos de dados relacionados de múltiplos arquivos
 \end{enumerate}
 
 O dilema é que --- até onde se tem conhecimento durante a publicação deste documento --- todos os SGWfCs conhecidos realizam apenas consultas do tipo \( 1 \) ou \( 2 \), como o FastBit~\cite{wu2009fastbit} que realiza apenas consultas do tipo 1, e como o Chiron~\cite{ogasawara2013chiron} que é capaz de realizar ambos os tipos de consulta. Nenhum deles é capaz de realizar consultas do tipo 3.
 
-\section{Contribuição} % {Objetivos, Relevância, Método}
+\section{Contribuição}
 
 Desse modo, como vimos na última seção, a capacidade de realizar todos os três tipos de consultas citados ainda é um problema em aberto, sendo especialmente importante em situações de larga escala, onde muitos dados são manipulados intensivamente.
 Para preencher esse gargalo, foi proposta a arquitetura \abbrev{ARMFUL}{Analysis of Raw Data from Multiple Files} ARMFUL (Analysis of Raw Data from Multiple Files)\cite{silva2017raw,silva2016situ}: com ela, todos os três tipos de consultas podem ser realizados. Ela funciona estendendo um SGWfC que suporta os tipos de consulta \( 1 \) e \( 2 \) com uma base de dados de proveniência cujo objetivo é guardar referências aos dados e elementos do domínio da aplicação selecionados pelos usuários para que eles possam ser devidamente rastreados suportando, assim, consultas do tipo 3~\cite{silva2015analyzing}.

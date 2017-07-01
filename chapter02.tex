@@ -5,97 +5,113 @@
 \chapter{Referencial Teórico}%
 \label{chap:referencial-teorico}
 
-Nesse capítulo serão abordados alguns conceitos e a terminologia que será utilizada ao longo desta monografia. Parte desse conteúdo, que será referenciado por~\cite{silva2015propostadoutorado}, é baseada na proposta de doutorado do \textsf{M. Sc. Vítor Silva Sousa}, co-orientador desta monografia.
-
-\perrotta{check bibliography: dataflow technical report (key is silvatechnicalreport)}
+Nesse capítulo serão abordados alguns conceitos e a terminologia que será utilizada ao longo desta monografia. Parte desse conteúdo, que será referenciado por~\cite{silva2015propostadoutorado}, é baseada na proposta de doutorado do M. Sc. Vítor Silva Sousa, co-orientador deste trabalho.
 
 \section{Simulação Computacional}
 
 Uma \textbf{simulação computacional}, também chamada de \textbf{simulação científica}, é um ``método de abstração e sistematização do processo experimental ou parte dele''~\cite{silva2015propostadoutorado,dias2015data}. Ela emergiu como um meio de executar experimentos científicos em ambientes computacionais~\cite{ogasawara2011algebraic}, e consiste de um ou vários programas de simulação específicos. Tais programas de simulação, em particular, são encadeados para realizar o processamento de dados necessários na condução do experimento científico de interesse.
 
-Dessa forma, uma simulação computacional pode ser representada por meio de um fluxo de dados (elucidado na~\autoref{sec:dataflow}), no qual ``os programas de simulação correspondem às transformações de dados e as dependências de dados correspondem ao fluxo de dados entre duas transformações de dados''~\cite{silva2015propostadoutorado,ogasawara2011algebraic}. Uma \textbf{transformação de dados} é definida como um componente da simulação computacional que é capaz de executar programas, com parâmetros de entrada e de saída, os quais são utilizados para representar dependências entre cada uma das transformações de dados. Os dados consumidos ou produzidos pelos programas de simulação são representados por conjuntos de dados de entrada ou de saída, respectivamente. Cada conjunto de dados assume um conjunto pré-definido de atributos, enquanto cada elemento de dados desse conjunto apresenta valores para cada atributo pré-definido.
+Dessa forma, uma simulação computacional pode ser representada por meio de um fluxo de dados (elucidado na~\autoref{sec:dataflow}), no qual ``os programas de simulação correspondem às transformações de dados e as dependências de dados correspondem ao fluxo de dados entre duas transformações de dados''~\cite{silva2015propostadoutorado,ogasawara2011algebraic}. Uma \textbf{transformação de dados} é definida como um componente da simulação computacional que é capaz de executar programas, com parâmetros de entrada e de saída, os quais são utilizados para representar dependências entre cada uma das transformações de dados. Os dados consumidos ou produzidos pelos programas de simulação são representados por \textbf{conjuntos de dados} de entrada ou de saída, respectivamente. Cada conjunto de dados assume um conjunto pré-definido de \textbf{atributos de dados}, enquanto cada elemento de dados desse conjunto apresenta valores para cada atributo de dados pré-definido.
 
 \section{Fluxo de dados}%
 \label{sec:dataflow}
 
-% REVIEW: conflito entre:
-% i) fluxo de dados = o schema inteiro, o grafo inteiro vs
-% ii) fluxo de dados = um único "caminho"
+% NOTA: fluxo de dados é o schema inteiro (e não apenas um único caminho no DAG)
+% NOTA: coleção de dados pode ser vista como uma definição virtual
 
-% REVIEW: conflito entre:
-% i) conjuntos de dados = compostos por elementos de dados apenas vs
-% ii) conjuntos de dados = compostos por coleções de dados, que por sua vez são compostas por elementos de dados
+\subsection{Conceito}
 
-% REVIEW: realmente preciso da definição de item de dados?
-
-\subsection{Conceito de fluxo de dados} % REVIEW: escrever apenas 'conceito'?
-
-Um \textbf{fluxo de dados} (do inglês \textit{dataflow}) é modelado como um grafo direcionado acíclico (DAG), no qual os vértices (nós) representam as transformações de dados\footnote{Isto é, quaisquer \emph{programas} de uma simulação computacional.} de uma simulação computacional, e as arestas direcionadas representam o fluxo de dados (conjuntos de dados) entre as transformações~\cite{silva2017raw}.
+Um \textbf{fluxo de dados} (do inglês \textit{dataflow}) é modelado como um grafo direcionado acíclico (DAG), no qual os vértices (nós) representam as transformações de dados\footnote{Isto é, quaisquer \emph{programas} de uma simulação computacional.} de uma simulação computacional, e as arestas direcionadas representam o conjuntos de dados entre as transformações~\cite{silva2017raw}.
 
 Formalmente, uma especificação de fluxo de dados \( D_F \) é definida como \[ D_F = (S, T, \Phi) \] onde:
 \begin{itemize}
-    \item \( S = \{s_1, s_2, \ldots, t_{\alpha}\} \) é o conjunto de conjuntos de dados
-    \item \( T = \{t_1, t_2, \ldots, t_{\beta}\} \) é um conjunto de transformações
+    \item \( S = \{ds_1, ds_2, \ldots, ds_{\alpha}\} \) é um conjunto de conjuntos de dados
+    \item \( T = \{dt_1, dt_2, \ldots, dt_{\beta}\} \) é um conjunto de transformações
     \item \( \Phi = \{\phi_1, \phi_2, \ldots, \phi_{\gamma}\} \) é um conjunto de dependência de dados
 \end{itemize}
 
 \subsection{Conjunto de dados}
 
-A especificação de um conjunto de dados \( ds \) é dada por \[ ds = (A, C) \] onde:
+A especificação de um \textbf{conjunto de dados} \( ds \) é dada por \[ ds = (A, C) \] onde:
 \begin{itemize}
-    \item \( A = \{a_1, a_2, \ldots, a_{\delta} \} \) é um conjunto de atributos
-    \item \( C = \{c_1, c_2, \ldots, c_{\zeta} \} \) é um conjunto de coleções de dados
+    \item \( A = \{da_1, da_2, \ldots, da_{\delta} \} \) é um conjunto de atributos de dados
+    \item \( C = \{dc_1, dc_2, \ldots, dc_{\zeta} \} \) é um conjunto de coleções de dados
 \end{itemize}
 
-\subsection{Transformação de dados}
+Em simulações computacionais, conjuntos de dados correspondem a dados científicos.
 
-% REVIEW: preciso falar dos tipos de transformação?
+\subsection{Transformação de dados}
 
 Uma \textbf{transformação de dados} \( dt \) é caracterizada pelo consumo de um ou mais conjuntos de dados de entrada e pela produção de um ou mais conjuntos de dados de saída. O exemplo da \autoref{fig:example-transformation} ilustra essa definição.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.35\textwidth]{img/example-transformation}
+    \includegraphics[width=0.35\textwidth]{img/example-data-transformation}
     \caption[Exemplo de transformação de dados]{Exemplo de transformação de dados, \( dt \), com dois conjuntos de dados de entrada, \( ds_1 \) e \( ds_2 \), e dois conjuntos de dados de saída, \( ds_3 \) e \( ds_4 \).}%
     \label{fig:example-transformation}
 \end{figure}
 
+No contexto de simulações computacionais, transformações de dados correspondem a programas científicos.
+
 \subsection{Dependência de dados}
 
-Uma especificação de dependência de dados \( \phi \) é definida como \[ \phi = (s, t_{\textrm{previous}}, t_{\textrm{next}}) \] onde:
+Uma especificação de \textbf{dependência de dados} \( \phi \) é definida como \[ \phi = (ds, dt_{\textrm{previous}}, dt_{\textrm{next}}) \] onde:
 \begin{itemize}
-    \item \( s \) é um conjunto de dados
-    \item \( t_{\textup{previous}} \) é a transformação que {\bf produz} coleções de dados para o conjunto de dados \( s \)
-    \item \( t_{\textup{next}} \) é a transformação que {\bf consome} coleções de dados do conjunto de dados \( s \)
+    \item \( ds \) é um conjunto de dados
+    \item \( dt_{\textup{previous}} \) é uma transformação de dados que {\bf produz} coleções de dados para o conjunto de dados \( ds \)
+    \item \( dt_{\textup{next}} \) é uma transformação de dados que {\bf consome} coleções de dados do conjunto de dados \( ds \)
 \end{itemize}
 
-\subsection{Atributo}
+\subsection{Atributo de dados}
 
-Um atributo é especificado da seguinte forma: \[ a = (\textrm{nome},\textrm{tipo}) \therefore \textrm{tipo} = \{\textup{inteiro}, \textup{ponto flutuante}, \textup{texto}, \textup{arquivo}\} \]
+Um \textbf{atributo de dados} é especificado da seguinte forma: \[ da = (\textrm{nome},\textrm{tipo}) \therefore \textrm{tipo} \in \{\textup{inteiro}, \textup{ponto flutuante}, \textup{texto}, \textup{arquivo}\} \]
+
+O nome do atributo de dados é um identificador que deve ser único em um mesmo conjunto de dados. O tipo do atributo provê um significado semântico ao mesmo. O exemplo da~\autoref{tab:dataset-attributes-example} ilustra essa definição.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{Conjunto de dados: usuários} \\
+        \hline
+        \textbf{Nome do atributo} & \textbf{Tipo do atributo} \\
+        \hline
+        Nome             & texto           \\
+        \hline
+        Idade            & inteiro         \\
+        \hline
+        Altura \( (m) \) & ponto flutuante \\
+        \hline
+    \end{tabular}
+    \caption[Exemplo de conjunto de dados com seus respectivos atributos de dados]{Exemplo de conjunto de dados de usuários com seus respectivos atributos de dados.}%
+    \label{tab:dataset-attributes-example}
+\end{table}
 
 \subsection{Coleção de dados}
 
-Uma coleção de dados é definida como \[ c = \{ i_1, i_2, \ldots, i_{\eta} \} \] é um conjunto de item de dados
-
-\subsection{Item de dados}
-
-A especificação de um item de dados é dada por \[ i = (s, T^{\ast}_{\textrm{previous}}, T^{\ast}_{\textrm{next}}, e) \] onde:
-
-\begin{itemize}
-    \item \( s \) é um conjunto de dados
-    \item \( T^{\ast}_{\textrm{previous}} \) é o conjunto com todas as instâncias de todas as transformações que são responsáveis por gerar \( i \)
-    \item \( T^{\ast}_{\textrm{next}} \) é o conjunto com todas as instâncias de todas as transformações que consomem \( i \)
-    \item \( e \) é um elemento de dados
-\end{itemize}
+Uma \textbf{coleção de dados}, também chamada de conjunto de elementos de dados, é definida como \[ dc = \{ de_1, de_2, \ldots, de_{\eta} \} \] onde cada \( de \) é um elemento de dados.
 
 \subsection{Elemento de dados}
 
-Um elemento de dados é definido como
+Um \textbf{elemento de dados} é definido como
 
-\[ e = \{ v_1, v_2, \ldots, v_{\theta} \} \therefore \#(s.A) = \#(e) \]
-\[ v_{\theta} \; \textrm{é o valor do atributo} \; a_{\theta} \; \textrm{de um item de dados do conjunto de dados} \; s \]
+\[ de = \{ v_1, v_2, \ldots, v_{\theta} \} \therefore \#(ds.A) = \#(de) \]
 
-onde \( \#(S) \) representa a cardinalidade do conjunto \( S \), i.e.\ a quantidade de elementos presentes no mesmo.
+onde o i-ésimo \( v \) é o valor do i-ésimo atributo de dados \( da \) de um conjunto de dados \( ds \). \( \#(S) \) representa a cardinalidade do conjunto \( S \), i.e., a quantidade de elementos presentes no mesmo. Note que a quantidade de atributos do conjunto de dados \( ds \) deve ser igual à quantidade de valores presentes no elemento de dados \( de \).
+
+Para exemplificar a relação entre coleção de dados e elemento de dados, considere a~\autoref{tab:data-collections-and-data-elements}.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{c|c|c|cc}
+        & \textbf{Nome} & \textbf{Idade} & \textbf{Altura \((m)\)} \\
+        \( de_{1} \) & Alice   & 22 & \( 1,77 \) & \rdelim\}{2}{.1mm}[\( dc_{1} \)] \\
+        \( de_{2} \) & Bob     & 25 & \( 1,79 \) \\
+        \( de_{3} \) & Charlie & 42 & \( 1,85 \) & \rdelim\}{1}{.1mm}[\( dc_{2} \)] \\
+    \end{tabular}
+    \caption[Relação entre coleção de dados e elemento de dados]{Relação entre coleção de dados e elemento de dados. Estes elementos de dados são instâncias do conjunto de dados de usuários da~\autoref{tab:dataset-attributes-example}. Cada linha numerada da tabela é um elemento de dados; e existem duas coleções de dados: \( dc_{1} = \{de_{1}, de_{2}\} \) e \( dc_{2} = \{ de_{3} \} \).}%
+    \label{tab:data-collections-and-data-elements}
+\end{table}
 
 \subsection{Um exemplo}%
 \label{sec:um-exemplo-de-dataflow}
@@ -193,7 +209,7 @@ A proveniência prospectiva desse experimento poderia ser representada através 
 
 \section{Rastreamento de dados de proveniência}
 
-\subsection{Mapeamento de atributos}
+\subsection{Mapeamento de atributos de dados}
 
 \subsection{Gerência do fluxo de dados no nível físico}
 
