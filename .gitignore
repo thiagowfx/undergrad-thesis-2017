@@ -1,4 +1,6 @@
 *.pdf
+!img/*.pdf
+
 *.abx
 *.lab
 *.los
