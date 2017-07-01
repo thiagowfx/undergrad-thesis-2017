@@ -241,29 +241,47 @@ A proveniência prospectiva desse experimento poderia ser representada através 
 
 As soluções precisam ser capazes de \textbf{rastrear} e \textbf{monitorar} o fluxo de dados que são consumidos e produzidos por cada transformação de dados (programa científico) durante a sua execução. Nesse contexto, dois níveis de abstração existem para tratar a \textbf{gerência do fluxo de dados}: o físico e o lógico~\cite{silva2015propostadoutorado}.
 
-\subsection{Gerência do fluxo de dados no nível físico}
+\subsection{Gerência do fluxo de dados no nível físico}%
+\label{sec:gerencia-do-fluxo-de-dados-no-nivel-fisico}
 
 A \textbf{gerência do fluxo de dados no nível físico}, ou \textbf{rastreamento físico de dados de proveniência}, consiste no apoio às \emph{transformações de dados} no nível do sistema de arquivos, i.e., rastreando \emph{elementos de dados individuais}. Nessa abordagem, é necessário etiquetar cada elemento de dado com um identificador único dentro do mesmo conjunto de dados~\cite{silva2015propostadoutorado}. Esse tipo de proveniência captura muitos detalhes, os quais podem ser úteis na depuração de simulações computacionais devido à sua gerência em um nível de granularidade fino dos elementos de dados~\cite{silva2017raw}.
 
 Nesse contexto, as transformações de dados são analisadas apenas no que tange o consumo e a produção de arquivos (e elementos de dados) por cada programa científico, sem considerar dados de domínio da simulação. Assim, essas transformações de dados são análogas a caixas-pretas (do inglês, \textit{black box})~\cite{silva2017raw}, desde que não existem índices ou qualquer tipo de suporte à consulta em termos de conteúdo de domínio da simulação. Desse modo, os usuários limitam-se apenas a ponteiros para os elementos de dados nos arquivos envolvidos no fluxo de dados, requerendo-se que os mesmos façam análises individuais de cada arquivo para poder extrair algum significado semântico deles~\cite{silva2015propostadoutorado}.
 
-\subsection{Gerência do fluxo de dados no nível lógico}
+\subsection{Gerência do fluxo de dados no nível lógico}%
+\label{sec:gerencia-do-fluxo-de-dados-no-nivel-logico}
 
-Em contrapartida, a \textbf{gerência do fluxo de dados no nível lógico}, ou \textbf{rastreamento lógico de dados de proveniência}, consiste no monitoramento de \emph{como} os elementos de dados são consumidos e produzidos pelas transformações de dados e programas científicos. Tais elementos de dados são tipicamente o conteúdo de arquivos de dados científicos e, a partir da sua gerência, os seus relacionamentos podem ser utilizados para a \emph{reconstrução do fluxo de dados}. Dessa maneira, menos dados precisam ser armazenados, já que um fluxo de dados costuma ter bem menos transformações de dados do que elementos de dados~\cite{silva2015propostadoutorado}.
+Em contrapartida, a \textbf{gerência do fluxo de dados no nível lógico}, ou \textbf{rastreamento lógico de dados de proveniência}, consiste no monitoramento de \emph{como} os elementos de dados são consumidos e produzidos pelas transformações de dados e programas científicos. Tais elementos de dados são tipicamente o conteúdo de arquivos de dados científicos e, a partir da sua gerência, os seus relacionamentos podem ser utilizados para a \emph{reconstrução do fluxo de dados}. Dessa maneira, menos dados precisam ser armazenados, já que um fluxo de dados costuma ter bem menos transformações de dados do que elementos de dados~\cite{silva2015propostadoutorado} (nível de granularidade grosso).
 
 No que diz respeito aos usuários, consultas podem ser realizadas de forma direcionada aos aspectos do domínio da simulação computacional, sem a necessidade de se fazer uma etapa de análise prévia (diferentemente da gerência no nível físico). Além disso, o rastreamento lógico de dados pode ser \emph{automaticamente} derivado das especificações das transformações de dados, uma vez que elas já apresentam propriedades sobre conjuntos de dados consumidos e produzidos~\cite{ikeda2013logical,silva2017raw}; por outro lado, vale destacar que o custo computacional é maior para a gerência de dados no nível lógico do que no físico, uma vez que nesse tipo de gerência os elementos de dados precisam ser capturados e monitorados em tempo de execução, enquanto que no nível físico esse monitoramento resume-se à utilização de ponteiros de arquivos para os dados científicos, antes mesmo da execução.
 
-\subsection{Mapeamento de atributos de dados}
+\subsection{Um exemplo}
 
-\perrotta{TODO}
+Para ilustrar a diferença entre os conceitos apresentados na \autoref{sec:gerencia-do-fluxo-de-dados-no-nivel-fisico} e na \autoref{sec:gerencia-do-fluxo-de-dados-no-nivel-logico}, \perrotta{Dar um exemplo que ilustre a diferença entre gerência de dados nos níveis físico e lógico. Eu me lembro da parte física (task_id), mas estou confuso na parte lógica, então vou delegar isso para mais tarde.}
 
-\subsubsection{Exemplo}
-
-\begin{lstlisting}[language=SQL,caption={},label=]
-SELECT * FROM table;
-\end{lstlisting}
-
-\perrotta{Exemplo para ilustrar: diferença entre físico e lógico}
 \missingfigure{Exemplo para ilustrar: diferença entre físico e lógico}
 
-% REVIEW: Mecanismos para processamento de consultas ??
+% \begin{lstlisting}[language=SQL,caption={},label=]
+% SELECT * FROM table WHERE task_id = task_id;
+% \end{lstlisting}
+
+\subsection{Mapeamento de atributos de dados}
+
+A seguinte definição foi extraída, traduzida e adaptada de~\cite{ikeda2013logical}:
+
+\textbf{Definição(mapeamento de atributo)}: seja \( dt \) uma transformação de dados com um conjunto de dados de entrada \( I \) e um conjunto de dados de saída \( O \). Assume-se também que \( A \) é um atributo de dados de \( I \) e \( B \) é um atributo de dados de \( O \). Diz-se que \( dt \) tem um mapeamento de atributo entre o atributo de entrada \( I.A \) e o atributo de saída \( O.B \), denotado por \( I.A \leftrightarrow O.B \), se todos os possíveis valores de \( x \in \textrm{domínio}(B) \) e todas as possíveis instâncias do conjunto de entrada \( I^{\prime} \) satisfazem
+\[ \sigma_{B=x}(T(I^{\prime})) = \sigma_{B=x}(T(\sigma_{A=x}(I^{\prime}))) \]
+
+\perrotta{Como explicar a igualdade do parágrafo anterior de forma sucinta?? Por favor veja se a explicação simplificada e o exemplo a seguir são suficientes.}
+
+Em outras palavras, e de forma simplificada, existe um mapeamento de atributos entre \( A \) e \( B \) quando:
+
+\begin{enumerate}
+    \item \( A \) faz parte de um conjunto de dados de entrada de uma transformação \( dt \), e \( B \) faz parte de um conjunto de dados de saída de \( dt \), ou vice-versa;
+    \item \( A \) e \( B \) possuem o mesmo tipo;
+    \item \( A \) e \( B \) possuem o mesmo nome.
+\end{enumerate}
+
+Por exemplo, considere que temos um conjunto de dados \( ds_{1} \) com dois atributos \( x \) e \( y \) do tipo ponto flutuante, representando as coordenadas de um plano, e uma transformação \( dt \) que dobra os valores de cada uma dessas coordenadas e é aplicada a \( ds_{1} \), produzindo \( ds_{2} \). Nesse cenário, existem dois mapeamentos de atributos: \( ds_{1}.x \leftrightarrow ds_{2}.x \) e \( ds_{1}.y \leftrightarrow ds_{2}.y \).
+
+\perrotta{REVIEW: \textbf{mecanismos para processamento de consultas??}}
