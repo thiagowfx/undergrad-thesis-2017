@@ -395,4 +395,38 @@ a few preliminary experimental results.},
   file         = {online:https\://escholarship.org/uc/item/3z6972w3.pdf:PDF},
 }
 
+@InProceedings{alagiannis2012nodb,
+  author       = {Alagiannis, Ioannis and Borovica, Renata and Branco, Miguel and Idreos, Stratos and Ailamaki, Anastasia},
+  title        = {NoDB: efficient query execution on raw data files},
+  booktitle    = {Proceedings of the 2012 ACM SIGMOD International Conference on Management of Data},
+  year         = {2012},
+  organization = {ACM},
+  pages        = {241--252},
+  doi          = {10.1145/2213836.2213864},
+  url          = {https://dl.acm.org/citation.cfm?id=2213864},
+  abstract     = {As data collections become larger and larger, data loading evolves to a major bottleneck. Many applications already avoid using database systems, e.g., scientific data analysis and social networks, due to the complexity and the increased data-to-query time. For such applications data collections keep growing fast, even on a daily basis, and we are already in the era of data deluge where we have much more data than what we can move, store, let alone analyze.
+
+Our contribution in this paper is the design and roadmap of a new paradigm in database systems, called NoDB, which do not require data loading while still maintaining the whole feature set of a modern database system. In particular, we show how to make raw data files a first-class citizen, fully integrated with the query engine. Through our design and lessons learned by implementing the NoDB philosophy over a modern DBMS, we discuss the fundamental limitations as well as the strong opportunities that such a research path brings. We identify performance bottlenecks specific for in situ processing, namely the repeated parsing and tokenizing overhead and the expensive data type conversion costs. To address these problems, we introduce an adaptive indexing mechanism that maintains positional information to provide efficient access to raw data files, together with a flexible caching structure.
+
+Our implementation over PostgreSQL, called PostgresRaw, is able to avoid the loading cost completely, while matching the query performance of plain PostgreSQL and even outperforming it in many cases. We conclude that NoDB systems are feasible to design and implement over modern database architectures, bringing an unprecedented positive effect in usability and performance.},
+  file         = {online:https\://infoscience.epfl.ch/record/175803/files/NoDBsigmod2012.pdf:PDF},
+}
+
+@Article{karpathiotakis2014adaptive,
+  author    = {Karpathiotakis, Manos and Branco, Miguel and Alagiannis, Ioannis and Ailamaki, Anastasia},
+  title     = {Adaptive query processing on RAW data},
+  journal   = {Proceedings of the VLDB Endowment},
+  year      = {2014},
+  volume    = {7},
+  number    = {12},
+  pages     = {1119--1130},
+  doi       = {10.14778/2732977.2732986},
+  url       = {https://dl.acm.org/citation.cfm?id=2732986},
+  abstract  = {Database systems deliver impressive performance for large classes of workloads as the result of decades of research into optimizing database engines. High performance, however, is achieved at the cost of versatility. In particular, database systems only operate efficiently over loaded data, i.e., data converted from its original raw format into the system's internal data format. At the same time, data volume continues to increase exponentially and data varies increasingly, with an escalating number of new formats. The consequence is a growing impedance mismatch between the original structures holding the data in the raw files and the structures used by query engines for efficient processing. In an ideal scenario, the query engine would seamlessly adapt itself to the data and ensure efficient query processing regardless of the input data formats, optimizing itself to each instance of a file and of a query by leveraging information available at query time. Today's systems, however, force data to adapt to the query engine during data loading.
+
+This paper proposes adapting the query engine to the formats of raw data. It presents RAW, a prototype query engine which enables querying heterogeneous data sources transparently. RAW employs Just-In-Time access paths, which efficiently couple heterogeneous raw files to the query engine and reduce the overheads of traditional general-purpose scan operators. There are, however, inherent overheads with accessing raw data directly that cannot be eliminated, such as converting the raw values. Therefore, RAW also uses column shreds, ensuring that we pay these costs only for the subsets of raw data strictly needed by a query. We use RAW in a real-world scenario and achieve a two-order of magnitude speedup against the existing hand-written solution.},
+  file      = {online:https\://infoscience.epfl.ch/record/200346/files/raw.pdf:PDF},
+  publisher = {VLDB Endowment},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

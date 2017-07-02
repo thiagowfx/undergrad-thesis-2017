@@ -46,20 +46,22 @@ Esses dados e seus respectivos arquivos podem estar ou não em formato binário;
 
 Consultas do tipo 1 são as mais simples de serem realizadas em relação às outras, pois elas são auto-contidas no que diz respeito aos dados científicos, isto é, apenas a presença desses dados é suficiente para que esse tipo de consulta possa ser realizado: não é necessária a especificação sobre o fluxo de dados da simulação computacional.
 
-\perrotta{Técnicas de indexação --> FastBit, NoDB, RAW??}
+\perrotta{REVIEW: Técnicas de indexação \rightarrow{} FastBit, NoDB, RAW??}
 
 \section{Rastreio de fluxos de arquivos}%
 \label{sec:rastreio-de-fluxos-de-arquivos}
 
 Consultas do \textbf{tipo 2} são caracterizadas pelo rastreio de fluxos de arquivos, que se relacionam através de transformações de dados. Elas são frequentemente apoiadas por sistemas de \textit{workflows} científicos, tais como o Chiron~\cite{ogasawara2011algebraic}, o Pegasus~\cite{deelman2005pegasus} e o Kepler~\cite{ludascher2006scientific}.
 
-\perrotta{Capítulo 03 --- Soluções para análise do fluxo de arquivos (citar sistemas existentes: Chiron; Pegasus; Kepler; etc)}
+\perrotta{EXPAND}
 
 \section{Rastreio de fluxo de elementos de dados em múltiplos arquivos}%
 \label{sec:rastreio-de-elemento-de-dados-em-multiplos-arquivos}
-\perrotta{Capítulo 03 --- Soluções para análise do fluxo de elementos de dados relacionados em múltiplos arquivos
-DfAnalyzer (grupo)
-YesWorkflow
-NoWorkflow
-CCPE (mais sistemas)
-}
+
+Consultas do \textbf{tipo 3} envolvem o rastreio de elementos de dados relacionados em múltiplos arquivos.
+
+\perrotta{EXPAND}
+
+O estado da arte no que diz respeito a soluções para análises de dados científicos concentra-se hoje no apoio de consultas do tipo 1~\cite{alagiannis2012nodb,karpathiotakis2014adaptive,silva2015propostadoutorado}. Em particular, não foram encontradas soluções para consultas do tipo 3 e / ou para uma combinação do tipo 3 com os outros.
+
+\perrotta{DfAnalyzer (grupo), YesWorkflow, NoWorkflow, CCPE (mais sistemas)}
