@@ -44,17 +44,16 @@ Consultas do \textbf{tipo 1} são caracterizadas pela \textbf{análise} (do ingl
 
 Esses dados e seus respectivos arquivos podem estar ou não em formato binário; por exemplo, um arquivo em formato \abbrev{JSON}{JavaScript Object Notation} JSON (JavaScript Object Notation) geralmente contém dados em formato de texto; enquanto que um arquivo FITS (Flexible Image Transport System)~\cite{greisen2002representations}, utilizado em astronomia, pode possuir parte de seus dados em formato binário assim como o NetCDF (Network Common Data Form)~\cite{rew1990netcdf}, utilizado em dinâmica de fluidos computacionais.
 
-Consultas do tipo 1 são as mais simples de serem realizadas em relação às outras. Em primeiro lugar, elas são auto-contidas no que diz respeito aos dados científicos, isto é, apenas a presença desses dados é suficiente para que esse tipo de consulta possa ser realizado: não é necessária a especificação sobre o fluxo de dados da simulação computacional. Em segundo lugar,
+Consultas do tipo 1 são as mais simples de serem realizadas em relação às outras, pois elas são auto-contidas no que diz respeito aos dados científicos, isto é, apenas a presença desses dados é suficiente para que esse tipo de consulta possa ser realizado: não é necessária a especificação sobre o fluxo de dados da simulação computacional.
 
-\perrotta{TODO}
-
-\perrotta{Técnicas de indexação --> FastBit, NoDB, RAW}
+\perrotta{Técnicas de indexação --> FastBit, NoDB, RAW??}
 
 \section{Rastreio de fluxos de arquivos}%
 \label{sec:rastreio-de-fluxos-de-arquivos}
-\perrotta{Capítulo 03 --- Soluções para análise do fluxo de arquivos (citar sistemas existentes: Chiron; Pegasus; Kepler; etc)}
 
-\perrotta{sistema de workflows --> gerência do fluxo de arquivos}
+Consultas do \textbf{tipo 2} são caracterizadas pelo rastreio de fluxos de arquivos, que se relacionam através de transformações de dados. Elas são frequentemente apoiadas por sistemas de \textit{workflows} científicos, tais como o Chiron~\cite{ogasawara2011algebraic}, o Pegasus~\cite{deelman2005pegasus} e o Kepler~\cite{ludascher2006scientific}.
+
+\perrotta{Capítulo 03 --- Soluções para análise do fluxo de arquivos (citar sistemas existentes: Chiron; Pegasus; Kepler; etc)}
 
 \section{Rastreio de fluxo de elementos de dados em múltiplos arquivos}%
 \label{sec:rastreio-de-elemento-de-dados-em-multiplos-arquivos}
