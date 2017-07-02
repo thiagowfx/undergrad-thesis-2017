@@ -7,6 +7,9 @@
 
 Dado que o principal objetivo dessa monografia é a apresentação de um processador de consultas integrado à arquitetura ARMFUL que será abordada no \autoref{chap:arquitetura-armful}, nesse capítulo serão abordados alguns trabalhos e algumas publicações relacionados a ela, no que diz respeito a simulações científicas, a \textit{workflows} científicos, a proveniência de dados e, em especial, a \textbf{tipos de consulta} que podem ser realizados.
 
+\section{Tipos de consulta}%
+\label{sec:tipos-de-consulta}
+
 Conforme introduzimos na \autoref{sec:motivacao}, existem três tipos básicos de consultas que podem ser realizados em uma base de dados de proveniência de uma simulação computacional~\cite{silva2015analyzing,silva2015propostadoutorado}:
 
 \begin{enumerate}
@@ -16,6 +19,23 @@ Conforme introduzimos na \autoref{sec:motivacao}, existem três tipos básicos d
 \end{enumerate}
 
 Consultas do tipo 1 requerem apenas acesso a um único arquivo, enquanto consultas dos tipos 2 e 3 necessitam do apoio de fluxo de dados da simulação computacional~\cite{silva2015analyzing}.
+
+\subsection{Um exemplo}
+
+A \autoref{fig:types-of-queries-1-2-3} apresenta um exemplo que envolve os três tipos de consulta citados na \autoref{sec:tipos-de-consulta}:
+
+\begin{itemize}
+    \item exemplo de consulta do tipo 1: usuário realiza uma consulta específica do domínio ao conteúdo do arquivo \mbox{\texttt{projected{\_}images.tbl}}. Os atributos FA e FB (marcados com linhas vermelhas) são acessados e capturados para a subsequente análise de transformações lineares realizadas pelo programa de projeção presente na simulação computacional com uma configuração pré-definida;
+    \item exemplo de consulta do tipo 2: as setas de cor preta representam a sequência do fluxo de arquivos nos formatos \texttt{TBL} e \texttt{FITS}, os quais são projetados em outros arquivos \texttt{TBL} e depois transformados para eventualmente criar um arquivo de imagem no formato JPG (\mbox{\texttt{mosaic.jpg}}). O registro desses relacionamentos permite a possibilidade do rastreio dos arquivos intermediários que geram o arquivo de imagem.
+    \item exemplo de consulta do tipo 3: podemos visualizar um dos fluxos de elementos de dados através da representação das setas na cor vermelha. Nesse exemplo, o atributo CRVAL1 é utilizado como chave para relacionar os dados científicos em diferentes arquivos. Dessa forma, através desse atributo, o arquivo \mbox{\texttt{hdu{\_}1n.fits}} pode ser relacionado ao elemento de dados FB cujo valor é 0.001969140 do arquivo \mbox{\texttt{projected{\_}images.tbl}}.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/types-of-queries-1-2-3}
+    \caption[Exemplo de análise de uma simulação de astronomia]{Exemplo de uma simulação de astronomia para análise de arquivos de dados científicos. Encontrada originalmente em~\cite{silva2015propostadoutorado}.}%
+    \label{fig:types-of-queries-1-2-3}
+\end{figure}
 
 \section{Análise de dados científicos isolados}%
 \label{sec:analise-de-dados-cientificos-isolados}
