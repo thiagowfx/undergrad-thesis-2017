@@ -12,7 +12,7 @@ Neste capítulo serão apresentadas a visão geral e a motivação dessa monogra
 Simulações computacionais tornaram-se predominantes e omnipresentes no dia-a-dia de cientistas\footnote{Daqui em diante denominados \textit{usuários}.}, sendo necessárias na realização de análises que utilizam modelos computacionais complexos que lidam com grandes volumes de dados~\cite{silva2015analyzing}, permitindo a exploração de dados específicos de domínio para apoiar esses usuários na validação de hipóteses científicas ou comportamentos peculiares.
 
 % Muitos programas...consumem e produzem muitos dados...
-Essas simulações geralmente envolvem a execução de muitos programas no domínio da aplicação os quais intensivamente consomem e produzem muitos dados, a maior parte dos quais é armazenada em uma miscelânea de formatos de arquivo também no domínio da aplicação~\cite{silva2015analyzing}; por exemplo, \abbrev{FITS}{Flexible Image Transport System} FITS~\cite{greisen2002representations} em astronomia, ou \abbrev{HDF}{Hierarchical Data Format} HDF5~\cite{hdfgroup2014hdf5} e \abbrev{NetCDF}{Network Common Data Form} NetCDF~\cite{rew1990netcdf} em dinâmica de fluidos computacionais.
+Essas simulações geralmente envolvem a execução de muitos programas no domínio da aplicação os quais intensivamente consomem e produzem muitos dados, a maior parte dos quais é armazenada em uma miscelânea de formatos de arquivo também no domínio da aplicação~\cite{silva2015analyzing}; por exemplo, \abbrev{FITS}{Flexible Image Transport System} FITS~\cite{greisen2002representations} em astronomia, ou \abbrev{HDF}{Hierarchical Data Format} HDF5~\cite{folk1999hdf5} e \abbrev{NetCDF}{Network Common Data Form} NetCDF~\cite{rew1990netcdf} em dinâmica de fluidos computacionais.
 % Longo tempo para ser executada...mesmo em PAD...
 Uma grande parte dessas simulações computacionais de larga escala leva um longo tempo para ser executada, mesmo em ambientes de \abbrev{PAD}{Processamento em Alto Desempenho} PAD (Processamento em Alto Desempenho)~\cite{silva2017raw}, onde o poder de computação é amplificado através da utilização de diversos núcleos computacionais.
 
@@ -60,9 +60,9 @@ Outro benefício é o desempenho atingido com as consultas: o \textit{Query Proc
 O principal objetivo desse trabalho é apresentar o \textit{Query Processor}: como ele foi criado, como ele se integra à arquitetura ARMFUL previamente apresentada, e quais são os benefícios --- qualitativamente e quantitativamente --- que ele acrescenta à mesma.
 
 Assim, ele está organizado da seguinte forma:
-o \autoref{chap:referencial-teorico} apresenta o embasamento teórico, introduzindo e definindo os conceitos e a terminologia que será utilizada ao longo do trabalho.
-No \autoref{chap:trabalhos-relacionados} listamos algumas publicações relacionadas e recentes, algumas dentre as quais serviram como motivação e base para essa.
-O \autoref{chap:arquitetura-armful} aborda a arquitetura ARMFUL, da qual a aplicação desenvolvida nesse trabalho é um componente.
-No \autoref{chap:rastros-de-proveniencia} desenvolvemos a abordagem utilizada para analisar rastros de proveniência dos arquivos e dados de simulações científicas.
+o \autoref{chap:referencial-teorico} apresenta o embasamento teórico, introduzindo e definindo os conceitos, definições e a terminologia que será utilizada ao longo do trabalho.
+No \autoref{chap:trabalhos-relacionados} listamos algumas publicações relacionadas e recentes, algumas dentre as quais serviram como motivação e base para essa, e também abordamos a diferença entre os tipos de consulta mais comuns em simulações científicas.
+O \autoref{chap:arquitetura-armful} aborda a arquitetura ARMFUL e apresenta o \textit{DfAnalyzer}, parte do qual a aplicação desenvolvida nesse trabalho é um componente.
+No \autoref{chap:rastros-de-proveniencia} desenvolvemos a abordagem e mostramos os algoritmos utilizados para analisar rastros de proveniência dos arquivos e dados de simulações científicas.
 No \autoref{chap:experimentos} são abordados os resultados obtidos através do \textit{Query Processor} e os experimentos realizados com o mesmo.
 Finalmente, o \autoref{chap:conclusao} conclui o trabalho com perspectivas de trabalhos futuros.

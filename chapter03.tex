@@ -20,6 +20,8 @@ Conforme introduzimos na \autoref{sec:motivacao}, existem três tipos básicos d
 
 Consultas do tipo 1 requerem apenas acesso a um único arquivo, enquanto consultas dos tipos 2 e 3 necessitam do apoio de fluxo de dados da simulação computacional~\cite{silva2015analyzing}.
 
+\perrotta{REVIEW: tudo bem colocar esse exemplo aqui, ou é melhor incluí-lo no final?}
+
 \subsection{Um exemplo}
 
 A \autoref{fig:types-of-queries-1-2-3} apresenta um exemplo que envolve os três tipos de consulta citados na \autoref{sec:tipos-de-consulta}:
@@ -46,22 +48,23 @@ Esses dados e seus respectivos arquivos podem estar ou não em formato binário;
 
 Consultas do tipo 1 são as mais simples de serem realizadas em relação às outras, pois elas são auto-contidas no que diz respeito aos dados científicos, isto é, apenas a presença desses dados é suficiente para que esse tipo de consulta possa ser realizado: não é necessária a especificação sobre o fluxo de dados da simulação computacional.
 
+\perrotta{REVIEW: Extratores??}
 \perrotta{REVIEW: Técnicas de indexação \rightarrow{} FastBit, NoDB, RAW??}
 
 \section{Rastreio de fluxos de arquivos}%
 \label{sec:rastreio-de-fluxos-de-arquivos}
 
-Consultas do \textbf{tipo 2} são caracterizadas pelo rastreio de fluxos de arquivos, que se relacionam através de transformações de dados. Elas são frequentemente apoiadas por sistemas de \textit{workflows} científicos, tais como o Chiron~\cite{ogasawara2011algebraic}, o Pegasus~\cite{deelman2005pegasus} e o Kepler~\cite{ludascher2006scientific}.
+Consultas do \textbf{tipo 2} são caracterizadas pelo rastreio do \textbf{fluxo de arquivos}, que se relacionam através de transformações de dados. Elas são frequentemente apoiadas por sistemas de \textit{workflows} científicos, tais como o Chiron~\cite{ogasawara2011algebraic}, o Pegasus~\cite{deelman2005pegasus} e o Kepler~\cite{ludascher2006scientific}. Através desse tipo de consulta, que busca informações de proveniência retrospectiva, os usuários são capazes de rastrear, em uma míriade de arquivos de uma simulação computacional em larga escala, qual foi o fluxo de arquivos que gerou determinados conjuntos de dados finais a partir de quais conjutos de dados iniciais.
 
-\perrotta{EXPAND}
+Um exemplo de ferramenta que é capaz de realizar consultas do tipo 2 é o \textit{NoWorkflow}~\cite{murta2014noworkflow}, que captura de forma transparente a proveniência de \textit{scripts} escritos na linguagem de programação Python. Em particular, chamadas de sistema do tipo \emph{open} (=leitura de arquivos) presentes nos \textit{scripts} são capturadas, assim como os arquivos que lhe são passados como argumentos, que então são armazenados em um banco de dados relacional que identifica as relações (de entrada e de saída) entre esses arquivos. Dessa maneira, o \textit{NoWorkflow} possui toda a informação de proveniência retrospectiva~\cite{Pimentel2016} necessária para consultar o fluxo dos arquivos lidos e escritos durante a execução dos \textit{scripts}\footnote{Nesse contexto, um \textit{script} é análogo a uma transformação de dados, representando um programa científico.}.
 
 \section{Rastreio de fluxo de elementos de dados em múltiplos arquivos}%
 \label{sec:rastreio-de-elemento-de-dados-em-multiplos-arquivos}
 
-Consultas do \textbf{tipo 3} envolvem o rastreio de elementos de dados relacionados em múltiplos arquivos.
+Consultas do \textbf{tipo 3} envolvem o rastreio de \textbf{elementos de dados relacionados} em \textbf{múltiplos arquivos}. Nesse sentido, são uma extensão das consultas do tipo 2, uma vez que é necessária uma granularidade mais fina para o fluxo, no nível de elementos de dados, e não apenas no nível do fluxo de arquivos.
 
-\perrotta{EXPAND}
+O estado da arte no que diz respeito a soluções para análises de dados científicos concentra-se hoje no apoio a consultas do tipo 1~\cite{alagiannis2012nodb,karpathiotakis2014adaptive,silva2015propostadoutorado}. Em particular, não foram encontradas soluções consolidadas para consultas do tipo 3 ou mesmo para uma combinação do tipo 3 com os outros.
 
-O estado da arte no que diz respeito a soluções para análises de dados científicos concentra-se hoje no apoio de consultas do tipo 1~\cite{alagiannis2012nodb,karpathiotakis2014adaptive,silva2015propostadoutorado}. Em particular, não foram encontradas soluções para consultas do tipo 3 e / ou para uma combinação do tipo 3 com os outros.
+Um paradigma que está começando a abordar esse tipo de consulta é o da arquitetura ARMFUL, instanciada, por exemplo, como o \textit{DfAnalyzer} em ~\cite{silva2017raw}. Isso será discutido no \autoref{chap:arquitetura-armful}.
 
-\perrotta{DfAnalyzer (grupo), YesWorkflow, NoWorkflow, CCPE (mais sistemas)}
+\perrotta{DfAnalyzer (grupo), YesWorkflow, CCPE (mais sistemas)}

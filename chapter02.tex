@@ -175,7 +175,7 @@ Além disso, podemos ver alguns dos atributos de dados do conjunto de dados \tex
 \subsection{Definição}
 
 % upstream: http://www.aulete.com.br/proveni%C3%AAncia
-O dicionário Aulete Digital~\cite{auletedigitalonline} define \textbf{proveniência} como
+O dicionário Aulete Digital~\cite{aulete2014dicionario} define \textbf{proveniência} como
 ``lugar de onde alguém ou alguma coisa provém; origem; FONTE;''. Em simulações computacionais, a proveniência nos ajuda a interpretar e entender resultados. Através da examinação e da cadeia de passos que criaram um certo resultado, nós podemos verificar que o experimento foi: (i) realizado de acordo com os procedimentos aceitáveis; (ii) inspecionar as suas entradas; e, em alguns casos, (iii) reproduzir os mesmos resultados~\cite{freire2008provenance}.
 
 Questões básicas sobre dados científicos podem ser respondidas através do conhecimento e da introspecção de sua proveniência, tais como
@@ -197,7 +197,7 @@ Existem dois tipos de proveniência envolvidos na gerência de fluxo de dados: \
 
 \begin{itemize}
 % murta2014noworkflow ++ freire2008provenance
-    \item A \textbf{proveniência prospectiva} captura a especificação e a estrutura de uma tarefa computacional --- por exemplo, um \textit{script}, ou um programa de simulação --- e associa a ela os passos que precisam ser seguidos para gerar um conjunto de dados. Ela corresponde à definição de um fluxo de dados e ao seu grafo, transformações de dados e dados científicos relacionados.
+    \item A \textbf{proveniência prospectiva} captura a especificação e a estrutura de uma tarefa computacional --- por exemplo, um \textit{script}, ou um programa de simulação --- e associa a ela os passos que precisam ser seguidos para gerar um conjunto de dados. Ela corresponde à definição de um fluxo de dados e ao seu grafo, transformações de dados e dados científicos relacionados. A proveniência prospectiva é uma descrição da especificação do próprio processo computacional~\cite{mcphillips2015yesworkflow}.
 % murta2014noworkflow ++ freire2008provenance
     \item Por outro lado, a \textbf{proveniência retrospectiva} captura não apenas os passos executados de uma tarefa computacional, mas também informações relacionadas ao ambiente e tempo de execução da mesma - por exemplo, quais parâmetros foram passados aos programas, qual \abbrev{PID}{Process ID} processo (PID) do sistema operacional foi executado, por quem o PID foi executado, qual foi a duração total (incluindo seu instante de início e de fim) do mesmo, ou quais variáveis de ambiente do sistema operacional estavam definidas. Sua estrutura do grafos é similar à da proveniência prospectiva.
 \end{itemize}
@@ -257,9 +257,9 @@ No que diz respeito aos usuários, consultas podem ser realizadas de forma direc
 
 \subsection{Um exemplo}
 
-Para ilustrar a diferença entre os conceitos apresentados na \autoref{sec:gerencia-do-fluxo-de-dados-no-nivel-fisico} e na \autoref{sec:gerencia-do-fluxo-de-dados-no-nivel-logico}, \perrotta{Dar um exemplo que ilustre a diferença entre gerência de dados nos níveis físico e lógico. Eu me lembro da parte física (taskid), mas estou confuso na parte lógica, então vou delegar isso para mais tarde.}
+Para ilustrar a diferença entre os conceitos apresentados na \autoref{sec:gerencia-do-fluxo-de-dados-no-nivel-fisico} e na \autoref{sec:gerencia-do-fluxo-de-dados-no-nivel-logico}, \perrotta{REVIEW: Dar um exemplo que ilustre a diferença entre gerência de dados nos níveis físico e lógico. Eu me lembro da parte física (taskid), mas estou confuso na parte lógica, então vou delegar isso para mais tarde.}
 
-\missingfigure{Exemplo para ilustrar: diferença entre físico e lógico}
+\missingfigure{REVIEW: Exemplo para ilustrar: diferença entre físico e lógico}
 
 % \begin{lstlisting}[language=SQL,caption={},label=]
 % SELECT * FROM table WHERE task_id = task_id;
@@ -272,7 +272,7 @@ A seguinte definição foi extraída, traduzida e adaptada de~\cite{ikeda2013log
 \textbf{Definição(mapeamento de atributo)}: seja \( dt \) uma transformação de dados com um conjunto de dados de entrada \( I \) e um conjunto de dados de saída \( O \). Assume-se também que \( A \) é um atributo de dados de \( I \) e \( B \) é um atributo de dados de \( O \). Diz-se que \( dt \) tem um mapeamento de atributo entre o atributo de entrada \( I.A \) e o atributo de saída \( O.B \), denotado por \( I.A \leftrightarrow O.B \), se todos os possíveis valores de \( x \in \textrm{domínio}(B) \) e todas as possíveis instâncias do conjunto de entrada \( I^{\prime} \) satisfazem
 \[ \sigma_{B=x}(T(I^{\prime})) = \sigma_{B=x}(T(\sigma_{A=x}(I^{\prime}))) \]
 
-\perrotta{Como explicar a igualdade do parágrafo anterior de forma sucinta?? Por favor veja se a explicação simplificada e o exemplo a seguir são suficientes.}
+\perrotta{REVIEW: Como explicar a igualdade do parágrafo anterior de forma sucinta?? Por favor veja se a explicação simplificada e o exemplo a seguir são suficientes.}
 
 Em outras palavras, e de forma simplificada, existe um mapeamento de atributos entre \( A \) e \( B \) quando:
 
@@ -284,4 +284,4 @@ Em outras palavras, e de forma simplificada, existe um mapeamento de atributos e
 
 Por exemplo, considere que temos um conjunto de dados \( ds_{1} \) com dois atributos \( x \) e \( y \) do tipo ponto flutuante, representando as coordenadas de um plano, e uma transformação \( dt \) que dobra os valores de cada uma dessas coordenadas e é aplicada a \( ds_{1} \), produzindo \( ds_{2} \). Nesse cenário, existem dois mapeamentos de atributos: \( ds_{1}.x \leftrightarrow ds_{2}.x \) e \( ds_{1}.y \leftrightarrow ds_{2}.y \).
 
-\perrotta{REVIEW: \textbf{mecanismos para processamento de consultas??}}
+\perrotta{REVIEW: mecanismos para processamento de consultas??}
