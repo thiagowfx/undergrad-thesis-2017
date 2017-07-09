@@ -14,8 +14,6 @@ foreach my $previewer (@try_previewers) {
     }
 }
 
-# $pdf_previewer = "open -a /Applications/Skim.app" if -e "/Applications/Skim.app";
-
 $clean_ext = "nlo lol lod tdo ilg los lab out syx toc aux abx dvi ps lof log lot bbl blg fdb_latexmk synctex.gz fls nav snm pdfsync";
 
 # vim: ft=perl sw=4 et

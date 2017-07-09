@@ -9,16 +9,36 @@ Nesse capítulo será apresentada a arquitetura \abbrev{ARMFUL}{Analysis of Raw 
 
 \section{Visão geral}
 
+A \textbf{arquitetura ARMFUL} tem suporte a extração de dados científicos e a técnicas de indexação com o propósito de permitir o acesso direto a qualquer elemento ou região específica do espaço do fluxo de dados de uma simulação científica. Essa flexibilidade existe graças a uma \textbf{arquitetura de componentes}, que utiliza um SGWfC como bancos de dados de proveniência de dados para proporcionar um caminho de acesso entre o fluxo de dados e os dados científicos. Na \autoref{fig:armful-architecture}, podemos visualizar como é feita a divisão em componentes da ARMFUL. Eles são os seguintes:
+
+\begin{itemize}
+    \item Extração de dados científicos;
+    \item Indexação de dados científicos;
+    \item Catálogo de dados científicos;
+    \item Ingestão de dados de proveniência;
+    \item Processamento de consultas.
+\end{itemize}
+
+% REVIEW: do...aos VS entre...e os
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/armful-architecture}
+    \caption[Componentes da arquitetura ARMFUL]{Componentes da arquitetura ARMFUL. Encontrada originalmente em~\cite{silva2017raw}.}%
+    \label{fig:armful-architecture}
+\end{figure}
+
+\perrotta{TODO: Expandir sobre o propósito da divisão em componentes, etc}
+
 % DfAnalyzer (instância da ARMFUL) --> conjunto de componentes
 % Provenance Gatherer (origem da proveniência para o banco de dados que eu vou utilizar na QueryProcessor)
 % QueryProcessorCaptura de dados de proveniência}
 
-\perrotta{Imagem do diagrama e explicação de cada componente}
-\missingfigure{Imagem do diagrama e explicação de cada componente}
-
 \subsection{Extração e indexação de dados científicos}
 
 % query tipo 1 --> in situ
+
+% \subsection{Catálogo de dados científicos}
 
 \subsection{Ingestão de dados}
 
@@ -38,5 +58,7 @@ Nesse capítulo será apresentada a arquitetura \abbrev{ARMFUL}{Analysis of Raw 
 \subsection{Raw Data Extractor (RDE)}
 
 \subsection{Raw Data Indexer (RDI)}
+
+% \subsection{Catálogo de dados científicos?}
 
 \subsection{Query Processor (QP)}
