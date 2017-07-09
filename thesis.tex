@@ -62,7 +62,8 @@
   breaklines=true,             % sets automatic line breaking
   captionpos=b,                % sets the caption-position
   commentstyle=\color{gray},   % sets the comments color
-  frame=single,                % adds a frame around the code
+  escapechar=\%,               % write LaTeX inside listings
+  % frame=single,              % adds a frame around the code
   numbers=left,                % where to put the line-numbers
   numberstyle=\footnotesize,   % the size of the fonts that are used for the line-numbers
   showspaces=false,            % show spaces adding particular underscores
@@ -71,6 +72,12 @@
   stepnumber=1,                % the step between two line-numbers. If it's 1 each line
   tabsize=4,                   % sets default tabsize to 4 spaces
   title=\lstname,              % show the filename of files included with \lstinputlisting;
+}
+
+% highlight the following keywords for pseudocode listings
+\lstdefinelanguage{pseudocodigo}{%
+    morekeywords={se,então,para,cada,faça,fim,função,retorna},
+    sensitive=true, % case-sensitive?
 }
 
 % display list of figures, tables or listings only if at least one component is present
@@ -90,7 +97,7 @@
 \makeloabbreviations{}
 
 % typeset only the following chapters for faster typesetting times
-% \includeonly{chapter03}
+% \includeonly{chapter03,chapter04,chapter05}
 
 \begin{document}
   \title{Análise do Rastro de Proveniência em Simulações Computacionais em Larga Escala}
@@ -144,6 +151,7 @@
   
   \iftotallstlistings
   \renewcommand{\lstlistlistingname}{Lista de Códigos}
+  \renewcommand{\lstlistingname}{Código}
   \clearpage
   \addcontentsline{toc}{chapter}{\lstlistlistingname}
   \lstlistoflistings{}

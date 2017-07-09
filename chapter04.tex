@@ -48,25 +48,31 @@ O \textbf{componente de extração de dados científicos} tem o objetivo de ler 
     \item \textbf{análise}: conversão de ada dado científico filtrado em uma estrutura de dados adequada para ser armazenada no SGBD. Os requisitos dessa estruturas de dados são documentados no catálogo de dados científicos.
 \end{itemize}
 
-O \textbf{componente de indexação de dados científicos} visa indexar um conteúdo específico dos arquivos científicos a fim de melhorar o tempo e desempenho de acesso direto a determinadas regiões do espaço de dados científicos através da gerência de metadados correlacionados ao fluxo de dados. A criação de índices é realizada segundo um algoritmo de indexação previamente definido.
+O \textbf{componente de indexação de dados científicos} visa indexar um conteúdo específico dos arquivos científicos a fim de agilizar o tempo de acesso direto a determinadas regiões do espaço de dados científicos através da gerência de metadados correlacionados ao fluxo de dados. A criação de índices é realizada segundo um algoritmo de indexação previamente definido. O componente de indexação é fortemente recomendado em simulações científicas que geram muitos dados.
 
 \perrotta{REVIEW: Mencionar exemplos de bitmap indexing e positional index??}
+
+\perrotta{REVIEW: mencionar extraction cartridges e métodos? Ex. extract, index, run, access}
 
 % \subsection{Catálogo de dados científicos}
 
 \subsection{Ingestão de dados}
+
+\perrotta{REVIEW: o que escrever aqui?}
 
 % prov df (alimentar a base de dados com informacoes de proveniencia)
 % ProvenanceGatherer
 
 \subsection{Processamento de consultas}
 
-% QueryProcessor
+O \textbf{componente de processamento de consultas} é responsável por prover um mecanismo de consultas a proveniência e a dados científicos armazenados em um banco de dados de proveniência compatível com um modelo de dados adequado. % REVIEW: qual modelo de dados? Prov-Df? Devemos falar sobre isso também?
+O comportamento desse componente é variável, dependendo da estratégia utilizada nos componentes anteriores --- de extração e de indexação. Uma vez que esse componente utiliza um SGBD para o armazenamento dos dados de proveniência, somente consultas que são permitidas e disponíveis pelo SGBD podem ser realizadas.
 
-% melhor traduzir tudo, exceto DfAnalyzer
+\perrotta{REVIEW: o que mais mencionar aqui??}
 
 \section{DfAnalyzer: uma instanciação da arquitetura ARMFUL}
 
+% melhor traduzir tudo, exceto DfAnalyzer
 % DfAnalyzer (instância da ARMFUL) --> conjunto de componentes
 % Provenance Gatherer (origem da proveniência para o banco de dados que eu vou utilizar na QueryProcessor)
 % QueryProcessorCaptura de dados de proveniência}

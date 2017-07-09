@@ -25,6 +25,26 @@
 
 \section{Query Processor}
 
+% TODO / REVIEW
+
+O Query Processor foi implementado na linguagem de programação Java.
+
+\subsection{Detecção das últimas transformações de dados}
+
+O \autoref{lst:algorithm-last-transformations} obtêm as últimas transformações de dados de um fluxo de dados, isto é, as transformações de dados as quais não possuem nenhuma outra transformação após as mesmas.
+
+\begin{lstlisting}[language=pseudocodigo,label=lst:algorithm-last-transformations,caption={[Detecção das últimas transformações de dados]Detecção das útimas transformações de dados em uma especificação de fluxo de dados.}]
+    função obterÚltimasTransformações(%\Phi%):
+        transformações %\leftarrow% {}
+        para cada %\phi% %\in% %\Phi% faça:
+            se %$\phi.t_{\textrm{próximo}} == \textrm{null}$% então:
+                transformações %\leftarrow% transformações + {%$\phi.t_{\textrm{anterior}}$%}
+            fim se
+        fim para
+        retorna transformações
+    fim função
+\end{lstlisting}
+
 % algoritmos, pré-processamento, exemplos ==> Java
 % pseudocódigo
 % complexidade, estruturas de dados
