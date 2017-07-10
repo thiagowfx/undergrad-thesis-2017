@@ -25,33 +25,65 @@
 
 \section{Query Processor}
 
-% TODO / REVIEW
-
 O Query Processor foi implementado na linguagem de programação Java.
+
+\perrotta{TODO: EXPAND}
 
 \subsection{Detecção das últimas transformações de dados}
 
-O \autoref{lst:algorithm-last-transformations} obtêm as últimas transformações de dados de um fluxo de dados, isto é, as transformações de dados as quais não possuem nenhuma outra transformação após as mesmas.
+O \autoref{lst:algorithm-last-transformations} demonstra como obter as últimas transformações de dados de um fluxo de dados, isto é, as transformações de dados as quais não possuem nenhuma outra transformação de saída após as mesmas. A ideia é bastante simples: basta checar todas as dependências de dados \( \phi \) --- do conjunto de dependência de dados \( \Phi \) --- cujo \( dt_{\textrm{next}} \) é nulo, e tomar o \( dt_{\textrm{previous}} \) das mesmas.
 
-\begin{lstlisting}[language=pseudocodigo,label=lst:algorithm-last-transformations,caption={[Detecção das últimas transformações de dados]Detecção das útimas transformações de dados em uma especificação de fluxo de dados.}]
-    função obterÚltimasTransformações(%\Phi%):
-        transformações %\leftarrow% {}
-        para cada %\phi% %\in% %\Phi% faça:
-            se %$\phi.t_{\textrm{próximo}} == \textrm{null}$% então:
-                transformações %\leftarrow% transformações + {%$\phi.t_{\textrm{anterior}}$%}
-            fim se
-        fim para
-        retorna transformações
-    fim função
+\perrotta{TODO: complexidade, tipos de estruturas de dados, on-the-fly add na criação do dataflow}
+
+% TODO: tipo de Phi: dependências de dados ou dataflow?
+% TODO: tipo de transformations?
+
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-last-transformations},caption={[Detecção das últimas transformações de dados]Detecção das útimas transformações de dados em uma especificação de fluxo de dados.}]
+    function getLastTransformations(%\Phi%):
+        transformations %\leftarrow% {}
+        for each %\phi% %\in% %\Phi% do:
+            if %$\phi.dt_{\texttt{next}} == \varnothing$% then:
+                transformations %\leftarrow% transformations + {%$\phi.dt_{\texttt{previous}}$%}
+            end if
+        end for
+        return transformations
+    end function
 \end{lstlisting}
 
 % algoritmos, pré-processamento, exemplos ==> Java
 % pseudocódigo
 % complexidade, estruturas de dados
 
-\silva{Implementação do processador de consultas}
+\subsection{Detecção das trilhas de transformações}
 
-\perrotta{Capítulo 05 --- Implementação no DfAnalyzer (instanciou no DfAnalyzer o processador de consultas)}
+\perrotta{TODO: add autoref, caption repeating, basic explanation and complexity}
+\perrotta{TODO: renew / recheck variable names, convention and style}
+
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro em nível de fluxo de dados baseado nas trilhas de transformações.}]
+    function getTransformationTracks(%\Phi%):
+        lastDts %\leftarrow% getLastTransformations(%\Phi%)
+        queue %\leftarrow% {}
+        queue.push(lastDts)
+        tracks %\leftarrow% {}
+        while queue is not empty do:
+            dt %\leftarrow% queue.pop()
+            nextDts %\leftarrow% getNextTransformations(%\Phi%, dt)
+            if lastDts.contains(dt) or hasManyOutputDatasets(%\Phi%, dt) or anyTransformationHasManyInputDatasets(nextDts, %\Phi%) then:
+                TransformationTrack track %\leftarrow% TransformationTrack()
+                track.addTransformation(dt)
+                tracks %\leftarrow% tracks + {track}
+            else then:
+                track %\leftarrow% getTrack(tracks, nextDts)
+                track.addTransformation(dt)
+            end if
+            previousDts %\leftarrow% getPreviousTransformations(%\Phi%, dt)
+            queue.push(previousDts)
+        end do
+        return tracks
+    end function
+\end{lstlisting}
+
+\silva{Implementação do processador de consultas}
 
 \perrotta{Pré-processamento}
 \perrotta{Pseudocódigos + explicações}

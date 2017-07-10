@@ -44,7 +44,7 @@ Em simulações computacionais, conjuntos de dados correspondem a dados científ
 
 Uma \textbf{transformação de dados} \( dt \) é caracterizada pelo consumo de um ou mais conjuntos de dados de entrada e pela produção de um ou mais conjuntos de dados de saída. O exemplo da \autoref{fig:example-transformation} ilustra essa definição.
 
-\begin{figure}[ht]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.35\textwidth]{img/example-data-transformation}
     \caption[Exemplo de transformação de dados]{Exemplo de transformação de dados, \( dt \), com dois conjuntos de dados de entrada, \( ds_1 \) e \( ds_2 \), e dois conjuntos de dados de saída, \( ds_3 \) e \( ds_4 \).}%
@@ -68,7 +68,7 @@ Um \textbf{atributo de dados} é especificado da seguinte forma: \[ da = (\textr
 
 O nome do atributo de dados é um identificador que deve ser único em um mesmo conjunto de dados. O tipo do atributo provê um significado semântico ao mesmo. O exemplo da \autoref{tab:dataset-attributes-example} ilustra essa definição.
 
-\begin{table}[ht]
+\begin{table}[htb]
     \centering
     \begin{tabular}{|c|c|}
         \hline
@@ -99,7 +99,7 @@ onde o i-ésimo \( v \) é o valor do i-ésimo atributo de dados \( da \) de um 
 
 Para exemplificar a relação entre coleção de dados e elemento de dados, considere a \autoref{tab:data-collections-and-data-elements}.
 
-\begin{table}[ht]
+\begin{table}[htb]
     \centering
     \begin{tabular}{c|c|c|cc}
         & \textbf{Nome} & \textbf{Idade} & \textbf{Altura \((m)\)} \\
@@ -114,9 +114,9 @@ Para exemplificar a relação entre coleção de dados e elemento de dados, cons
 \subsection{Um exemplo}%
 \label{sec:um-exemplo-de-dataflow}
 
-Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamos utilizar uma pequena amostra de um fluxo de dados real, de um conjunto de dados de um experimento de sedimentação de fluidos. Na \autoref{fig:example-dataflow-specification} podemos ver o DAG correspondente a esse fluxo de dados \( D \): ele contém duas transformações de dados, \textsc{inputmesh} e \textsc{createequationsystems}, e três conjuntos de dados, \textsc{iinputmesh}, \textsc{oinputmesh} e \textsc{ocreateequationsystems}, assim como três dependências de dados. Eis a especificação de \( D \):
-
-\begin{figure}[ht]
+Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamos utilizar uma pequena amostra de um fluxo de dados real, de um conjunto de dados de um experimento de sedimentação de fluidos. Na \autoref{fig:example-dataflow-specification} podemos ver o DAG correspondente a esse fluxo de dados \( D \): ele contém duas transformações de dados, \textsc{inputmesh} e \textsc{createequationsystems}, e três conjuntos de dados, \textsc{iinputmesh}, \textsc{oinputmesh} e \textsc{ocreateequationsystems}, assim como três dependências de dados. Eis a especificação de \( D \)\footnote{\( \varnothing \) representa o símbolo nulo.}:
+s
+\begin{figure}[htb]
     \centering
     \includegraphics[width=0.35\textwidth]{img/example-dataflow-specification}
     \caption[Exemplo de especificação de fluxo de dados]{Exemplo de especificação de fluxo de dados, com duas transformações de dados e três conjuntos de dados.}%
@@ -141,7 +141,7 @@ Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamo
 
 Além disso, podemos ver alguns dos atributos de dados do conjunto de dados \textsc{iinputmesh} na \autoref{tab:iinputmesh-attributes}, assim como alguns de seus valores na \autoref{tab:iinputmesh-values}. Cada uma das linhas da \autoref{tab:iinputmesh-values} corresponde a um elemento de dados diferente, e todo o conjunto desses elementos de dados compõe toda a coleção de dados do conjunto de dados.
 
-\begin{table}[ht]
+\begin{table}[htb]
     \centering
     \begin{tabular}{|c|c|}
         \hline
@@ -158,7 +158,7 @@ Além disso, podemos ver alguns dos atributos de dados do conjunto de dados \tex
     \label{tab:iinputmesh-attributes}
 \end{table}
 
-\begin{table}[ht]
+\begin{table}[htb]
     \centering
     \begin{tabular}{c|c|c|c|c}
         \textbf{id} & \textbf{mesh{\_}file} & \textbf{dim} & \textbf{simulationid} & \textbf{restart{\_}control} \\
@@ -214,14 +214,14 @@ Para ilustrar a diferença entre os dois tipos de proveniência apresentados, co
 
 A proveniência prospectiva desse experimento poderia ser representada através do grafo da \autoref{fig:word-count-prospective}. Por outro lado, a proveniência retrospectiva do último passo (ordenação) poderia ter capturado em tempo de execução algumas das informações presentes na \autoref{tab:word-count-retrospective}.
 
-\begin{figure}[ht]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{img/word-count-prospective}
     \caption[Proveniência prospectiva do exemplo de contagem de palavras]{Proveniência prospectiva do exemplo de contagem de palavras.}%
     \label{fig:word-count-prospective}
 \end{figure}
 
-\begin{table}[ht]
+\begin{table}[htb]
     \centering
     \begin{tabular}{r|l}
         \hline
