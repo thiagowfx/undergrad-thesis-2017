@@ -14,7 +14,6 @@ A \textbf{arquitetura ARMFUL} tem suporte a extração de dados científicos, a 
 % Baseado na seção 5 de~\cite{silva2017raw}. Tentativa de tradução livre e de adaptação para o contexto desse trabalho.
 A ARMFUL funciona do seguinte modo: a gerência de conteúdos científicos é obtida a partir de dados científicos de arquivos, que então são relacionados, em um SGBD relacional, através de dados de proveniência do fluxo de dados. Essa gerência de dados requer características que são específicas do domínio; por isso, modelos de dados de proveniência costumam ser representados em granularidade não-fina. Entretanto, consultas de proveniência possuem um valor analítico limitado caso não sejam relacionadas a elementos de dados específicos ao domínio da simulação científica. Só que isso exige bastante esforço de usuários de SGWfC no que diz respeito a desenvolver, para cada domínio, um modelo de dados e programas científicos específicos para acessar, extrair e relacionar os dados de domínio aos dados de proveniência. Nesse aspecto, a arquitetura ARMFUL contribui objetivando a colaborar com esse esforço através da introdução e apresentação de componentes genéricos que modelam e relacionam entre si, no mesmo banco de dados, dados específicos de domínio e proveniência.
 
-\perrotta{TODO: extraction cartridge}
 \perrotta{TODO: relational DMBS}
 
 Na \autoref{fig:armful-architecture}, podemos visualizar como é feita a divisão em componentes da ARMFUL, que são os seguintes:
