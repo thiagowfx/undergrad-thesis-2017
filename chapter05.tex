@@ -34,17 +34,17 @@
 O \autoref{lst:algorithm-last-transformations} demonstra como obter as \textbf{últimas transformações de dados} \texttt{transformations} de um fluxo de dados \( D \), isto é, as transformações de dados \(dt\) as quais não possuem nenhuma outra transformação de saída após as mesmas. A ideia do algoritmo é bastante simples: basta checar todas as dependências de dados \( \phi \) --- do conjunto de dependência de dados do fluxo de dados \( D.\Phi \) --- cujo \( dt_{\textrm{next}} \) é nulo, e tomar o \( dt_{\textrm{previous}} \) das mesmas.
 
 % https://tex.stackexchange.com/questions/73231/avoid-page-breaks-in-lstlistings
-\begin{minipage}[c]{\linewidth}
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-last-transformations},caption={[Detecção das últimas transformações de dados]Detecção das útimas transformações de dados em uma especificação de fluxo de dados.}]
-    function getLastTransformations(%\(D\)%):
-        transformations %\leftarrow% {}
-        for each %\phi% %\in% %\(D.\Phi\)% do:
-            if %$\phi.dt_{\texttt{next}} == \varnothing$% then:
-                transformations %\leftarrow% transformations + {%$\phi.dt_{\texttt{previous}}$%}
-            end if
-        end for
-        return transformations
-    end function
+function getLastTransformations(%\(D\)%):
+    transformations %\leftarrow% {}
+    for each %\phi% %\in% %\(D.\Phi\)% do:
+        if %$\phi.dt_{\texttt{next}} == \varnothing$% then:
+            transformations %\leftarrow% transformations + {%$\phi.dt_{\texttt{previous}}$%}
+        end if
+    end do
+    return transformations
+end function
 \end{lstlisting}
 \end{minipage}
 
@@ -58,33 +58,33 @@ O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{
 
 O algoritmo começa com as últimas transformações de \( D \) (encontradas no \autoref{lst:algorithm-last-transformations}), e trabalha em direção às primeiras transformações de \( D \). A ideia principal é realizar a detecção do fim --- e, portanto, do início --- de cada trilha de transformação, que pode acontecer em quatro situações: (\(i\)) \perrotta{listar as situações}
 
-\begin{minipage}[c]{\linewidth}
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro do fluxo de dados no nível de trilhas de transformações.}]
-    function getTransformationTracks(%\(D\)%):
-        tracks %\leftarrow% {}
-        lastDts %\leftarrow% getLastTransformations(%\(D\)%) %\quad% # %\autoref{lst:algorithm-last-transformations}%
-        queue %\leftarrow% {}
-        queue.push(lastDts)
-        while queue is not empty do:
-            dt %\leftarrow% queue.pop()
-            nextDts %\leftarrow% getNextTransformations(%\(D\)%, dt)
-            if lastDts.contains(dt)
-               or hasManyOutputDatasets(%\(D\)%, dt)
-               or hasManyNextTransformations(%\( D \)%, dt)
-               or anyTransformationHasManyInputDatasets(%\(D\)%, nextDts)
-               then:
-                track %\leftarrow% new TransformationTrack()
-                track.addTransformation(dt)
-                tracks %\leftarrow% tracks + {track}
-            else then:
-                track %\leftarrow% getTrack(tracks, nextDts)
-                track.addTransformation(dt)
-            end if
-            previousDts %\leftarrow% getPreviousTransformations(%\(D\)%, dt)
-            queue.push(previousDts)
-        end do
-        return tracks
-    end function
+function getTransformationTracks(%\(D\)%):
+    tracks %\leftarrow% {}
+    lastDts %\leftarrow% getLastTransformations(%\(D\)%) %\quad% # %\autoref{lst:algorithm-last-transformations}%
+    queue %\leftarrow% {}
+    queue.push(lastDts)
+    while queue is not empty do:
+        dt %\leftarrow% queue.pop()
+        nextDts %\leftarrow% getNextTransformations(%\(D\)%, dt)
+        if lastDts.contains(dt)
+           or hasManyOutputDatasets(%\(D\)%, dt)
+           or hasManyNextTransformations(%\( D \)%, dt)
+           or anyTransformationHasManyInputDatasets(%\(D\)%, nextDts)
+           then:
+            track %\leftarrow% new TransformationTrack()
+            track.addTransformation(dt)
+            tracks %\leftarrow% tracks + {track}
+        else then:
+            track %\leftarrow% getTrack(tracks, nextDts)
+            track.addTransformation(dt)
+        end if
+        previousDts %\leftarrow% getPreviousTransformations(%\(D\)%, dt)
+        queue.push(previousDts)
+    end do
+    return tracks
+end function
 \end{lstlisting}
 \end{minipage}
 
@@ -94,25 +94,53 @@ A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(T)) \), isto 
 
 \perrotta{TODO: introduction with autoref, caption repeating + bold and algorithm explanation}
 
-\begin{minipage}[c]{\linewidth}
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dataset-tracks},caption={[Detecção das trilhas de conjuntos de dados]Detecção do rastro do fluxo de dados no nível de trilhas de conjuntos de dados.}]
-    function getDatasetTracks(%\(D\)%, dtTrack):
-        dsTrack %\leftarrow% {}
-        for each dt %\in% dtTrack do:
-            if dsTrack is empty then:
-                nextDss %\leftarrow% getNextDatasets(%\(D\)%, dt)
-                dsTrack %\leftarrow% {nextDss}
-            end if
-            previousDss %\leftarrow% getPreviousDatasets(%\(D\)%, dt)
-            dsTrack %\leftarrow% dsTrack + {previousDss}
-        end do
-        return dsTrack
-    end function
+function getDatasetTracks(%\(D\)%,dtTrack):
+    dsTrack %\leftarrow% {}
+    for each dt %\in% dtTrack do:
+        if dsTrack is empty then:
+            nextDss %\leftarrow% getNextDatasets(%\(D\)%, dt)
+            dsTrack %\leftarrow% {nextDss}
+        end if
+        previousDss %\leftarrow% getPreviousDatasets(%\(D\)%, dt)
+        dsTrack %\leftarrow% dsTrack + {previousDss}
+    end do
+    return dsTrack
+end function
 \end{lstlisting}
 \end{minipage}
 
 \perrotta{TODO: complexity and data structures}
 
-\perrotta{TODO: Mais listings, com pseudocódigos, explicações e complexidade}
+\subsection{Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados}
+
+\perrotta{TODO: introduction with autoref, caption repeating + bold and algorithm explanation}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-attribute-mappings},caption={[Obtenção de múltiplos mapeamentos de atributos]Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados.}]
+function getAttributesMapping(dt,%\(\textrm{ds}_{\textrm{input}}\)%,%\(\textrm{ds}_{\textrm{output}}\)%,type)
+   attrs %\leftarrow% {}
+   if type == physical then:
+       attrs %\leftarrow% attrs + {t.getInstanceAttribute()}
+   else:
+       for each inAttr %\in% %\(\textrm{ds}_{\textrm{input}}\).A% do:
+           for each outAttr %\in% %\(\textrm{ds}_{\textrm{output}}\).A% do:
+               if inAttr.name == outAttr.name
+                  and inAttr.type == outAttr.type then:
+                   attrs %\leftarrow% attrs + {inAttr}
+               end if
+           end for
+       end do
+   end if
+   %\mu% %\leftarrow% attributesMapping(attrs,dt,%\(\textrm{ds}_{\textrm{input}}\)%,%\(\textrm{ds}_{\textrm{output}}\)%)
+   return %\mu%
+end function
+\end{lstlisting}
+\end{minipage}
+
+\perrotta{TODO: complexity and data structures}
+
+\perrotta{TODO: Mais listings, com pseudocódigos, explicações e complexidade. Algoritmos de grafos (bfs/dfs) + query (como algoritmo 6)}
 \perrotta{TODO: Mencionar o pré-processamento e as otimizações que fiz}
 \perrotta{TODO: Como rodar --- explicar a assinatura da funcao principal}

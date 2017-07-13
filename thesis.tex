@@ -148,9 +148,6 @@
   \iftotaltables
   \listoftables
   \fi
-
-  \printlosymbols{}
-  \printloabbreviations{}
   
   \iftotallstlistings
   \renewcommand{\lstlistlistingname}{Lista de Códigos}
@@ -159,6 +156,9 @@
   \addcontentsline{toc}{chapter}{\lstlistlistingname}
   \lstlistoflistings{}
   \fi
+
+  \printloabbreviations{}
+  \printlosymbols{}
 
   \mainmatter{}
   \include{chapter01} % Introduction
