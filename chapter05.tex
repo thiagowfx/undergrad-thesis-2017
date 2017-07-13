@@ -25,23 +25,20 @@
 
 \section{Query Processor}
 
-O Query Processor foi implementado na linguagem de programação Java.
+\perrotta[O Query Processor foi implementado na linguagem de programação Java.]{TODO: EXPAND}
 
-\perrotta{TODO: EXPAND}
+\perrotta{REVIEW: code style; ``is empty''}
 
 \subsection{Detecção das últimas transformações de dados}
 
-O \autoref{lst:algorithm-last-transformations} demonstra como obter as últimas transformações de dados de um fluxo de dados, isto é, as transformações de dados as quais não possuem nenhuma outra transformação de saída após as mesmas. A ideia é bastante simples: basta checar todas as dependências de dados \( \phi \) --- do conjunto de dependência de dados \( \Phi \) --- cujo \( dt_{\textrm{next}} \) é nulo, e tomar o \( dt_{\textrm{previous}} \) das mesmas.
+O \autoref{lst:algorithm-last-transformations} demonstra como obter as \textbf{últimas transformações de dados} \texttt{transformations} de um fluxo de dados \( D \), isto é, as transformações de dados \(dt\) as quais não possuem nenhuma outra transformação de saída após as mesmas. A ideia do algoritmo é bastante simples: basta checar todas as dependências de dados \( \phi \) --- do conjunto de dependência de dados do fluxo de dados \( D.\Phi \) --- cujo \( dt_{\textrm{next}} \) é nulo, e tomar o \( dt_{\textrm{previous}} \) das mesmas.
 
-\perrotta{TODO: complexidade, tipos de estruturas de dados, on-the-fly add na criação do dataflow}
-
-% TODO: tipo de Phi: dependências de dados ou dataflow?
-% TODO: tipo de transformations?
-
+% https://tex.stackexchange.com/questions/73231/avoid-page-breaks-in-lstlistings
+\begin{minipage}[c]{\linewidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-last-transformations},caption={[Detecção das últimas transformações de dados]Detecção das útimas transformações de dados em uma especificação de fluxo de dados.}]
-    function getLastTransformations(%\Phi%):
+    function getLastTransformations(%\(D\)%):
         transformations %\leftarrow% {}
-        for each %\phi% %\in% %\Phi% do:
+        for each %\phi% %\in% %\(D.\Phi\)% do:
             if %$\phi.dt_{\texttt{next}} == \varnothing$% then:
                 transformations %\leftarrow% transformations + {%$\phi.dt_{\texttt{previous}}$%}
             end if
@@ -49,42 +46,73 @@ O \autoref{lst:algorithm-last-transformations} demonstra como obter as últimas 
         return transformations
     end function
 \end{lstlisting}
+\end{minipage}
 
-% algoritmos, pré-processamento, exemplos ==> Java
-% pseudocódigo
-% complexidade, estruturas de dados
+A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(\Phi)) \), isto é, proporcional ao número de dependência de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário ter acesso aleatório a essa estrutura de dados. Entretanto, na prática, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP.
 
 \subsection{Detecção das trilhas de transformações}
 
-\perrotta{TODO: add autoref, caption repeating, basic explanation and complexity}
-\perrotta{TODO: renew / recheck variable names, convention and style}
+O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (\textit{splits}) em \( D \). Tais separações existem no fluxo de dados em interseções que possuem mais de uma transformação de entrada ou de saída: por exemplo, como podemos visualizar na \perrotta[??]{TODO: add autoref to figure}.
 
-\begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro em nível de fluxo de dados baseado nas trilhas de transformações.}]
-    function getTransformationTracks(%\Phi%):
-        lastDts %\leftarrow% getLastTransformations(%\Phi%)
+\missingfigure{Exemplos de \textit{splits} / interseções (2+ transformações de entrada e de saída)}
+
+O algoritmo começa com as últimas transformações de \( D \) (encontradas no \autoref{lst:algorithm-last-transformations}), e trabalha em direção às primeiras transformações de \( D \). A ideia principal é realizar a detecção do fim --- e, portanto, do início --- de cada trilha de transformação, que pode acontecer em quatro situações: (\(i\)) \perrotta{listar as situações}
+
+\begin{minipage}[c]{\linewidth}
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro do fluxo de dados no nível de trilhas de transformações.}]
+    function getTransformationTracks(%\(D\)%):
+        tracks %\leftarrow% {}
+        lastDts %\leftarrow% getLastTransformations(%\(D\)%) %\quad% # %\autoref{lst:algorithm-last-transformations}%
         queue %\leftarrow% {}
         queue.push(lastDts)
-        tracks %\leftarrow% {}
         while queue is not empty do:
             dt %\leftarrow% queue.pop()
-            nextDts %\leftarrow% getNextTransformations(%\Phi%, dt)
-            if lastDts.contains(dt) or hasManyOutputDatasets(%\Phi%, dt) or anyTransformationHasManyInputDatasets(nextDts, %\Phi%) then:
-                TransformationTrack track %\leftarrow% TransformationTrack()
+            nextDts %\leftarrow% getNextTransformations(%\(D\)%, dt)
+            if lastDts.contains(dt)
+               or hasManyOutputDatasets(%\(D\)%, dt)
+               or hasManyNextTransformations(%\( D \)%, dt)
+               or anyTransformationHasManyInputDatasets(%\(D\)%, nextDts)
+               then:
+                track %\leftarrow% new TransformationTrack()
                 track.addTransformation(dt)
                 tracks %\leftarrow% tracks + {track}
             else then:
                 track %\leftarrow% getTrack(tracks, nextDts)
                 track.addTransformation(dt)
             end if
-            previousDts %\leftarrow% getPreviousTransformations(%\Phi%, dt)
+            previousDts %\leftarrow% getPreviousTransformations(%\(D\)%, dt)
             queue.push(previousDts)
         end do
         return tracks
     end function
 \end{lstlisting}
+\end{minipage}
 
-\silva{Implementação do processador de consultas}
+A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(T)) \), isto é, proporcional ao número de transformações de dados presentes em \( D \). As trilhas de transformações são armazenadas em listas encadeadas de transformações.
 
-\perrotta{Pré-processamento}
-\perrotta{Pseudocódigos + explicações}
-\perrotta{Como rodar}% explicar a assinatura da funcao principal
+\subsection{Detecção das trilhas de conjuntos de dados}
+
+\perrotta{TODO: introduction with autoref, caption repeating + bold and algorithm explanation}
+
+\begin{minipage}[c]{\linewidth}
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-dataset-tracks},caption={[Detecção das trilhas de conjuntos de dados]Detecção do rastro do fluxo de dados no nível de trilhas de conjuntos de dados.}]
+    function getDatasetTracks(%\(D\)%, dtTrack):
+        dsTrack %\leftarrow% {}
+        for each dt %\in% dtTrack do:
+            if dsTrack is empty then:
+                nextDss %\leftarrow% getNextDatasets(%\(D\)%, dt)
+                dsTrack %\leftarrow% {nextDss}
+            end if
+            previousDss %\leftarrow% getPreviousDatasets(%\(D\)%, dt)
+            dsTrack %\leftarrow% dsTrack + {previousDss}
+        end do
+        return dsTrack
+    end function
+\end{lstlisting}
+\end{minipage}
+
+\perrotta{TODO: complexity and data structures}
+
+\perrotta{TODO: Mais listings, com pseudocódigos, explicações e complexidade}
+\perrotta{TODO: Mencionar o pré-processamento e as otimizações que fiz}
+\perrotta{TODO: Como rodar --- explicar a assinatura da funcao principal}
