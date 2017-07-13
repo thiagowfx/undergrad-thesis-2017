@@ -25,9 +25,9 @@ Um \textbf{fluxo de dados} (do inglês \textit{dataflow}) é modelado como um gr
 
 Formalmente, uma especificação de fluxo de dados \( D \) é definida como \[ D = (T, S, \Phi) \] onde:
 \begin{itemize}
-    \item \( T = \{dt_1, dt_2, \ldots, dt_{\beta}\} \) é um conjunto de transformações;
-    \item \( S = \{ds_1, ds_2, \ldots, ds_{\alpha}\} \) representa os conjuntos de dados; e
-    \item \( \Phi = \{\phi_1, \phi_2, \ldots, \phi_{\gamma}\} \) é um conjunto de dependência de dados
+    \item \( T = \{dt_1, dt_2, \ldots, dt_{\alpha}\} \) é um conjunto de transformações;
+    \item \( S = \{ds_1, ds_2, \ldots, ds_{\beta}\} \) representa os conjuntos de dados; e
+    \item \( \Phi = \{\phi_1, \phi_2, \ldots, \phi_{\gamma}\} \) é um conjunto de dependência de dados.
 \end{itemize}
 
 \subsection{Transformação de dados}
@@ -47,11 +47,11 @@ No contexto de simulações computacionais, transformações de dados correspond
 
 A especificação de um \textbf{conjunto de dados} \( ds \) é dada por \[ ds = (A, C) \] onde:
 \begin{itemize}
-    \item \( A = \{da_1, da_2, \ldots, da_{\delta} \} \) é um conjunto de atributos de dados
-    \item \( C = \{dc_1, dc_2, \ldots, dc_{\zeta} \} \) é um conjunto de coleções de dados
+    \item \( A = \{da_1, da_2, \ldots, da_{\delta} \} \) é um conjunto de atributos de dados; e
+    \item \( C = \{dc_1, dc_2, \ldots, dc_{\zeta} \} \) é um conjunto de coleções de dados.
 \end{itemize}
 
-Em simulações computacionais, conjuntos de dados contém os dados científicos comumente extraídos de arquivos produzidos pelos programas de simulação. Além disso, o termo coleção de dados é especificado formalmente na Subseção \ref{subsec:data-collection}
+Em simulações computacionais, conjuntos de dados contêm os dados científicos comumente extraídos de arquivos produzidos pelos programas de simulação. Além disso, o termo coleção de dados é especificado formalmente na Subseção \ref{subsec:data-collection}.
 
 \subsection{Atributo de dados}
 
@@ -107,15 +107,15 @@ Para exemplificar a relação entre coleção de dados e elemento de dados, cons
 
 Uma especificação de \textbf{dependência de dados} \( \phi \) é dada por \[ \phi = (ds, dt_{\textrm{previous}}, dt_{\textrm{next}}) \] onde:
 \begin{itemize}
-    \item \( ds \) é um conjunto de dados
-    \item \( dt_{\textup{previous}} \) é uma transformação de dados que {\bf produz} coleções de dados para o conjunto de dados \( ds \)
-    \item \( dt_{\textup{next}} \) é uma transformação de dados que {\bf consome} coleções de dados do conjunto de dados \( ds \)
+    \item \( ds \) é um conjunto de dados;
+    \item \( dt_{\textup{previous}} \) é uma transformação de dados que {\bf produz} coleções de dados para o conjunto de dados \( ds \); e
+    \item \( dt_{\textup{next}} \) é uma transformação de dados que {\bf consome} coleções de dados do conjunto de dados \( ds \).
 \end{itemize}
 
 \subsection{Um exemplo}%
 \label{sec:um-exemplo-de-dataflow}
 
-Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamos utilizar uma pequena amostra de um fluxo de dados real em dinâmica de fluidos computacionais. Na \autoref{fig:example-dataflow-specification} podemos ver o DAG correspondente a esse fluxo de dados \( D \): ele contém duas transformações de dados, \textsc{inputmesh} e \textsc{createequationsystems}, e três conjuntos de dados, \textsc{iinputmesh}, \textsc{oinputmesh} e \textsc{ocreateequationsystems}, assim como três dependências de dados. Eis a especificação de \( D \)\footnote{\( \varnothing \) representa o símbolo nulo.}:
+Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamos utilizar uma pequena amostra de um fluxo de dados real em dinâmica de fluidos computacionais. Na \autoref{fig:example-dataflow-specification} podemos ver o DAG correspondente a esse fluxo de dados \( D \): ele contém duas transformações de dados, \textsc{inputmesh} e \textsc{createequationsystems}, e três conjuntos de dados, \textsc{iinputmesh}, \textsc{oinputmesh} e \textsc{ocreateequationsystems}, assim como três dependências de dados. Eis a especificação de \( D \):
 
 \begin{figure}[htb]
     \centering
@@ -124,7 +124,6 @@ Para ilustrar as definições e especificações da \autoref{sec:dataflow}, vamo
     \label{fig:example-dataflow-specification}
 \end{figure}
 
-\silva{observar a mudança na especificação do fluxo de dados para D=(T,S,null)}
 \[
     \begin{array}{rl}
     % \begin{cases}
