@@ -92,7 +92,10 @@ A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(T)) \), isto 
 
 \subsection{Detecção das trilhas de conjuntos de dados}
 
-\perrotta{TODO: introduction with autoref, caption repeating + bold and algorithm explanation}
+O \autoref{lst:algorithm-dataset-tracks} obtém as \textbf{trilhas de conjuntos de dados} de um fluxo de dados \( D \).
+% baseia-se nas trilhas de transformações de dados do \autoref{lst:algorithm-transformation-tracks}, 
+
+\perrotta{TODO: algorithm explanation}
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dataset-tracks},caption={[Detecção das trilhas de conjuntos de dados]Detecção do rastro do fluxo de dados no nível de trilhas de conjuntos de dados.}]
@@ -111,7 +114,7 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-\perrotta{TODO: complexity and data structures}
+A complexidade de tempo do algoritmo é a mesma do algoritmo do \autoref{lst:algorithm-transformation-tracks}: linear da ordem de \( O(\#(T)) \), e as trilhas de conjuntos de dados são também armazenadas em listas encadeadas de conjuntos de dados.
 
 \subsection{Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados}
 
