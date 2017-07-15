@@ -39,7 +39,6 @@ visualization; differencing over provenance trails; and inference queries.},
   title     = {Yin {\&} Yang: Demonstrating Complementary Provenance from noWorkflow {\&} YesWorkflow},
   booktitle = {Provenance and Annotation of Data and Processes: 6th International Provenance and Annotation Workshop, IPAW 2016, McLean, VA, USA, June 7-8, 2016, Proceedings},
   year      = {2016},
-  editor    = {Mattoso, Marta and Glavic, Boris},
   publisher = {Springer International Publishing},
   isbn      = {978-3-319-40593-3},
   pages     = {161--165},
@@ -237,7 +236,6 @@ http://taverna.sourceforge.net/.},
   booktitle    = {Journal of Physics: Conference Series},
   year         = {2009},
   volume       = {180},
-  number       = {1},
   organization = {IOP Publishing},
   pages        = {012053},
   url          = {http://iopscience.iop.org/article/10.1088/1742-6596/180/1/012053/meta},
@@ -291,11 +289,11 @@ interactive exploration on terabytes of data.},
 }
 
 @Unpublished{silva2015propostadoutorado,
-  author  = {Vítor Silva},
-  title   = {Análise de dados científicos sobre múltiplos arquivos ao longo da geração dos dados},
-  year    = {2015},
-  date    = {2015-12},
-  comment = {https://carinercrs.blogspot.com.br/2011/04/tipos-de-entradas-dos-arquivos-bibtex.html},
+  author = {Vítor Silva},
+  title  = {Análise de dados científicos sobre múltiplos arquivos ao longo da geração dos dados},
+  year   = {2015},
+  date   = {2015-12},
+  note   = {Qualificação de Doutorado de Vítor Silva.},
 }
 
 @Article{dias2015data,
@@ -454,6 +452,15 @@ This paper proposes adapting the query engine to the formats of raw data. It pre
   url          = {https://dl.acm.org/citation.cfm?id=2612185},
   abstract     = {Scientific experiments and large-scale simulations produce massive amounts of data. Many of these scientific datasets are arrays, and are stored in file formats such as HDF5 and NetCDF. Although scientific data management systems, such as SciDB, are designed to manipulate arrays, there are challenges in integrating these systems into existing analysis workflows. Major barriers include the expensive task of preparing and loading data before querying, and converting the final results to a format that is understood by the existing post-processing and visualization tools. As a consequence, integrating a data management system into an existing scientific data analysis workflow is time-consuming and requires extensive user involvement. In this paper, we present the design of a new scientific data analysis system that efficiently processes queries directly over data stored in the HDF5 file format. This design choice eliminates the tedious and error-prone data loading process, and makes the query results readily available to the next processing steps of the analysis workflow. Our design leverages the increasing main memory capacities found in supercomputers through bitmap indexing and in-memory query execution. In addition, query processing over the HDF5 data format can be effortlessly parallelized to utilize the ample concurrency available in large-scale supercomputers and modern parallel file systems. We evaluate the performance of our system on a large supercomputing system and experiment with both a synthetic dataset and a real cosmology observation dataset. Our system frequently outperforms the relational database system that the cosmology team currently uses, and is more than 10X faster than Hive when processing data in parallel. Overall, by eliminating the data loading step, our query processing system is more effective in supporting in situ scientific analysis workflows.},
   file         = {online:http\://web.cse.ohio-state.edu/~blanas.2/files/sigmod2014_analysisonhdf5.pdf:PDF},
+}
+
+@Book{ozsu2011principles,
+  author    = {{\"O}zsu, M Tamer and Valduriez, Patrick},
+  title     = {Principles of distributed database systems},
+  year      = {2011},
+  publisher = {Springer Science \& Business Media},
+  url       = {https://cs.uwaterloo.ca/~tozsu/ddbook/},
+  address   = {University of Waterloo},
 }
 
 @Comment{jabref-meta: databaseType:biblatex;}

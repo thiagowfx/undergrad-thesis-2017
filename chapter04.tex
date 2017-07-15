@@ -9,33 +9,41 @@ Nesse capítulo será apresentada a arquitetura \abbrev{ARMFUL}{Analysis of Raw 
 
 \section{Visão geral}
 
-A \textbf{arquitetura ARMFUL} tem suporte a extração de dados científicos, a técnicas de indexação e a análise de dados científicos a partir de múltiplos arquivos~\cite{silva2016situ} com o propósito de permitir o acesso direto a qualquer elemento ou região específica do espaço do fluxo de dados de uma simulação científica. Essa flexibilidade na análise existe graças a uma \textbf{arquitetura de componentes}, que utiliza um SGWfC como bancos de dados de proveniência de dados para proporcionar um caminho de acesso entre o fluxo de dados e os dados científicos~\cite{silva2017raw}.
+A \textbf{arquitetura ARMFUL} tem suporte a extração de dados científicos, a técnicas de indexação e a análise de dados científicos a partir de múltiplos arquivos~\cite{silva2016situ} com o propósito de permitir o acesso direto a qualquer elemento ou região específica do espaço do fluxo de dados de uma simulação científica. Em outras palavras, ela permite a execução, \textit{off-line} e~/~ou \textit{on-line}\footnote{\textit{I.e.}, as consultas podem ser realizadas tanto \emph{após} as simulações científicas, quanto \emph{durante} as mesmas, respectivamente.}, de todos os três tipos de consultas apresentadas na \autoref{sec:tipos-de-consulta}. Essa flexibilidade e versatilidade na análise existe graças a uma \textbf{arquitetura de componentes}, \hl{que utiliza um SGWfC como bancos de dados de proveniência} de dados para proporcionar um caminho de acesso entre o fluxo de dados e os dados científicos~\cite{silva2017raw}.
+
+\perrotta{REVIEW: o que está realçado acima está correto? É realmente um SGWfC, ou eu deveria mencionar ``SGBD relacional?''.}
+
+\perrotta{NOTA: estou utilizando a palavra \textbf{correlacionar} com uma frequência bem alta, optando por ela em vez de \textbf{relacionar}.}
 
 % Baseado na seção 5 de~\cite{silva2017raw}. Tentativa de tradução livre e de adaptação para o contexto desse trabalho.
-A ARMFUL funciona do seguinte modo: a gerência de conteúdos científicos é obtida a partir de dados científicos de arquivos, que então são relacionados, em um SGBD relacional, através de dados de proveniência do fluxo de dados. Essa gerência de dados requer características que são específicas do domínio; por isso, modelos de dados de proveniência costumam ser representados em granularidade não-fina. Entretanto, consultas de proveniência possuem um valor analítico limitado caso não sejam relacionadas a elementos de dados específicos ao domínio da simulação científica. Só que isso exige bastante esforço de usuários de SGWfC no que diz respeito a desenvolver, para cada domínio, um modelo de dados e programas científicos específicos para acessar, extrair e relacionar os dados de domínio aos dados de proveniência. Nesse aspecto, a arquitetura ARMFUL contribui objetivando a colaborar com esse esforço através da introdução e apresentação de componentes genéricos que modelam e relacionam entre si, no mesmo banco de dados, dados específicos de domínio e proveniência.
+A arquitetura ARMFUL funciona do seguinte modo: a gerência de conteúdos científicos é obtida a partir de dados científicos de arquivos, que então são correlacionados, em um SGBD relacional, através de dados de proveniência do seu respectivo fluxo de dados. Essa gerência de dados requer características que são específicas do domínio da simulação científica; por isso, modelos de dados de proveniência dessas simulações costumam ser representados em granularidade não-fina, \textit{i.e.}, as tabelas do SGBD possuem um grau de abstração relativamente alto para representar esses dados. Entretanto, consultas de proveniência possuem um valor analítico limitado caso não sejam relacionadas a elementos de dados específicos ao domínio da simulação computacional; contudo, esse relacionamento exige bastante esforço dos usuários de SGWfCs no que diz respeito a desenvolver, para cada domínio, um modelo de dados e programas científicos específicos para acessar, extrair e correlacionar os dados de domínio aos dados de proveniência. Nesse aspecto, a arquitetura ARMFUL contribui diminuindo o esforço necessário para capturar e representar esses dados de proveniência aravés da introdução e divisão de componentes genéricos e auto-contidos que modelam e correlacionam entre si, no mesmo banco de dados, (\(i\)) dados científicos específicos do domínio e (\(ii\)) proveniência.
 
-\perrotta{TODO: relational DMBS}
-
-Na \autoref{fig:armful-architecture}, podemos visualizar como é feita a divisão em componentes da ARMFUL, que são os seguintes:
+Na \autoref{fig:armful-architecture-simplified}, podemos visualizar como é feita a representação e a divisão em componentes da arquitetura ARMFUL, que são os seguintes:
 
 \begin{itemize}
+    \item Banco de dados de proveniência;
     \item Extração de dados científicos;
     \item Indexação de dados científicos;
     \item Catálogo de dados científicos;
-    \item Ingestão de dados de proveniência;
+    \item Ingestão de dados de proveniência; e
     \item Processamento de consultas.
 \end{itemize}
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{img/armful-architecture}
-    \caption[Componentes da arquitetura ARMFUL]{Componentes da arquitetura ARMFUL. Encontrada originalmente em~\cite{silva2017raw}.}%
-    \label{fig:armful-architecture}
+    \includegraphics[width=\textwidth]{img/armful-architecture-simplified}
+    \caption[Componentes da arquitetura ARMFUL]{Componentes da arquitetura ARMFUL. Baseada em~\cite{silva2017raw}.}%
+    \label{fig:armful-architecture-simplified}
 \end{figure}
 
-Os componentes na cor branca correspondem à captura e ao armazenamento de dados de proveniência em um banco de dados de proveniência. Em contrapartida, os componentes na cor cinza descrevem os passos responsáveis por: (\(i\)) extrair dados científicos de arquivos, (\(ii\)) gerar índices para os mesmos e (\(iii\)) permitir a consulta de proveniência \textbf{e} dados científicos a partir do mesmo banco de dados. Nas próximas subseções, os componentes serão detalhados.
+Os componentes na cor branca correspondem à captura e ao armazenamento de dados de proveniência em um banco de dados de proveniência. Em contrapartida, os componentes na cor cinza descrevem os passos responsáveis por: (\(i\)) extrair dados científicos de arquivos, (\(ii\)) gerar índices para os mesmos e (\(iii\)) permitir a consulta de proveniência \textbf{e} dados científicos a partir do mesmo banco de dados. Nas próximas subseções os componentes serão detalhados.
 
 % Baseado na seção 5.1 de~\cite{silva2017raw}.
+\subsection{Banco de dados de proveniência}%
+\label{subsec:banco-de-dados-de-proveniencia}
+
+O \textbf{banco de dados de proveniência}, que deve ser um \textbf{SGBD relacional}, é responsável por armazenar, gerenciar e correlacionar (\(i\)) dados de proveniências e (\(ii\)) dados científicos, a fim de se beneficiar do suporte analítico de consultas do fluxo de dados. Além disso, SGBDs possuem solidez, confiabilidade e segurança, oriundas de uma experiência de mais de 30 anos de estudos científicos e aplicações no mundo real, provendo estratégias e algoritmos bem conhecidos que garantem atomicidade, consistência, isolamento e durabilidade (ACID) em transações, além de possuir soluções consolidadas e robustas no que diz respeito a recuperação de dados e controle concorrente de acesso~\cite{ozsu2011principles}.
+
 \subsection{Extração e indexação de dados científicos}
 
 O \textbf{componente de extração de dados científicos} tem o objetivo de ler o conteúdo de arquivos científicos, analisá-lo e então recuperar parte do conteúdo selecionado que é relevante de acordo com os atributos especificados pelo usuário. Para que esse objetivo seja completado, quatro etapas devem ser seguidas:
@@ -47,25 +55,21 @@ O \textbf{componente de extração de dados científicos} tem o objetivo de ler 
     \item \textbf{análise}: conversão de ada dado científico filtrado em uma estrutura de dados adequada para ser armazenada no SGBD. Os requisitos dessa estruturas de dados são documentados no catálogo de dados científicos.
 \end{itemize}
 
-O \textbf{componente de indexação de dados científicos} visa indexar um conteúdo específico dos arquivos científicos a fim de agilizar o tempo de acesso direto a determinadas regiões do espaço de dados científicos através da gerência de metadados correlacionados ao fluxo de dados. A criação de índices é realizada segundo um algoritmo de indexação previamente definido. O componente de indexação é fortemente recomendado em simulações científicas que geram muitos dados.
+O \textbf{componente de indexação de dados científicos} é opcional e visa indexar um conteúdo específico dos arquivos científicos a fim de agilizar o tempo de acesso direto a determinadas regiões do espaço de dados científicos através da gerência de metadados correlacionados ao fluxo de dados. A criação de índices é realizada segundo um algoritmo de indexação previamente definido, \textit{e.g.} indexação por \textit{bitmap} e indexação posicional. O componente de indexação é fortemente recomendado em simulações científicas que geram muitos dados.
 
-\perrotta{REVIEW: Mencionar exemplos de bitmap indexing e positional index??}
+\subsection{Catálogo de dados científicos}
 
-\perrotta{REVIEW: mencionar extraction cartridges e métodos? Ex. extract, index, run, access}
-
-% \subsection{Catálogo de dados científicos}
+\perrotta{TODO: preciso falar sobre isso?}
 
 \subsection{Ingestão de dados}
 
-\perrotta{REVIEW: o que escrever aqui?}
+O \textbf{componente de ingestão de dados} é responsável por coletar a \textbf{proveniência} do fluxo de dados, selecionando, manipulando e armazenando convenientemente as informações referentes aos arquivos e dados científicos no banco de dados mencionado na \autoref{subsec:banco-de-dados-de-proveniencia}. Em outras palavras, esse componente é responsável por alimentar e popular o SGBD com informações de proveniência de dados que serão posteriormente utilizadas para auxiliar o componente de processamento de consultas, que será discutido na próxima seção.
 
-% prov df (alimentar a base de dados com informacoes de proveniencia)
-% ProvenanceGatherer
+\perrotta{TODO: Descrever como os dados de proveniência, domínio e execução são carregados na base de dados. COMO??????}
 
 \subsection{Processamento de consultas}
 
-O \textbf{componente de processamento de consultas} é responsável por prover um mecanismo de consultas a proveniência e a dados científicos armazenados em um banco de dados de proveniência compatível com um modelo de dados adequado. % REVIEW: qual modelo de dados? Prov-Df? Devemos falar sobre isso também?
-O comportamento desse componente é variável, dependendo da estratégia utilizada nos componentes anteriores --- de extração e de indexação. Uma vez que esse componente utiliza um SGBD para o armazenamento dos dados de proveniência, somente consultas que são permitidas e disponíveis pelo SGBD podem ser realizadas.
+O \textbf{componente de processamento de consultas} é responsável por prover um mecanismo de consultas a proveniência e a dados científicos armazenados em um banco de dados de proveniência compatível com um modelo de dados adequado. O comportamento desse componente é variável, dependendo da estratégia utilizada nos componentes anteriores --- de extração e de indexação. Uma vez que esse componente utiliza um SGBD para o armazenamento dos dados de proveniência, somente tipos de consultas que são permitidas e disponíveis pelo SGBD podem ser realizadas.
 
 \perrotta{REVIEW: o que mais mencionar aqui??}
 

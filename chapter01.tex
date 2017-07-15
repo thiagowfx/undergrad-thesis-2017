@@ -33,7 +33,7 @@ Os SGWfCs citados anteriormente são usualmente difíceis de serem configurados 
 % Dificuldade em não utilizar SGWfCs...
 Eles facilitam o \textit{design}, a manutenção, a execução e o monitoramento de \textit{workflows} científicos. Entretanto, sem suporte ao rastreio de dados científicos, o desafio é analisar a propagação de dados de conjuntos de arquivos ao longo da execução da simulação, o que é bastante propenso a erros se realizado manualmente~\cite{silva2015analyzing}, pois são necessários: \( (i) \) a nomenclatura de arquivos de forma apropriada; \( (ii) \) escrever e gerenciar programas \textit{ad-hoc} para gerenciar cada transformação de dados e arquivos; e \( (iii) \) mapear o fluxo das transformações de dados, assim como dos elementos de dados consumidos e produzidos pela execução de cada transformação de dados.
 
-No entanto, eis um dilema: existem três tipos básicos de consultas\footnote{Isso será mais aprofundado no~\autoref{chap:trabalhos-relacionados}.} que são rotineiramente utilizadas:
+Existem três tipos básicos de consultas\footnote{Isso será mais aprofundado no~\autoref{chap:trabalhos-relacionados}.} que são rotineiramente utilizadas em simulações científicas:
 
 \begin{enumerate}
     \item conteúdo de arquivo específico de domínio;
@@ -41,7 +41,7 @@ No entanto, eis um dilema: existem três tipos básicos de consultas\footnote{Is
     \item elementos de dados relacionados de múltiplos arquivos
 \end{enumerate}
 
-O dilema é que --- até onde se tem conhecimento durante a publicação deste documento --- todos os SGWfCs conhecidos realizam apenas consultas do tipo \( 1 \) ou \( 2 \), como o FastBit~\cite{wu2009fastbit} que realiza apenas consultas do tipo 1, e como o Chiron~\cite{ogasawara2013chiron} que é capaz de realizar ambos os tipos de consulta. Nenhum deles é capaz de realizar consultas do tipo 3.
+Por exemplo, o FastBit~\cite{wu2009fastbit} é capaz de realizar apenas consultas do tipo 1, o Chiron~\cite{ogasawara2013chiron} é capaz de realizar consultas dos tipos 1 e 2, enquanto o NoWorkflow~\cite{murta2014noworkflow} e o Tigres~\cite{hendrix2016tigres} são capazes de realizar consultas dos tipos 2 e 3. Contudo, os dois últimos não são focados em dados científicos presentes em arquivos.
 
 \section{Contribuição}
 
