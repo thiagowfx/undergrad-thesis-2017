@@ -9,11 +9,7 @@ Nesse capítulo será apresentada a arquitetura \abbrev{ARMFUL}{Analysis of Raw 
 
 \section{Visão geral}
 
-A \textbf{arquitetura ARMFUL} tem suporte a extração de dados científicos, a técnicas de indexação e a análise de dados científicos a partir de múltiplos arquivos~\cite{silva2016situ} com o propósito de permitir o acesso direto a qualquer elemento ou região específica do espaço do fluxo de dados de uma simulação científica. Em outras palavras, ela permite a execução, \textit{off-line} e~/~ou \textit{on-line}\footnote{\textit{I.e.}, as consultas podem ser realizadas tanto \emph{após} as simulações científicas, quanto \emph{durante} as mesmas, respectivamente.}, de todos os três tipos de consultas apresentadas na \autoref{sec:tipos-de-consulta}. Essa flexibilidade e versatilidade na análise existe graças a uma \textbf{arquitetura de componentes}, \hl{que utiliza um SGWfC como bancos de dados de proveniência} de dados para proporcionar um caminho de acesso entre o fluxo de dados e os dados científicos~\cite{silva2017raw}.
-
-\perrotta{REVIEW: o que está realçado acima está correto? É realmente um SGWfC, ou eu deveria mencionar ``SGBD relacional?''.}
-
-\perrotta{NOTA: estou utilizando a palavra \textbf{correlacionar} com uma frequência bem alta, optando por ela em vez de \textbf{relacionar}.}
+A \textbf{arquitetura ARMFUL} tem suporte a extração de dados científicos, a técnicas de indexação e a análise de dados científicos a partir de múltiplos arquivos~\cite{silva2016situ} com o propósito de permitir o acesso direto a qualquer elemento ou região específica do espaço do fluxo de dados de uma simulação científica. Em outras palavras, ela permite a execução, \textit{off-line} e~/~ou \textit{on-line}\footnote{\textit{I.e.}, as consultas podem ser realizadas tanto \emph{após} as simulações científicas, quanto \emph{durante} as mesmas, respectivamente.}, de todos os três tipos de consultas apresentadas na \autoref{sec:tipos-de-consulta}. Essa flexibilidade e versatilidade na análise existe graças a uma \textbf{arquitetura de componentes}, que utiliza um banco de dados de proveniência para proporcionar um caminho de acesso entre o fluxo de dados e os dados científicos~\cite{silva2017raw}.
 
 % Baseado na seção 5 de~\cite{silva2017raw}. Tentativa de tradução livre e de adaptação para o contexto desse trabalho.
 A arquitetura ARMFUL funciona do seguinte modo: a gerência de conteúdos científicos é obtida a partir de dados científicos de arquivos, que então são correlacionados, em um SGBD relacional, através de dados de proveniência do seu respectivo fluxo de dados. Essa gerência de dados requer características que são específicas do domínio da simulação científica; por isso, modelos de dados de proveniência dessas simulações costumam ser representados em granularidade não-fina, \textit{i.e.}, as tabelas do SGBD possuem um grau de abstração relativamente alto para representar esses dados. Entretanto, consultas de proveniência possuem um valor analítico limitado caso não sejam relacionadas a elementos de dados específicos ao domínio da simulação computacional; contudo, esse relacionamento exige bastante esforço dos usuários de SGWfCs no que diz respeito a desenvolver, para cada domínio, um modelo de dados e programas científicos específicos para acessar, extrair e correlacionar os dados de domínio aos dados de proveniência. Nesse aspecto, a arquitetura ARMFUL contribui diminuindo o esforço necessário para capturar e representar esses dados de proveniência aravés da introdução e divisão de componentes genéricos e auto-contidos que modelam e correlacionam entre si, no mesmo banco de dados, (\(i\)) dados científicos específicos do domínio e (\(ii\)) proveniência.
@@ -24,7 +20,6 @@ Na \autoref{fig:armful-architecture-simplified}, podemos visualizar como é feit
     \item Banco de dados de proveniência;
     \item Extração de dados científicos;
     \item Indexação de dados científicos;
-    \item Catálogo de dados científicos;
     \item Ingestão de dados de proveniência; e
     \item Processamento de consultas.
 \end{itemize}
@@ -50,16 +45,12 @@ O \textbf{componente de extração de dados científicos} tem o objetivo de ler 
 
 \begin{itemize}
     \item \textbf{leitura do conteúdo}: acesso aos arquivos científicos e leitura do seu conteúdo;
-    \item \textbf{tokenização}: investigação do catálogo de dados científicos, que contém metadados relacionados à especificação do formato de arquivo, visando verificar se os dados científicos obtidos na etapa anterior correspondem ao domínio da simulação computacional processada atualmente;
+    \item \textbf{tokenização}: investigação de metadados relacionados à especificação do formato de arquivo, visando verificar se os dados científicos obtidos na etapa anterior correspondem ao domínio da simulação computacional processada atualmente;
     \item \textbf{filtragem de conteúdo}: a especificação do usuário é responsável por definir e restringir o que deve ser analisado e armazenado no banco de dados de proveniência, isto é, essa etapa evita armazenar atributos desnecessários, que não serão utilizados na próxima etapa;
-    \item \textbf{análise}: conversão de ada dado científico filtrado em uma estrutura de dados adequada para ser armazenada no SGBD. Os requisitos dessa estruturas de dados são documentados no catálogo de dados científicos.
+    \item \textbf{análise}: conversão de cada dado científico filtrado em uma estrutura de dados apropriada para ser armazenada no SGBD.
 \end{itemize}
 
-O \textbf{componente de indexação de dados científicos} é opcional e visa indexar um conteúdo específico dos arquivos científicos a fim de agilizar o tempo de acesso direto a determinadas regiões do espaço de dados científicos através da gerência de metadados correlacionados ao fluxo de dados. A criação de índices é realizada segundo um algoritmo de indexação previamente definido, \textit{e.g.} indexação por \textit{bitmap} e indexação posicional. O componente de indexação é fortemente recomendado em simulações científicas que geram muitos dados.
-
-\subsection{Catálogo de dados científicos}
-
-\perrotta{TODO: preciso falar sobre isso?}
+O \textbf{componente de indexação de dados científicos} é opcional e visa indexar um conteúdo específico dos arquivos científicos a fim de agilizar o tempo de acesso direto a determinadas regiões do espaço de dados científicos através da gerência de metadados correlacionados ao fluxo de dados. A criação de índices é realizada segundo um algoritmo de indexação previamente definido, \textit{e.g.} indexação por \textit{bitmap} ou indexação posicional. O componente de indexação é fortemente recomendado em simulações científicas que geram muitos dados.
 
 \subsection{Ingestão de dados}
 
@@ -69,9 +60,9 @@ O \textbf{componente de ingestão de dados} é responsável por coletar a \textb
 
 \subsection{Processamento de consultas}
 
-O \textbf{componente de processamento de consultas} é responsável por prover um mecanismo de consultas a proveniência e a dados científicos armazenados em um banco de dados de proveniência compatível com um modelo de dados adequado. O comportamento desse componente é variável, dependendo da estratégia utilizada nos componentes anteriores --- de extração e de indexação. Uma vez que esse componente utiliza um SGBD para o armazenamento dos dados de proveniência, somente tipos de consultas que são permitidas e disponíveis pelo SGBD podem ser realizadas.
+O \textbf{componente de processamento de consultas} é responsável por prover um mecanismo de consultas à proveniência e aos dados científicos armazenados em um banco de dados de proveniência compatível com um modelo de dados adequado. O comportamento desse componente é variável, dependendo da estratégia utilizada nos componentes anteriores --- de extração e de indexação. Uma vez que esse componente utiliza um SGBD para o armazenamento dos dados de proveniência, somente tipos de consultas que são permitidas e disponíveis pelo SGBD podem ser realizadas. Em particular, e como consequência disso, as consultas são comumente especificadas no formato SQL.
 
-\perrotta{REVIEW: o que mais mencionar aqui??}
+O processador de consultas é um componente bastante importante, já que é a principal interface entre os usuários e uma instância da arquitetura ARMFUL, e todas as consultas ao banco de dados são iniciadas (e especificadas) a partir dele.
 
 \section{DfAnalyzer: uma instanciação da arquitetura ARMFUL}
 
@@ -85,7 +76,5 @@ O \textbf{componente de processamento de consultas} é responsável por prover u
 \subsection{Raw Data Extractor (RDE)}
 
 \subsection{Raw Data Indexer (RDI)}
-
-% \subsection{Catálogo de dados científicos?}
 
 \subsection{Query Processor (QP)}
