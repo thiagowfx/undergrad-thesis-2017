@@ -463,4 +463,33 @@ This paper proposes adapting the query engine to the formats of raw data. It pre
   address   = {University of Waterloo},
 }
 
+@Article{boncz2008breaking,
+  author    = {Boncz, Peter A and Kersten, Martin L and Manegold, Stefan},
+  title     = {Breaking the memory wall in MonetDB},
+  journal   = {Communications of the ACM},
+  year      = {2008},
+  volume    = {51},
+  number    = {12},
+  pages     = {77--85},
+  doi       = {10.1145/1409360.1409380},
+  url       = {https://dl.acm.org/citation.cfm?id=1409380},
+  abstract  = {In the past decades, advances in speed of commodity CPUs have far outpaced advances in RAM latency. Main-memory access has therefore become a performance bottleneck for many computer applications; a phenomenon that is widely known as the "memory wall." In this paper, we report how research around the MonetDB database system has led to a redesign of database architecture in order to take advantage of modern hardware, and in particular to avoid hitting the memory wall. This encompasses (i) a redesign of the query execution model to better exploit pipelined CPU architectures and CPU instruction caches; (ii) the use of columnar rather than row-wise data storage to better exploit CPU data caches; (iii) the design of new cache-conscious query processing algorithms; and (iv) the design and automatic calibration of memory cost models to choose and tune these cache-conscious algorithms in the query optimizer.},
+  publisher = {ACM},
+}
+
+@Article{kirk2006libmesh,
+  author    = {Kirk, Benjamin S and Peterson, John W and Stogner, Roy H and Carey, Graham F},
+  title     = {libMesh: a C++ library for parallel adaptive mesh refinement/coarsening simulations},
+  journal   = {Engineering with Computers},
+  year      = {2006},
+  volume    = {22},
+  number    = {3-4},
+  pages     = {237--254},
+  doi       = {10.1007/s00366-006-0049-3},
+  url       = {https://link.springer.com/article/10.1007/s00366-006-0049-3},
+  abstract  = {In this paper we describe the libMesh (http://libmesh.sourceforge.net) framework for parallel adaptive finite element applications. libMesh is an open-source software library that has been developed to facilitate serial and parallel simulation of multiscale, multiphysics applications using adaptive mesh refinement and coarsening strategies. The main software development is being carried out in the CFDLab (http://cfdlab.ae.utexas.edu) at the University of Texas, but as with other open-source software projects; contributions are being made elsewhere in the US and abroad. The main goals of this article are: (1) to provide a basic reference source that describes libMesh and the underlying philosophy and software design approach; (2) to give sufficient detail and references on the adaptive mesh refinement and coarsening (AMR/C) scheme for applications analysts and developers; and (3) to describe the parallel implementation and data structures with supporting discussion of domain decomposition, message passing, and details related to dynamic repartitioning for parallel AMR/C. Other aspects related to C++ programming paradigms, reusability for diverse applications, adaptive modeling, physics-independent error indicators, and similar concepts are briefly discussed. Finally, results from some applications using the library are presented and areas of future research are discussed.},
+  file      = {online:https\://www.researchgate.net/profile/Roy_Stogner/publication/220677642_libMesh_A_C_Library_for_Parallel_Adaptive_Mesh_RefinementCoarsening_Simulations/links/02e7e5346c12916e8a000000/libMesh-A-C-Library-for-Parallel-Adaptive-Mesh-Refinement-Coarsening-Simulations.pdf:PDF},
+  publisher = {Springer},
+}
+
 @Comment{jabref-meta: databaseType:biblatex;}

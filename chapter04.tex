@@ -54,7 +54,8 @@ O \textbf{componente de indexação de dados científicos} é opcional e visa in
 
 O volume de dados científicos que é gerado durante a execução de uma simulação computacional é um fator determinante para a definição da melhor estratégia para a representação desses dados~\cite{silva2015propostadoutorado}: em simulações que geram um pequeno volume de dados em cada transformação de dados e que possuem poucos atributos, a extração e ingestão (\textit{i.e.}, carga no banco de dados de proveniência) de dados científicos \emph{diretamente} com seus próprios valores de dados costuma ser uma abordagem melhor. Em contrapartida, em um cenário no qual um grande volume de dados --- com estruturas de dados complexas --- precisa ser capturado, o componente de indexação é fortemente recomendado.
 
-\subsection{Ingestão de dados}
+\subsection{Ingestão de dados}%
+\label{subsec:ingestao-de-dados}
 
 O \textbf{componente de ingestão de dados} é responsável por coletar a \textbf{proveniência} do fluxo de dados, selecionando, manipulando e armazenando (\textit{i.e.} realizando a carga dos valores assumidos pelos atributos) convenientemente as informações referentes aos arquivos e dados científicos no banco de dados mencionado na \autoref{subsec:banco-de-dados-de-proveniencia}~\cite{silva2015propostadoutorado}. Em outras palavras, esse componente é responsável por alimentar e popular o SGBD com informações de proveniência de dados que serão posteriormente utilizadas para auxiliar o componente de processamento de consultas, que será discutido na próxima seção. Esse componente interfaceia diretamente com todo item do fluxo de dados.
 
@@ -68,15 +69,18 @@ O processador de consultas é um componente bastante importante, já que é a pr
 
 \section{DfAnalyzer: uma instância da arquitetura ARMFUL}
 
-Como vimos na seção anterior, a arquitetura ARMFUL é uma \textbf{abstração} que define e especifica componentes a fim de prover um mecanismo capaz de realizar consultas a um banco de dados de proveniência oriundo de uma simulação computacional. Dito isso, o \textbf{DfAnalyzer} é uma \textbf{instância} da arquitetura ARMFUL; em outras palavras, é um exemplo de implementação e uso da mesma para um contexto e uma aplicação de simulação de dinâmica computacional de sedimentação de fluidos. Ele foi originalmente introduzido em~\cite{silva2016situ}.
+\subsection{Visão Geral}
 
-\perrotta{TODO: EXPAND. SuperComputing, 2017, 2015}
+Como vimos na seção anterior, a arquitetura ARMFUL é uma \textbf{abstração} que define e especifica componentes a fim de prover um mecanismo capaz de realizar consultas a um banco de dados de proveniência oriundo de uma simulação computacional. Dito isso, o \textbf{DfAnalyzer} é uma \textbf{instância da arquitetura ARMFUL}; em outras palavras, é um exemplo de implementação e uso da mesma para um contexto e uma aplicação de simulação de dinâmica computacional de sedimentação de fluidos. Ele foi originalmente introduzido em~\cite{silva2016situ}.
+
+% Descrição geral / overview do DfAnalyzer.
+O DfAnalyzer utiliza a \textit{libMesh}, um \textit{framework} e biblioteca \textit{open-source} implementada na linguagem C++, desenvolvida para facilitar a simulação de aplicações paralelas de refinamento de malhas e elementos finitos adaptativos~\cite{boncz2008breaking}, em uma aplicação chamada \textit{libMesh-sedimentation solver}. O propósito dessa aplicação é simular a turbidez e perturbação de correntes de fluidos tipicamente encontradas em processos geológicos. Os sedimentos que são transportados devido à dinâmica e ao movimento dos fluidos computacionais são descritos por um modelo matemático que resulta da equação de incompressibilidade de Navier-Stokes (fluido) combinada com uma equação de transporte dominada por advecção (concentração de sedimentos). A \textit{libMesh-sedimentation} emprega um método de elementos finitos de multi-escala variacional no qual uma abordagem escalonada é utilizada para representar e simular a evolução do tempo nas equações de acoplamento entre o fluido e os sedimentos.
+
+Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}.
 
 \subsection{Provenance Data Gatherer (PDG)}
 
-O Provenance Data Gatherer (PDG), 
-
-% Provenance Gatherer (origem da proveniência para o banco de dados que eu vou utilizar na QueryProcessor)
+O \textbf{Provenance Data Gatherer} (PDG) é o componente responsável por capturar proveniência (\textit{c.f.} \autoref{subsec:ingestao-de-dados}) e dados específicos do domínio a partir do código da aplicação, gerando um arquivo JSON com o conteúdo extraído e as suas respectivas dependências~\cite{silva2016situ}. Após a captura, a proveniência e os dados de domínio são carregados em um banco de dados que é compatível com um esquema (do inglês \textit{schema}) pré-definido e que é gerenciado pelo SGBD MonetDB~\cite{boncz2008breaking}, que é um banco de dados orientado a colunas compatível com a linguagem SQL.
 
 \perrotta{TODO: EXPAND}
 
@@ -89,6 +93,8 @@ O Provenance Data Gatherer (PDG),
 \perrotta{TODO: EXPAND}
 
 \subsection{Query Processor (QP)}
+
+O \textbf{Query Processor} (QP) é o componente responsável por auxiliar os usuários a submeter consultas na linguagem SQL ao banco de dados de proveniência~\cite{silva2016situ}, realizar a validação dessas consultas --- por exemplo, se a sintaxe e~/~ou se os nomes dos atributos estão corretos --- e então finalmente retornar e exibir os resultados das mesmas.
 
 \perrotta{TODO: EXPAND}
 \perrotta{TODO: to mention my contribution}
