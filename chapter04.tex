@@ -39,7 +39,8 @@ Os componentes na cor branca correspondem à captura e ao armazenamento de dados
 
 O \textbf{banco de dados de proveniência}, que funciona como um repositório para os dados de proveniência, deve ser um \textbf{SGBD relacional}, e é responsável por armazenar, gerenciar e correlacionar (\(i\)) dados de proveniências e (\(ii\)) dados científicos, a fim de se beneficiar do suporte analítico de consultas do fluxo de dados. Além disso, SGBDs possuem solidez, confiabilidade e segurança, oriundas de uma experiência de mais de 30 anos de estudos científicos e aplicações no mundo real, provendo estratégias e algoritmos bem conhecidos que garantem atomicidade, consistência, isolamento e durabilidade (ACID) em transações, além de possuir soluções consolidadas e robustas no que diz respeito a recuperação de dados e controle concorrente de acesso~\cite{ozsu2011principles}.
 
-\subsection{Extração e indexação de dados científicos}
+\subsection{Extração e indexação de dados científicos}%
+\label{subsec:extracao-e-indexacao-de-dados-cientificos}
 
 O \textbf{componente de extração de dados científicos} tem o objetivo de ler o conteúdo de arquivos científicos, analisá-lo e então recuperar parte do conteúdo selecionado que é relevante de acordo com os atributos especificados pelo usuário. Para que esse objetivo seja completado, quatro etapas devem ser seguidas:
 
@@ -76,27 +77,36 @@ Como vimos na seção anterior, a arquitetura ARMFUL é uma \textbf{abstração}
 % Descrição geral / overview do DfAnalyzer.
 O DfAnalyzer utiliza a \textit{libMesh}, um \textit{framework} e biblioteca \textit{open-source} implementada na linguagem C++, desenvolvida para facilitar a simulação de aplicações paralelas de refinamento de malhas e elementos finitos adaptativos~\cite{boncz2008breaking}, em uma aplicação chamada \textit{libMesh-sedimentation solver}. O propósito dessa aplicação é simular a turbidez e perturbação de correntes de fluidos tipicamente encontradas em processos geológicos. Os sedimentos que são transportados devido à dinâmica e ao movimento dos fluidos computacionais são descritos por um modelo matemático que resulta da equação de incompressibilidade de Navier-Stokes (fluido) combinada com uma equação de transporte dominada por advecção (concentração de sedimentos). A \textit{libMesh-sedimentation} emprega um método de elementos finitos de multi-escala variacional no qual uma abordagem escalonada é utilizada para representar e simular a evolução do tempo nas equações de acoplamento entre o fluido e os sedimentos.
 
-Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}.
+Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}. Nesse cenário a análise é possibilitada pelo DfAnalyzer o qual, devido a sua arquitetura em componentes herdada da ARMFUL, permite que consultas relacionadas a proveniência e aos dados científicos de múltiplos arquivos e transformações de dados sejam realizadas \textit{on-line}, ainda durante a execução da simulação computacional.
+
+Nas próximas subseções, os principais componentes do DfAnalyzer serão abordados.
 
 \subsection{Provenance Data Gatherer (PDG)}
 
-O \textbf{Provenance Data Gatherer} (PDG) é o componente responsável por capturar proveniência (\textit{c.f.} \autoref{subsec:ingestao-de-dados}) e dados específicos do domínio a partir do código da aplicação, gerando um arquivo JSON com o conteúdo extraído e as suas respectivas dependências~\cite{silva2016situ}. Após a captura, a proveniência e os dados de domínio são carregados em um banco de dados que é compatível com um esquema (do inglês \textit{schema}) pré-definido e que é gerenciado pelo SGBD MonetDB~\cite{boncz2008breaking}, que é um banco de dados orientado a colunas compatível com a linguagem SQL.
+O \textbf{Provenance Data Gatherer} (PDG) é o componente do DfAnalyzer responsável por \textbf{capturar proveniência} de dados (\textit{c.f.} \autoref{subsec:ingestao-de-dados}) assim como dados específicos do domínio a partir do código da aplicação, gerando um arquivo JSON com o conteúdo extraído e as suas respectivas dependências de dados~\cite{silva2016situ}. Após a captura, a proveniência e os dados de domínio são carregados em um banco de dados que é compatível com um esquema (do inglês \textit{schema}) pré-definido e que é gerenciado pelo SGBD MonetDB~\cite{boncz2008breaking}, que é um banco de dados orientado a colunas compatível com a linguagem SQL.
 
-\perrotta{TODO: EXPAND}
+\perrotta{TODO: por que usamos o MonetDB?}
+
+\perrotta{TODO: algo a mais a ser mencionado específico do libMesh-sedimentation?}
 
 \subsection{Raw Data Extractor (RDE)}
 
-\perrotta{TODO: EXPAND}
+Uma vez que o PDG especializa-se em coletar proveniência e dados de domínio, o \textbf{Raw Data Extractor} (RDE) o complementa, sendo o componente responsável por \textbf{extrair} os dados científicos que estão presentes em arquivos científicos (\textit{c.f.} \autoref{subsec:extracao-e-indexacao-de-dados-cientificos}). Esses arquivos usualmente contêm seus dados em formato binário, total ou parcialmente, sendo responsabilidade do RDE a leitura, filtragem e análise do conteúdo desses dados, transformando-os em um formato adequado para ser armazenado nos tipos e tabelas disponíveis no MonetDB. Dependendo da aplicação e da simulação científica, o conteúdo desses arquivos científicos pode ser ora armazenado diretamente no SGBD, ora armazenado indiretamente, através de ponteiros, referências de arquivos, ou estruturas de dados em formatos intermediários de representação.
+
+\perrotta{TODO: que tipos de arquivos ou dados são coletados na libMesh-sedimentation?}
 
 \subsection{Raw Data Indexer (RDI)}
 
-\perrotta{TODO: EXPAND}
+O \textbf{Raw Data Indexer} (RDI) é o componente do DfAnalyzer responsável por criar índices de dados dos arquivos científicos, com o objetivo de agilizar subsequentes acessos aos mesmos durante a execução das consultas pelos usuários, diminuindo o tempo médio delas (\textit{c.f.} \autoref{subsec:extracao-e-indexacao-de-dados-cientificos}).
+
+\perrotta{TODO: existe alguma indexação na libMesh-sedimentation? Qual?}
 
 \subsection{Query Processor (QP)}
 
-O \textbf{Query Processor} (QP) é o componente responsável por auxiliar os usuários a submeter consultas na linguagem SQL ao banco de dados de proveniência~\cite{silva2016situ}, realizar a validação dessas consultas --- por exemplo, se a sintaxe e~/~ou se os nomes dos atributos estão corretos --- e então finalmente retornar e exibir os resultados das mesmas.
+O \textbf{Query Processor} (QP) é o componente responsável por auxiliar os usuários a \textbf{submeter consultas} na linguagem SQL ao banco de dados de proveniência~\cite{silva2016situ}, realizar a validação dessas consultas --- por exemplo, se a sintaxe e~/~ou se os nomes dos atributos estão corretos --- e então finalmente retornar e exibir os resultados das mesmas.
+
+\textbf{A principal contribuição desse trabalho encontra-se especificamente na implementação deste componente}, a qual será detalhadamente discutida no \autoref{chap:rastros-de-proveniencia}.
 
 \perrotta{TODO: EXPAND}
-\perrotta{TODO: to mention my contribution}
 
 % QueryProcessorCaptura de dados de proveniência}
