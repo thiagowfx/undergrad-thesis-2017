@@ -70,7 +70,8 @@ O processador de consultas é um componente bastante importante, já que é a pr
 
 \section{DfAnalyzer: uma instância da arquitetura ARMFUL}
 
-\subsection{Visão Geral}
+\subsection{Visão Geral}%
+\label{subsec:dfanalyzer-visao-geral}
 
 Como vimos na seção anterior, a arquitetura ARMFUL é uma \textbf{abstração} que define e especifica componentes a fim de prover um mecanismo capaz de realizar consultas a um banco de dados de proveniência oriundo de uma simulação computacional. Dito isso, o \textbf{DfAnalyzer} é uma \textbf{instância da arquitetura ARMFUL}; em outras palavras, é um exemplo de implementação e uso da mesma para um contexto e uma aplicação de simulação de dinâmica computacional de sedimentação de fluidos. Ele foi originalmente introduzido em~\cite{silva2016situ}.
 
@@ -85,9 +86,9 @@ Nas próximas subseções, os principais componentes do DfAnalyzer serão aborda
 
 O \textbf{Provenance Data Gatherer} (PDG) é o componente do DfAnalyzer responsável por \textbf{capturar proveniência} de dados (\textit{c.f.} \autoref{subsec:ingestao-de-dados}) assim como dados específicos do domínio a partir do código da aplicação, gerando um arquivo JSON com o conteúdo extraído e as suas respectivas dependências de dados~\cite{silva2016situ}. Após a captura, a proveniência e os dados de domínio são carregados em um banco de dados que é compatível com um esquema (do inglês \textit{schema}) pré-definido e que é gerenciado pelo SGBD MonetDB~\cite{boncz2008breaking}, que é um banco de dados orientado a colunas compatível com a linguagem SQL.
 
-\perrotta{TODO: por que usamos o MonetDB?}
+Existem duas fontes de proveniência para o PDG. Uma é a \textit{libMesh-sedimentation solver}, mencionada anteriormente na \autoref{subsec:dfanalyzer-visao-geral}, que contribui com dados científicos diretamente relacionados à simulação de dinâmica de fluidos computacionais. A outra é o ParaView Catalyst~\cite{ayachit2015paraview}, que é um SGWfC com o qual o DfAnalyzer pode comunicar-se para aproveitar-se dos dados gerenciados por ele e relacioná-los com o banco de dados de proveniência, além de prover uma biblioteca de visualização e de processamento de dados. O Paraview Catalyst pode ser utilizado para extrair dados que estão em memória, complementando a \textit{libMesh-sedimentation} e os arquivos científicos.
 
-\perrotta{TODO: algo a mais a ser mencionado específico do libMesh-sedimentation?}
+\perrotta{TODO: por que usamos o MonetDB?}
 
 \subsection{Raw Data Extractor (RDE)}
 
@@ -105,8 +106,10 @@ O \textbf{Raw Data Indexer} (RDI) é o componente do DfAnalyzer responsável por
 
 O \textbf{Query Processor} (QP) é o componente responsável por auxiliar os usuários a \textbf{submeter consultas} na linguagem SQL ao banco de dados de proveniência~\cite{silva2016situ}, realizar a validação dessas consultas --- por exemplo, se a sintaxe e~/~ou se os nomes dos atributos estão corretos --- e então finalmente retornar e exibir os resultados das mesmas.
 
-\textbf{A principal contribuição desse trabalho encontra-se especificamente na implementação deste componente}, a qual será detalhadamente discutida no \autoref{chap:rastros-de-proveniencia}.
+Com o objetivo de facilitar o aprendizado e a execução de consultas por novos usuários, sem a necessidade de que eles aprendam a sintaxe da linguagem SQL, uma sintaxe (representação) intermediária para descrever as consultas foi desenvolvida, a qual traduz e converte a consulta do usuário para SQL, e é essa conversão que é enviada ao MonetDB, o qual retorna os resultados para o usuário.
+
+Essa conversão possui duas vantagens básicas: a primeira, mencionada anteriormente, é a facilidade para novos usuários interagirem com o DfAnalyzer, de forma mais intuitiva e direta, sem a necessidade de descrever uma consulta em SQL completa e válida. A segunda é a possibilidade do Query Processor realizar otimizações na consulta antes de enviá-la de forma crua, diretamente ao MonetDB. Por exemplo, em dada consulta, a cláusula \textsc{FROM} pode ser otimizada, filtrando tabelas que não sejam realmente necessárias na consulta em questão, diminuindo a sobrecarga ao SGBD e recuperando apenas os dados realmente necessários à consulta.
+
+\textbf{A principal contribuição desse trabalho encontra-se especificamente na implementação deste componente, a qual será detalhadamente discutida no \autoref{chap:rastros-de-proveniencia}}.
 
 \perrotta{TODO: EXPAND}
-
-% QueryProcessorCaptura de dados de proveniência}
