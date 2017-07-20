@@ -52,17 +52,22 @@ A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(\Phi)) \), is
 
 \subsection{Detecção das trilhas de transformações}
 
-O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (\textit{splits}) em \( D \). Tais separações existem no fluxo de dados em interseções que possuem mais de uma transformação de entrada ou de saída: por exemplo, como podemos visualizar na \perrotta[??]{TODO: add autoref to figure}.
+O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (\textit{splits}) em \( D \). Tais separações existem no grafo do fluxo de dados em interseções de transformações que possuem mais de uma transformação de entrada ou de saída (\textit{i.e.}, grau do vértice maior do que 1). Por exemplo, na \autoref{fig:transformation-tracks}, podemos visualizar um exemplo de divisão e agrupamento de transformações de dados em trilhas.
 
-\missingfigure{Exemplos de \textit{splits} / interseções (2+ transformações de entrada e de saída)}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/transformation-tracks}
+    \caption[Exemplo de detecção das trilhas de transformações.]{Exemplo de detecção das trilhas de transformações de um fluxo de dados. Na figura existem três trilhas de transformações (\textsc{TT}).}%
+    \label{fig:transformation-tracks}
+\end{figure}
 
-O algoritmo começa com as últimas transformações de \( D \) (encontradas no \autoref{lst:algorithm-last-transformations}), e trabalha em direção às primeiras transformações de \( D \). A ideia principal é realizar a detecção do fim --- e, portanto, do início --- de cada trilha de transformação, que pode acontecer em quatro situações: (\(i\)) \perrotta{listar as situações}
+O algoritmo começa com as últimas transformações de \( D \) (encontradas no \autoref{lst:algorithm-last-transformations}), e caminha em direção às primeiras transformações de \( D \). A ideia principal é realizar a detecção do fim --- e, portanto, do início --- de cada trilha de transformação, que pode acontecer em várias situações: \textit{e.g.}, sempre que o grau de saída do vértide de transformação for maior do que 1, indicando que a transformação em questão possui várias transformações de saída.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro do fluxo de dados no nível de trilhas de transformações.}]
 function getTransformationTracks(%\(D\)%):
     tracks %\leftarrow% {}
-    lastDts %\leftarrow% getLastTransformations(%\(D\)%) %\quad% # %\autoref{lst:algorithm-last-transformations}%
+    lastDts %\leftarrow% getLastTransformations(%\(D\)%) %\quad%# %\autoref{lst:algorithm-last-transformations}%
     queue %\leftarrow% {}
     queue.push(lastDts)
     while queue is not empty do:
