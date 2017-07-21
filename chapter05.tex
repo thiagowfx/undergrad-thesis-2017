@@ -72,7 +72,7 @@ O algoritmo começa com as últimas transformações de \( D \) (encontradas no 
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro do fluxo de dados no nível de trilhas de transformações.}]
 function getTransformationTracks(%\(D\)%):
     dtTracks %\leftarrow% {}
-    lastDts %\leftarrow% getLastTransformations(%\(D\)%) %\quad%# %\autoref{lst:algorithm-last-transformations}%
+    lastDts %\leftarrow% getLastTransformations(%\(D\)%)%~\quad%#%~\autoref{lst:algorithm-last-transformations}%
     queue %\leftarrow% {}
     queue.push(lastDts)
     while queue is not empty do:
@@ -110,7 +110,7 @@ O algoritmo funciona com base no \autoref{lst:algorithm-transformation-tracks}: 
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dataset-tracks},caption={[Detecção das trilhas de conjuntos de dados]Detecção do rastro do fluxo de dados no nível de trilhas de conjuntos de dados.}]
 function getDatasetTracks(%\(D\)%):
     dsTracks %\leftarrow% {}
-    dtTracks %\leftarrow% getTransformationTracks(D) %\quad%# %\autoref{lst:algorithm-transformation-tracks}%
+    dtTracks %\leftarrow% getTransformationTracks(D)%~\quad%#%~\autoref{lst:algorithm-transformation-tracks}%
     for each dtTrack %\in% dtTracks do:
         dsTrack %\leftarrow% {}
         for each dt %\in% dtTrack do:
@@ -175,7 +175,7 @@ function findPaths(D, dsOrigin, dsDestination, dsIncludes, dsExcludes)
     state.dsIncludes = dsIncludes
     state.dsExcludes = dsExcludes
 
-    depthFirstSearch(D, state) %\quad%# %\autoref{lst:algorithm-dfs}%
+    depthFirstSearch(D, state)%~\quad%#%~\autoref{lst:algorithm-dfs}%
     return state.paths
 end function
 \end{lstlisting}
@@ -215,9 +215,45 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-\subsection{generateSqlQuery from QueryCreator.java}
+\subsection{Geração da consulta em SQL}
 
 \perrotta{TODO: everything}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-generate-sql-query},caption={[Geração da consulta em SQL]Geração da consulta na linguagem SQL a partir das especificações do usuário.}]
+function generateSqlQuery(dsOrigins, dsDestinations, dsIncludes, dsExcludes, type, projections, selections)
+    selectClause %\leftarrow% {}
+    fromClause   %\leftarrow% {}
+    whereClause  %\leftarrow% {}
+    
+    for each projection %\in% projections do
+        selectClause %\leftarrow% selectClause + {projection}
+    end for
+    for each selection %\in% selections do
+        whereClause %\leftarrow% whereClause + {selection}
+    end for
+    
+    for each dsOrigin %\in% dsOrigins do
+        for each dsDestination %\in% dsDestinations do
+            paths %\leftarrow% findPaths(dsOrigin, dsDestination, dsIncludes, dsExcludes)%~\quad%#%~\autoref{lst:algorithm-find-paths}%
+            
+            for each path %\in% paths do
+                for each ds %\in% path do
+                    fromClause %\leftarrow% fromClause + {ds}
+                end for                
+                for (i %\leftarrow% 1; i < path.size(); i %\leftarrow% i + 1) do
+                    prevDs %\leftarrow% path[i - 1]
+                    nextDs %\leftarrow% path[i]
+                end for
+            end for
+        end for
+    end for
+    
+    sqlQuery %\leftarrow% new SqlQuery(selectClause, fromClause, whereClause)
+    return sqlQuery
+end function
+\end{lstlisting}
+\end{minipage}
 
 \section{Um exemplo}
 
