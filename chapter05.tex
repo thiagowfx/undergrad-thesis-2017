@@ -50,9 +50,10 @@ end function
 
 A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(\Phi)) \), isto é, proporcional ao número de dependência de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário ter acesso aleatório a essa estrutura de dados. Entretanto, na prática, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP.
 
-\subsection{Detecção das trilhas de transformações}
+\subsection{Detecção das trilhas de transformações}%
+\label{subsec:deteccao-das-trilhas-de-transformacoes}
 
-O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (\textit{splits}) em \( D \). Tais separações existem no grafo do fluxo de dados em interseções de transformações que possuem mais de uma transformação de entrada ou de saída (\textit{i.e.}, grau do vértice maior do que 1). Por exemplo, na \autoref{fig:transformation-tracks}, podemos visualizar um exemplo de divisão e agrupamento de transformações de dados em trilhas.
+O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações} \texttt{dtTracks} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (\textit{splits}) em \( D \). Tais separações existem no grafo do fluxo de dados em interseções de transformações que possuem mais de uma transformação de entrada ou de saída (\textit{i.e.}, grau do vértice maior do que 1). Por exemplo, na \autoref{fig:transformation-tracks}, podemos visualizar um exemplo de divisão e agrupamento de transformações de dados em trilhas.
 
 \begin{figure}[htb]
     \centering
@@ -66,7 +67,7 @@ O algoritmo começa com as últimas transformações de \( D \) (encontradas no 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro do fluxo de dados no nível de trilhas de transformações.}]
 function getTransformationTracks(%\(D\)%):
-    tracks %\leftarrow% {}
+    dtTracks %\leftarrow% {}
     lastDts %\leftarrow% getLastTransformations(%\(D\)%) %\quad%# %\autoref{lst:algorithm-last-transformations}%
     queue %\leftarrow% {}
     queue.push(lastDts)
@@ -80,15 +81,15 @@ function getTransformationTracks(%\(D\)%):
            then:
             track %\leftarrow% new TransformationTrack()
             track.addTransformation(dt)
-            tracks %\leftarrow% tracks + {track}
+            dtTracks %\leftarrow% dtTracks + {track}
         else then:
-            track %\leftarrow% getTrack(tracks, nextDts)
+            track %\leftarrow% getTransformationTrack(dtTracks, nextDts)
             track.addTransformation(dt)
         end if
         previousDts %\leftarrow% getPreviousTransformations(%\(D\)%, dt)
         queue.push(previousDts)
     end do
-    return tracks
+    return dtTracks
 end function
 \end{lstlisting}
 \end{minipage}
@@ -97,24 +98,28 @@ A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(T)) \), isto 
 
 \subsection{Detecção das trilhas de conjuntos de dados}
 
-O \autoref{lst:algorithm-dataset-tracks} obtém as \textbf{trilhas de conjuntos de dados} de um fluxo de dados \( D \).
-% baseia-se nas trilhas de transformações de dados do \autoref{lst:algorithm-transformation-tracks}, 
+O \autoref{lst:algorithm-dataset-tracks} tem como função obter as \textbf{trilhas de conjuntos de dados} \texttt{dsTracks} de um fluxo de dados \( D \). O conceito de trilha de conjuntos de dados é análogo ao de trilha de transformações de dados, mencionado na \autoref{subsec:deteccao-das-trilhas-de-transformacoes}: é uma forma de dividir e agrupar conjuntos de dados em diversos subconjuntos.
 
-\perrotta{TODO: algorithm explanation}
+O algoritmo funciona com base no \autoref{lst:algorithm-transformation-tracks}: uma vez tomadas as trilhas de transformações de dados, é trivial obter cada uma das trilhas de conjuntos de dados a partir de cada uma delas. Para isso, basta tomar a união de todos os conjuntos de dados adjacentes (\textit{i.e.} anteriores e posteriores) a todas as transformações de dados de uma trilha de transformações.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dataset-tracks},caption={[Detecção das trilhas de conjuntos de dados]Detecção do rastro do fluxo de dados no nível de trilhas de conjuntos de dados.}]
-function getDatasetTracks(%\(D\)%,dtTrack):
-    dsTrack %\leftarrow% {}
-    for each dt %\in% dtTrack do:
-        if dsTrack is empty then:
-            nextDss %\leftarrow% getNextDatasets(%\(D\)%, dt)
-            dsTrack %\leftarrow% {nextDss}
-        end if
-        previousDss %\leftarrow% getPreviousDatasets(%\(D\)%, dt)
-        dsTrack %\leftarrow% dsTrack + {previousDss}
+function getDatasetTracks(%\(D\)%):
+    dsTracks %\leftarrow% {}
+    dtTracks %\leftarrow% getTransformationTracks(D) %\quad%# %\autoref{lst:algorithm-transformation-tracks}%
+    for each dtTrack %\in% dtTracks do:
+        dsTrack %\leftarrow% {}
+        for each dt %\in% dtTrack do:
+            if dsTrack is empty then:
+                nextDss %\leftarrow% getNextDatasets(%\(D\)%, dt)
+                dsTrack %\leftarrow% dsTrack + {nextDss}
+            end if
+            previousDss %\leftarrow% getPreviousDatasets(%\(D\)%, dt)
+            dsTrack %\leftarrow% dsTrack + {previousDss}
+        end do
+        dsTracks %\leftarrow% dsTracks + {dsTrack}
     end do
-    return dsTrack
+    return dsTracks
 end function
 \end{lstlisting}
 \end{minipage}
