@@ -174,7 +174,6 @@ function findPaths(D, dsOrigin, dsDestination, dsIncludes, dsExcludes)
     state.dsDestination = dsDestination
     state.dsIncludes = dsIncludes
     state.dsExcludes = dsExcludes
-
     depthFirstSearch(D, state)%~\quad%#%~\autoref{lst:algorithm-dfs}%
     return state.paths
 end function
@@ -185,7 +184,6 @@ end function
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dfs},caption={[Depth First Search (DFS)]Depth First Search (DFS): busca em profundidade dos caminhos entre dois conjuntos de dados.}]
 function depthFirstSearch(D, state)
     nodes %\leftarrow% D.getNextDatasets(state.visited.getLast())
-    
     for each node %\in% nodes do
         # Pular nós que já foram visitados.
         if node %\in% state.visited then
@@ -202,7 +200,6 @@ function depthFirstSearch(D, state)
             break
         end if
     end for
-    
     for node %\in% nodes do
         if node %\in% state.visited or node = state.dsDestination
             continue
@@ -221,22 +218,19 @@ end function
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-generate-sql-query},caption={[Geração da consulta em SQL]Geração da consulta na linguagem SQL a partir das especificações do usuário.}]
-function generateSqlQuery(dsOrigins, dsDestinations, dsIncludes, dsExcludes, type, projections, selections)
+function generateSqlQuery(D, dsOrigins, dsDestinations, dsIncludes, dsExcludes, type, projections, selections)
     selectClause %\leftarrow% {}
     fromClause   %\leftarrow% {}
     whereClause  %\leftarrow% {}
-    
     for each projection %\in% projections do
         selectClause %\leftarrow% selectClause + {projection}
     end for
     for each selection %\in% selections do
         whereClause %\leftarrow% whereClause + {selection}
     end for
-    
     for each dsOrigin %\in% dsOrigins do
         for each dsDestination %\in% dsDestinations do
             paths %\leftarrow% findPaths(dsOrigin, dsDestination, dsIncludes, dsExcludes)%~\quad%#%~\autoref{lst:algorithm-find-paths}%
-            
             for each path %\in% paths do
                 for each ds %\in% path do
                     fromClause %\leftarrow% fromClause + {ds}
@@ -244,11 +238,17 @@ function generateSqlQuery(dsOrigins, dsDestinations, dsIncludes, dsExcludes, typ
                 for (i %\leftarrow% 1; i < path.size(); i %\leftarrow% i + 1) do
                     prevDs %\leftarrow% path[i - 1]
                     nextDs %\leftarrow% path[i]
+                    attrMapping %\leftarrow% getAttributesMapping(D.getTransformation(prevDs, nextDs), prevDs, nextDs, type)%~\quad%#%~\autoref{lst:algorithm-attribute-mappings}%
+                    for each attr %\in% attrMapping do
+                        whereClause.addSelection(prevDs.attr, "=", nextDs.attr)
+                        if projections is empty then
+                            selectClause %\leftarrow% selectClause + {prevDs.attr, rightDs.attr}
+                        end if
+                    end for
                 end for
             end for
         end for
     end for
-    
     sqlQuery %\leftarrow% new SqlQuery(selectClause, fromClause, whereClause)
     return sqlQuery
 end function
