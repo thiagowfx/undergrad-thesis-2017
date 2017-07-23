@@ -27,11 +27,14 @@
 
 O Query Processor foi implementado na linguagem de programação Java...
 
-\perrotta{TODO: EXPAND}
+\perrotta{TODO: EXPAND ++ TODO: Mencionar o pré-processamento e as otimizações que fiz}
 
-\perrotta{TODO: Mencionar o pré-processamento e as otimizações que fiz}
+\section{Algoritmos utilizados}%
+\label{sec:algoritmos-utilizados}
 
-\section{Algoritmos utilizados}
+Nessa seção serão abordados os principais algoritmos e funções utilizadas no Query Processor. Funções auxiliares referenciadas pelos mesmos estão definidas no \autoref{app:funcoes-auxiliares}. A notação utilizada é de pseudocódigo, e as definições dos algoritmos e nomes das variáveis utilizados foram ligeiramente alterados e simplificados em relação à implementação original, visando uma melhor clarificação e apresentação.
+
+\perrotta{REVIEW: mencionar algo a mais sobre a notação?}
 
 \subsection{Detecção das últimas transformações de dados}
 
@@ -52,12 +55,12 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(\Phi)) \), isto é, proporcional ao número de dependência de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário ter acesso aleatório a essa estrutura de dados. Entretanto, na prática, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP.
+A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), isto é, proporcional ao número de dependência de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário acesso aleatório a essa estrutura de dados. Entretanto, na prática, com o objetivo de amortizar um pouco a complexidade, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP (c.f. \autoref{subsec:preprocessamento}).
 
 \subsection{Detecção das trilhas de transformações}%
 \label{subsec:deteccao-das-trilhas-de-transformacoes}
 
-O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações} \texttt{dtTracks} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (\textit{splits}) em \( D \). Tais separações existem no grafo do fluxo de dados em interseções de transformações que possuem mais de uma transformação de entrada ou de saída (\textit{i.e.}, grau do vértice maior do que 1). Por exemplo, na \autoref{fig:transformation-tracks}, podemos visualizar um exemplo de divisão e agrupamento de transformações de dados em trilhas.
+O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações} \texttt{dtTracks} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (do inglês, \textit{splits}) em \( D \). Tais separações existem no grafo do fluxo de dados em interseções de transformações que possuem mais de uma transformação de entrada ou de saída (\textit{i.e.}, grau do vértice maior do que 1). Por exemplo, na \autoref{fig:transformation-tracks}, podemos visualizar um exemplo de divisão e agrupamento de transformações de dados em trilhas.
 
 \begin{figure}[htb]
     \centering
@@ -66,45 +69,45 @@ O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{
     \label{fig:transformation-tracks}
 \end{figure}
 
-O algoritmo começa com as últimas transformações de \( D \) (encontradas no \autoref{lst:algorithm-last-transformations}), e caminha em direção às primeiras transformações de \( D \). A ideia principal é realizar a detecção do fim --- e, portanto, do início --- de cada trilha de transformação, que pode acontecer em várias situações: \textit{e.g.}, sempre que o grau de saída do vértide de transformação for maior do que 1, indicando que a transformação em questão possui várias transformações de saída.
+O algoritmo começa com as últimas transformações \texttt{lastDts} de \( D \) (encontradas no \autoref{lst:algorithm-last-transformations}), e caminha em direção às primeiras transformações de \( D \). A ideia principal é realizar a detecção do fim --- e, consequentemente, também do início --- de cada trilha de transformação \texttt{dtTrack}, que pode acontecer em várias situações: \textit{e.g.}, sempre que o grau de saída do vértide de uma transformação for maior do que 1, indicando que a transformação em questão possui várias transformações de saída.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro do fluxo de dados no nível de trilhas de transformações.}]
 function getTransformationTracks(%\(D\)%):
     dtTracks %\leftarrow% {}
     lastDts %\leftarrow% getLastTransformations(%\(D\)%)%~\quad%#%~\autoref{lst:algorithm-last-transformations}%
-    queue %\leftarrow% {}
-    queue.push(lastDts)
+    queue %\leftarrow% {}%~\quad%#%~%FIFO (First In First Out)
+    queue.enqueue(lastDts)
     while queue is not empty do:
-        dt %\leftarrow% queue.pop()
+        dt %\leftarrow% queue.dequeue()
         nextDts %\leftarrow% getNextTransformations(%\(D\)%, dt)
-        if lastDts.contains(dt)
+        if dt %\in% lastDts
            or hasManyOutputDatasets(%\(D\)%, dt)
            or hasManyNextTransformations(%\( D \)%, dt)
            or anyTransformationHasManyInputDatasets(%\(D\)%, nextDts)
            then:
-            track %\leftarrow% new TransformationTrack()
-            track.addTransformation(dt)
-            dtTracks %\leftarrow% dtTracks + {track}
+            dtTrack %\leftarrow% new TransformationTrack()
+            dtTrack.addTransformation(dt)
+            dtTracks %\leftarrow% dtTracks + {dtTrack}
         else then:
-            track %\leftarrow% getTransformationTrack(dtTracks, nextDts)
-            track.addTransformation(dt)
+            dtTrack %\leftarrow% getTransformationTrack(dtTracks, nextDts)
+            dtTrack.addTransformation(dt)
         end if
         previousDts %\leftarrow% getPreviousTransformations(%\(D\)%, dt)
-        queue.push(previousDts)
+        queue.enqueue(previousDts)
     end do
     return dtTracks
 end function
 \end{lstlisting}
 \end{minipage}
 
-A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(T)) \), isto é, proporcional ao número de transformações de dados presentes em \( D \). As trilhas de transformações são armazenadas em listas encadeadas de transformações.
+A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(T)) \), isto é, proporcional ao número de transformações de dados presentes em \( D \). As trilhas de transformações \texttt{dtTracks} são armazenadas em listas encadeadas de transformações --- acesso aleatório não é necessário, porém convém armazená-las na ordem em que foram encontradas.
 
 \subsection{Detecção das trilhas de conjuntos de dados}
 
-O \autoref{lst:algorithm-dataset-tracks} tem como função obter as \textbf{trilhas de conjuntos de dados} \texttt{dsTracks} de um fluxo de dados \( D \). O conceito de trilha de conjuntos de dados é análogo ao de trilha de transformações de dados, mencionado na \autoref{subsec:deteccao-das-trilhas-de-transformacoes}: é uma forma de dividir e agrupar conjuntos de dados em diversos subconjuntos.
+O \autoref{lst:algorithm-dataset-tracks} tem como função obter as \textbf{trilhas de conjuntos de dados} \texttt{dsTracks} de um fluxo de dados \( D \). O conceito de trilha de conjuntos de dados é análogo e baseado no de trilha de transformações de dados, mencionado na \autoref{subsec:deteccao-das-trilhas-de-transformacoes}: é uma forma de dividir e agrupar conjuntos de dados em diversos subconjuntos.
 
-O algoritmo funciona com base no \autoref{lst:algorithm-transformation-tracks}: uma vez tomadas as trilhas de transformações de dados, é trivial obter cada uma das trilhas de conjuntos de dados a partir de cada uma delas. Para isso, basta tomar a união de todos os conjuntos de dados adjacentes (\textit{i.e.} anteriores e posteriores) a todas as transformações de dados de uma trilha de transformações.
+O algoritmo funciona com base no \autoref{lst:algorithm-transformation-tracks}: uma vez tomadas as trilhas de transformações de dados \texttt{dtTracks}, é simples obter cada uma das trilhas de conjuntos de dados \texttt{dsTrack} a partir de cada \texttt{dtTrack}. Para isso, basta tomar a união de todos os conjuntos de dados adjacentes (\textit{i.e.} anteriores e posteriores) a todas as transformações de dados de \texttt{dtTrack}.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dataset-tracks},caption={[Detecção das trilhas de conjuntos de dados]Detecção do rastro do fluxo de dados no nível de trilhas de conjuntos de dados.}]
@@ -115,11 +118,9 @@ function getDatasetTracks(%\(D\)%):
         dsTrack %\leftarrow% {}
         for each dt %\in% dtTrack do:
             if dsTrack is empty then:
-                nextDss %\leftarrow% getNextDatasets(%\(D\)%, dt)
-                dsTrack %\leftarrow% dsTrack + {nextDss}
+                dsTrack %\leftarrow% dsTrack + {getNextDatasets(%\(D\)%, dt)}
             end if
-            previousDss %\leftarrow% getPreviousDatasets(%\(D\)%, dt)
-            dsTrack %\leftarrow% dsTrack + {previousDss}
+            dsTrack %\leftarrow% dsTrack + {getPreviousDatasets(%\(D\)%, dt)}
         end do
         dsTracks %\leftarrow% dsTracks + {dsTrack}
     end do
@@ -128,7 +129,7 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-A complexidade de tempo do algoritmo é a mesma do algoritmo do \autoref{lst:algorithm-transformation-tracks}: linear da ordem de \( O(\#(T)) \), e as trilhas de conjuntos de dados são também armazenadas em listas encadeadas de conjuntos de dados.
+A complexidade de tempo do algoritmo é a mesma do algoritmo do \autoref{lst:algorithm-transformation-tracks}: linear da ordem de \( O(\#(T)) \), e as trilhas de conjuntos de dados \texttt{dsTracks} são também armazenadas em listas encadeadas de conjuntos de dados.
 
 \subsection{Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados}
 
@@ -181,27 +182,27 @@ end function
 \end{minipage}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=pseudocode,label={lst:algorithm-dfs},caption={[Depth First Search (DFS)]Depth First Search (DFS): busca em profundidade dos caminhos entre dois conjuntos de dados.}]
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-dfs},caption={[Busca em Profundidade (DFS) dos caminhos]Depth First Search (DFS): busca em profundidade de todos os caminhos entre dois conjuntos de dados.}]
 function depthFirstSearch(D, state)
-    nodes %\leftarrow% D.getNextDatasets(state.visited.getLast())
-    for each node %\in% nodes do
+    nodes %\leftarrow% getNextDatasets(D, state.visited.getLast())
+    for each node %\in% nodes do:
         # Pular nós que já foram visitados.
-        if node %\in% state.visited then
+        if node %\in% state.visited then:
             continue
         end if
         # Checar se está no fim da DFS.
-        if node = state.dsDestination then
+        if node = state.dsDestination then:
             state.visited %\leftarrow% state.visited + {node}
             path %\leftarrow% new Path(state.visited)
-            if state.dsIncludes %\in% path and state.dsExcludes %\not\in% path
+            if state.dsIncludes %\in% path and state.dsExcludes%~%%\not\in%%~%path then:
                 state.paths %\leftarrow% state.paths + {path}
             end if
             state.visited.pop()
             break
         end if
     end for
-    for node %\in% nodes do
-        if node %\in% state.visited or node = state.dsDestination
+    for node %\in% nodes do:
+        if node %\in% state.visited or node = state.dsDestination then:
             continue
         end if
         state.visited %\leftarrow% state.visited + {node}
@@ -222,26 +223,26 @@ function generateSqlQuery(D, dsOrigins, dsDestinations, dsIncludes, dsExcludes, 
     selectClause %\leftarrow% {}
     fromClause   %\leftarrow% {}
     whereClause  %\leftarrow% {}
-    for each projection %\in% projections do
+    for each projection %\in% projections do:
         selectClause %\leftarrow% selectClause + {projection}
     end for
-    for each selection %\in% selections do
+    for each selection %\in% selections do:
         whereClause %\leftarrow% whereClause + {selection}
     end for
-    for each dsOrigin %\in% dsOrigins do
-        for each dsDestination %\in% dsDestinations do
+    for each dsOrigin %\in% dsOrigins do:
+        for each dsDestination %\in% dsDestinations do:
             paths %\leftarrow% findPaths(dsOrigin, dsDestination, dsIncludes, dsExcludes)%~\quad%#%~\autoref{lst:algorithm-find-paths}%
-            for each path %\in% paths do
-                for each ds %\in% path do
+            for each path %\in% paths do:
+                for each ds %\in% path do:
                     fromClause %\leftarrow% fromClause + {ds}
                 end for                
-                for (i %\leftarrow% 1; i < path.size(); i %\leftarrow% i + 1) do
+                for (i %\leftarrow% 1; i < path.size(); i %\leftarrow% i + 1) do:
                     prevDs %\leftarrow% path[i - 1]
                     nextDs %\leftarrow% path[i]
                     attrMapping %\leftarrow% getAttributesMapping(D.getTransformation(prevDs, nextDs), prevDs, nextDs, type)%~\quad%#%~\autoref{lst:algorithm-attribute-mappings}%
-                    for each attr %\in% attrMapping do
+                    for each attr %\in% attrMapping do:
                         whereClause.addSelection(prevDs.attr, "=", nextDs.attr)
-                        if projections is empty then
+                        if projections is empty then:
                             selectClause %\leftarrow% selectClause + {prevDs.attr, rightDs.attr}
                         end if
                     end for
@@ -254,6 +255,9 @@ function generateSqlQuery(D, dsOrigins, dsDestinations, dsIncludes, dsExcludes, 
 end function
 \end{lstlisting}
 \end{minipage}
+
+\subsection{Pré-processamento}%
+\label{subsec:preprocessamento}
 
 \section{Um exemplo}
 

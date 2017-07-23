@@ -77,8 +77,8 @@
 % highlight the following keywords for pseudocode listings
 % \lstdefinelanguage{pseudocodigo}{%
 \lstdefinelanguage{pseudocode}{%
-    % morekeywords={se,então,para,cada,faça,fim,função,retorna,enquanto,não,is,ou,e,senão,novo,termina,continua},
-    morekeywords={if,then,for,each,do,end,function,return,while,not,is,or,and,else,new,break,continue},
+    % morekeywords={se,então,para,cada,faça,fim,função,retorna,enquanto,não,is,ou,e,senão,novo,termina,continua,verdadeiro,falso},
+    morekeywords={if,then,for,each,do,end,function,return,while,not,is,or,and,else,new,break,continue,true,false},
     sensitive=true, % case-sensitive keywords?
     morecomment=[l]{\#}, % comments are lines that start with a #
 }
@@ -170,11 +170,10 @@
   \include{chapter07} % Conclusion
 
   \backmatter{}
+  \appendix
+  \include{appendix01}
+  
   \bibliographystyle{coppetex/coppe-unsrt}
   \bibliography{thesis} % Pro-Tip: use JabRef to manage this file
-
-  % TODO: appendix?
-  % \appendix
-  % \chapter{Apêndice}
 
 \end{document}

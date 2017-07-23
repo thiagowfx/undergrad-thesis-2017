@@ -1,0 +1,92 @@
+% !TEX encoding = UTF-8 Unicode
+% -*- coding: UTF-8; -*-
+% vim: set fenc=utf-8
+
+\chapter{Funções auxiliares}%
+\label{app:funcoes-auxiliares}
+
+Nesse capítulo são listadas as funções auxiliares referenciadas e utilizadas nos algoritmos da \autoref{sec:algoritmos-utilizados}, na ordem de aparecimento no documento.
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=pseudocode,label={lst:get-next-transformations},caption={[Obtenção das próximas transformações de dados de uma transformação]Obtenção das próximas transformações de dados de uma transformação de dados.}]
+function getNextTransformations(D, dt):
+    transformations %\leftarrow% {}
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.dt_{\textup{previous}}$% = dt and %$\phi.dt_{\textup{next}}$% %\ne% %\varnothing% then:
+            transformations %\leftarrow% transformations + {%$\phi.dt_{\textup{next}}$%}
+        end if
+    end for
+    return transformations
+end function
+\end{lstlisting}
+\end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-output-datasets},caption={[Contagem dos conjuntos de dados de saída de uma transformação]Contagem dos conjuntos de dados de saída de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que 1, e falso caso contrário.}]
+function hasManyOutputDatasets(D, dt):
+    count %\leftarrow% 0
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.dt_{\textup{previous}}$% = dt and %$\phi.ds$% %\ne% %\varnothing% then:
+            count %\leftarrow% count + 1
+            if count > 1 then:
+                return true
+            end if
+        end if
+    end for
+    return false
+end function
+\end{lstlisting}
+\end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-next-transformations},caption={[Contagem das próximas transformações de dados de uma transformação]Contagem das próximas transformações de dados de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que 1, e falso caso contrário.}]
+function hasManyNextTransformations(D, dt):
+    count %\leftarrow% 0
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.dt_{\textup{previous}}$% = dt and %$\phi.dt_{\textup{next}}$% %\ne% %\varnothing% then:
+            count %\leftarrow% count + 1
+            if count > 1 then:
+                return true
+            end if
+        end if
+    end for
+    return false
+end function
+\end{lstlisting}
+\end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=pseudocode,label={lst:get-next-datasets},caption={[Obtenção dos próximos conjuntos de dados de uma transformação]Obtenção dos próximos conjuntos de dados de uma transformação de dados.}]
+function getNextDatasets(D, dt):
+    datasets %\leftarrow% {}
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.dt_{\textup{previous}}$% = dt and %\phi.ds% %\ne% %\varnothing% then:
+            datasets %\leftarrow% datasets + {%\phi.ds%}
+        end if
+    end for
+    return datasets
+end function
+\end{lstlisting}
+\end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=pseudocode,label={lst:get-previous-datasets},caption={[Obtenção dos conjuntos de dados anteriores a uma transformação]Obtenção dos conjuntos de dados anteriores a uma transformação de dados.}]
+function getPreviousDatasets(D, dt):
+    datasets %\leftarrow% {}
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.dt_{\textup{next}}$% = dt and %\phi.ds% %\ne% %\varnothing% then:
+            datasets %\leftarrow% datasets + {%\phi.ds%}
+        end if
+    end for
+    return datasets
+end function
+\end{lstlisting}
+\end{minipage}
