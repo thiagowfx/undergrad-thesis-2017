@@ -69,7 +69,7 @@ O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{
     \label{fig:transformation-tracks}
 \end{figure}
 
-O algoritmo começa com as últimas transformações \texttt{lastDts} de \( D \) (encontradas no \autoref{lst:algorithm-last-transformations}), e caminha em direção às primeiras transformações de \( D \). A ideia principal é realizar a detecção do fim --- e, consequentemente, também do início --- de cada trilha de transformação \texttt{dtTrack}, que pode acontecer em várias situações: \textit{e.g.}, sempre que o grau de saída do vértide de uma transformação for maior do que 1, indicando que a transformação em questão possui várias transformações de saída.
+O algoritmo começa com as últimas transformações \texttt{lastDts} de \( D \) (encontradas no \autoref{lst:algorithm-last-transformations}), e caminha em direção às primeiras transformações de \( D \), utilizando uma estrutura de dados \texttt{queue} do tipo fila (FIFO - \textit{First In First Out}) como armazenamento temporário das próximas transformações de dados a serem analisadas. A ideia principal é realizar a detecção do fim --- e, consequentemente, também do início --- de cada trilha de transformação \texttt{dtTrack}, que pode acontecer em várias situações: \textit{e.g.}, sempre que o grau de saída do vértide de uma transformação for maior do que 1, indicando que a transformação em questão possui várias transformações de saída.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-transformation-tracks},caption={[Detecção das trilhas de transformações]Detecção do rastro do fluxo de dados no nível de trilhas de transformações.}]
@@ -161,10 +161,18 @@ end function
 
 \subsection{Obtenção dos caminhos entre dois conjuntos de dados}
 
-\perrotta{TODO: everything. Autoref code label, Bold title, Introduction with caption repeating + algorithm explanation. Later: Complexity, data structures.}
+A função \texttt{findPaths} do \autoref{lst:algorithm-find-paths} inicializa a estrutura de estados \texttt{state}, necessária para a chamada da função de busca em profundidade \abbrev{DFS}{Depth-first Search (Busca em profundidade)} \texttt{depthFirstSearch} (DFS) do \autoref{lst:algorithm-dfs}. Essas duas funções atuam em conjunto com um objetivo em comum: \textbf{obter todos os caminhos entre dois conjuntos de dados} \texttt{dsOrigin} e \texttt{dsDestination} do fluxo de dados \(D\).
+Nesse contexto, um caminho é definido como uma lista ordenada de conjuntos de dados, cujo primeiro elemento é \texttt{dsOrigin}, e cujo último elemento é \texttt{dsDestination}.
+
+Como podem existir potencialmente vários caminhos entre esse par de conjuntos de dados, a função \texttt{findPaths} possui dois argumentos adicionais que atuam como filtros:
+
+\begin{itemize}
+    \item \texttt{dsIncludes} --- uma coleção de conjuntos de dados: todos eles devem estar presentes no caminho para que tal caminho seja retornado pela função \texttt{findPaths};
+    \item \texttt{dsExcludes} --- o oposto de \texttt{dsIncludes}: nenhum dos caminhos que fazem parte da coleção \texttt{dsExcludes} pode estar presente nos caminhos retornados por \texttt{findPaths}.
+\end{itemize}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=pseudocode,label={lst:algorithm-find-paths},caption={[Obtenção dos caminhos entre dois conjuntos de dados.]Obtenção dos caminhos entre dois conjuntos de dados, inicializando a \textsc{DFS} com um estado inicial apropriado.}]
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-find-paths},caption={[Obtenção dos caminhos entre dois conjuntos de dados.]Obtenção de todos os caminhos entre dois conjuntos de dados, inicializando a \textsc{DFS} com um estado inicial apropriado.}]
 function findPaths(D,dsOrigin,dsDestination,dsIncludes,dsExcludes)
     state %\leftarrow% {}
     state.visited %\leftarrow% {dsOrigin}
@@ -178,6 +186,10 @@ function findPaths(D,dsOrigin,dsDestination,dsIncludes,dsExcludes)
 end function
 \end{lstlisting}
 \end{minipage}
+
+A função \texttt{depthFirstSearch}
+
+\perrotta{TODO: algorithm explanation + complexity + data structures.}
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dfs},caption={[Busca em Profundidade (DFS) dos caminhos]Depth First Search (DFS): busca em profundidade de todos os caminhos entre dois conjuntos de dados.}]
@@ -213,7 +225,7 @@ end function
 
 \subsection{Geração da consulta em SQL}
 
-\perrotta{TODO: everything}
+\perrotta{TODO: everything. Autoref code label, Bold title, Introduction with caption repeating + algorithm explanation. Later: Complexity, data structures.}
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-generate-sql-query},caption={[Geração da consulta em SQL]Geração da consulta na linguagem SQL a partir das especificações do usuário.}]
