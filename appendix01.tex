@@ -5,7 +5,7 @@
 \chapter{Funções auxiliares}%
 \label{app:funcoes-auxiliares}
 
-Nesse capítulo são listadas as funções auxiliares referenciadas e utilizadas nos algoritmos da \autoref{sec:algoritmos-utilizados}, na ordem de aparecimento no documento.
+Nesse capítulo são listadas as funções auxiliares (do inglês, \textit{helper functions}) referenciadas e utilizadas nos algoritmos da \autoref{sec:algoritmos-utilizados}, na ordem de aparecimento neste documento.
 
 \vfill{}
 
@@ -17,7 +17,7 @@ function getNextTransformations(D, dt):
         if %$\phi.dt_{\textup{previous}}$% = dt and %$\phi.dt_{\textup{next}}$% %\ne% %\varnothing% then:
             transformations %\leftarrow% transformations + {%$\phi.dt_{\textup{next}}$%}
         end if
-    end for
+    end do
     return transformations
 end function
 \end{lstlisting}
@@ -35,7 +35,7 @@ function hasManyOutputDatasets(D, dt):
                 return true
             end if
         end if
-    end for
+    end do
     return false
 end function
 \end{lstlisting}
@@ -53,8 +53,70 @@ function hasManyNextTransformations(D, dt):
                 return true
             end if
         end if
-    end for
+    end do
     return false
+end function
+\end{lstlisting}
+\end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:any-transformation-has-many-input-datasets},caption={[Determinação de se pelo menos uma transformação possui mais de 1 conjunto de dados de entrada.]Determinação de se pelo menos uma transformação de dados possui mais de 1 conjunto de dados de entrada. Retorna verdadeiro caso positivo, e falso caso contrário.}]
+function anyTransformationHasManyInputDatasets(D, dts):
+    for each dt %\in% dts do:
+        if hasManyInputDatasets(D, dt) then:%~\quad%#%~\autoref{lst:has-many-input-datasets}%
+            return true
+        end if
+    end do
+    return false
+end function
+\end{lstlisting}
+\end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-input-datasets},caption={[Contagem dos conjuntos de dados anteriores a uma transformação]Contagem dos conjuntos de dados anteriores a uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que 1, e falso caso contrário.}]
+function hasManyInputDatasets(D, dt):
+    count %\leftarrow% 0
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.dt_{\textup{next}}$% = dt and %$\phi.ds$% %\ne% %\varnothing% then:
+            count %\leftarrow% count + 1
+            if count > 1 then:
+                return true
+            end if
+        end if
+    end do
+    return false
+end function
+\end{lstlisting}
+\end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:get-transformation-track},caption={[Obtenção da trilha de transformações de uma transformação.]Obtenção da trilha de transformações de uma transformação.}]
+function getTransformationTrack(dtTracks,dt):
+    for dtTrack %\in% dtTracks:
+        if dt %\in% dtTrack then:
+            return dtTrack
+        end if
+    end do
+    return %\varnothing%
+end function
+\end{lstlisting}
+\end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=pseudocode,label={lst:get-previous-transformations},caption={[Obtenção das transformações de dados anteriores a uma transformação]Obtenção das transformações de dados anteriores a uma transformação de dados.}]
+function getPreviousTransformations(D, dt):
+    transformations %\leftarrow% {}
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.dt_{\textup{next}}$% = dt and %$\phi.dt_{\textup{previous}}$% %\ne% %\varnothing% then:
+            transformations %\leftarrow% transformations + {%$\phi.dt_{\textup{previous}}$%}
+        end if
+    end do
+    return transformations
 end function
 \end{lstlisting}
 \end{minipage}
@@ -69,7 +131,7 @@ function getNextDatasets(D, dt):
         if %$\phi.dt_{\textup{previous}}$% = dt and %\phi.ds% %\ne% %\varnothing% then:
             datasets %\leftarrow% datasets + {%\phi.ds%}
         end if
-    end for
+    end do
     return datasets
 end function
 \end{lstlisting}
@@ -85,7 +147,7 @@ function getPreviousDatasets(D, dt):
         if %$\phi.dt_{\textup{next}}$% = dt and %\phi.ds% %\ne% %\varnothing% then:
             datasets %\leftarrow% datasets + {%\phi.ds%}
         end if
-    end for
+    end do
     return datasets
 end function
 \end{lstlisting}

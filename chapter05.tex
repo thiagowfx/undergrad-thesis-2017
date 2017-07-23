@@ -32,7 +32,7 @@ O Query Processor foi implementado na linguagem de programação Java...
 \section{Algoritmos utilizados}%
 \label{sec:algoritmos-utilizados}
 
-Nessa seção serão abordados os principais algoritmos e funções utilizadas no Query Processor. Funções auxiliares referenciadas pelos mesmos estão definidas no \autoref{app:funcoes-auxiliares}. A notação utilizada é de pseudocódigo, e as definições dos algoritmos e nomes das variáveis utilizados foram ligeiramente alterados e simplificados em relação à implementação original, visando uma melhor clarificação e apresentação.
+Nessa seção serão abordados os principais algoritmos e funções utilizadas no Query Processor. Funções auxiliares referenciadas pelos mesmos estão definidas no \autoref{app:funcoes-auxiliares}. A notação utilizada é de pseudocódigo, e as definições dos algoritmos e nomes das variáveis utilizados foram ligeiramente alterados e simplificados em relação à implementação original, visando uma melhor clarificação e apresentação do código.
 
 \perrotta{REVIEW: mencionar algo a mais sobre a notação?}
 
@@ -55,7 +55,7 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), isto é, proporcional ao número de dependência de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário acesso aleatório a essa estrutura de dados. Entretanto, na prática, com o objetivo de amortizar um pouco a complexidade, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP (c.f. \autoref{subsec:preprocessamento}).
+A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), isto é, proporcional ao número de dependências de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário acesso aleatório a essa estrutura de dados. Entretanto, na prática, com o objetivo de amortizar um pouco a complexidade, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP (c.f. \autoref{subsec:preprocessamento}).
 
 \subsection{Detecção das trilhas de transformações}%
 \label{subsec:deteccao-das-trilhas-de-transformacoes}
@@ -86,12 +86,11 @@ function getTransformationTracks(%\(D\)%):
            or hasManyNextTransformations(%\( D \)%, dt)
            or anyTransformationHasManyInputDatasets(%\(D\)%, nextDts)
            then:
-            dtTrack %\leftarrow% new TransformationTrack()
-            dtTrack.addTransformation(dt)
+            dtTrack %\leftarrow% {dt}
             dtTracks %\leftarrow% dtTracks + {dtTrack}
         else then:
-            dtTrack %\leftarrow% getTransformationTrack(dtTracks, nextDts)
-            dtTrack.addTransformation(dt)
+            dtTrack %\leftarrow% getTransformationTrack(dtTracks, nextDts[0])
+            dtTrack %\leftarrow% dtTrack + {dt}
         end if
         previousDts %\leftarrow% getPreviousTransformations(%\(D\)%, dt)
         queue.enqueue(previousDts)
@@ -101,7 +100,7 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(T)) \), isto é, proporcional ao número de transformações de dados presentes em \( D \). As trilhas de transformações \texttt{dtTracks} são armazenadas em listas encadeadas de transformações --- acesso aleatório não é necessário, porém convém armazená-las na ordem em que foram encontradas.
+A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), como no \autoref{lst:algorithm-last-transformations}. As trilhas de transformações \texttt{dtTracks} são armazenadas em listas encadeadas de transformações --- acesso aleatório não é necessário, porém convém armazená-las na mesma ordem em que foram encontradas.
 
 \subsection{Detecção das trilhas de conjuntos de dados}
 
@@ -129,7 +128,7 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-A complexidade de tempo do algoritmo é a mesma do algoritmo do \autoref{lst:algorithm-transformation-tracks}: linear da ordem de \( O(\#(T)) \), e as trilhas de conjuntos de dados \texttt{dsTracks} são também armazenadas em listas encadeadas de conjuntos de dados.
+A complexidade de tempo do algoritmo é a mesma do algoritmo do \autoref{lst:algorithm-transformation-tracks}: linear da ordem de \( O(\#(D.\Phi)) \), e as trilhas de conjuntos de dados \texttt{dsTracks} são também armazenadas em listas encadeadas de conjuntos de dados.
 
 \subsection{Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados}
 
@@ -139,22 +138,21 @@ O \autoref{lst:algorithm-attribute-mappings} demonstra como obter \textbf{múlti
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-attribute-mappings},caption={[Obtenção de múltiplos mapeamentos de atributos]Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados adjacentes.}]
-function getAttributesMapping(dt,%\(\textrm{ds}_{\textrm{input}}\)%,%\(\textrm{ds}_{\textrm{output}}\)%,type)
+function getAttributesMapping(dt,%\(ds_{\textrm{input}}\)%,%\(ds_{\textrm{output}}\)%,type)
    attrs %\leftarrow% {}
    if type = physical then:
        attrs %\leftarrow% attrs + {t.getInstanceAttribute()}
    else:
-       for each inAttr %\in% %\(\textrm{ds}_{\textrm{input}}\).A% do:
-           for each outAttr %\in% %\(\textrm{ds}_{\textrm{output}}\).A% do:
+       for each inAttr %\in% %\(ds_{\textrm{input}}\).A% do:
+           for each outAttr %\in% %\(ds_{\textrm{output}}\).A% do:
                if inAttr.name = outAttr.name
                   and inAttr.type = outAttr.type then:
                    attrs %\leftarrow% attrs + {inAttr}
                end if
-           end for
+           end do
        end do
    end if
-   %\mu% %\leftarrow% attributesMapping(attrs,dt,%\(\textrm{ds}_{\textrm{input}}\)%,%\(\textrm{ds}_{\textrm{output}}\)%)
-   return %\mu%
+   return attributesMapping(attrs,dt,%\(ds_{\textrm{input}}\)%,%\(ds_{\textrm{output}}\)%)
 end function
 \end{lstlisting}
 \end{minipage}
@@ -167,9 +165,9 @@ end function
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-find-paths},caption={[Obtenção dos caminhos entre dois conjuntos de dados.]Obtenção dos caminhos entre dois conjuntos de dados, inicializando a \textsc{DFS} com um estado inicial apropriado.}]
-function findPaths(D, dsOrigin, dsDestination, dsIncludes, dsExcludes)
-    state %\leftarrow% new Struct()
-    state.visited.add(dsOrigin)
+function findPaths(D,dsOrigin,dsDestination,dsIncludes,dsExcludes)
+    state %\leftarrow% {}
+    state.visited %\leftarrow% {dsOrigin}
     state.paths %\leftarrow% {}
     state.dsOrigin = dsOrigin
     state.dsDestination = dsDestination
@@ -183,8 +181,8 @@ end function
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dfs},caption={[Busca em Profundidade (DFS) dos caminhos]Depth First Search (DFS): busca em profundidade de todos os caminhos entre dois conjuntos de dados.}]
-function depthFirstSearch(D, state)
-    nodes %\leftarrow% getNextDatasets(D, state.visited.getLast())
+function depthFirstSearch(D,state)
+    nodes %\leftarrow% getNextDatasets(D,state.visited.getLast())
     for each node %\in% nodes do:
         # Pular nós que já foram visitados.
         if node %\in% state.visited then:
@@ -200,7 +198,7 @@ function depthFirstSearch(D, state)
             state.visited.pop()
             break
         end if
-    end for
+    end do
     for node %\in% nodes do:
         if node %\in% state.visited or node = state.dsDestination then:
             continue
@@ -208,7 +206,7 @@ function depthFirstSearch(D, state)
         state.visited %\leftarrow% state.visited + {node}
         depthFirstSearch(state)
         state.visited.pop()
-    end for
+    end do
 end function
 \end{lstlisting}
 \end{minipage}
@@ -219,23 +217,23 @@ end function
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-generate-sql-query},caption={[Geração da consulta em SQL]Geração da consulta na linguagem SQL a partir das especificações do usuário.}]
-function generateSqlQuery(D, dsOrigins, dsDestinations, dsIncludes, dsExcludes, type, projections, selections)
+function generateSqlQuery(D,dsOrigins,dsDestinations,dsIncludes, dsExcludes,type,projections,selections)
     selectClause %\leftarrow% {}
     fromClause   %\leftarrow% {}
     whereClause  %\leftarrow% {}
     for each projection %\in% projections do:
         selectClause %\leftarrow% selectClause + {projection}
-    end for
+    end do
     for each selection %\in% selections do:
         whereClause %\leftarrow% whereClause + {selection}
-    end for
+    end do
     for each dsOrigin %\in% dsOrigins do:
         for each dsDestination %\in% dsDestinations do:
             paths %\leftarrow% findPaths(dsOrigin, dsDestination, dsIncludes, dsExcludes)%~\quad%#%~\autoref{lst:algorithm-find-paths}%
             for each path %\in% paths do:
                 for each ds %\in% path do:
                     fromClause %\leftarrow% fromClause + {ds}
-                end for                
+                end do                
                 for (i %\leftarrow% 1; i < path.size(); i %\leftarrow% i + 1) do:
                     prevDs %\leftarrow% path[i - 1]
                     nextDs %\leftarrow% path[i]
@@ -245,11 +243,11 @@ function generateSqlQuery(D, dsOrigins, dsDestinations, dsIncludes, dsExcludes, 
                         if projections is empty then:
                             selectClause %\leftarrow% selectClause + {prevDs.attr, rightDs.attr}
                         end if
-                    end for
-                end for
-            end for
-        end for
-    end for
+                    end do
+                end do
+            end do
+        end do
+    end do
     sqlQuery %\leftarrow% new SqlQuery(selectClause, fromClause, whereClause)
     return sqlQuery
 end function
