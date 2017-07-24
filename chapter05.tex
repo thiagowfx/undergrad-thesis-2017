@@ -187,10 +187,6 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-A função \texttt{depthFirstSearch}
-
-\perrotta{TODO: algorithm explanation + complexity + data structures.}
-
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-dfs},caption={[Busca em Profundidade (DFS) dos caminhos]Depth First Search (DFS): busca em profundidade de todos os caminhos entre dois conjuntos de dados.}]
 function depthFirstSearch(D,state)
@@ -222,6 +218,10 @@ function depthFirstSearch(D,state)
 end function
 \end{lstlisting}
 \end{minipage}
+
+A função \texttt{depthFirstSearch} é responsável por realizar uma busca no grafo do fluxo de dados \(D\), tratando cada conjunto de dados como um vértice do grafo. Dois vértices são considerados adjacentes se existe uma transformação de dados que consome um dos vértices e produz o outro. A DFS opera recursivamente, utilizando a estrutura \texttt{state} para salvar dados intermediários durante a busca, e também para popular a coleção \texttt{state.paths} com os caminhos encontrados. A coleção de conjuntos de dados \texttt{state.visited} armazena os conjuntos de dados que já foram processados, a fim de evitar que a busca seja executada indefinidamente.
+
+A complexidade computacional desse par de funções (\texttt{findPaths} e \texttt{depthFirstSearch}) é da ordem de \(O(\#(S) + \#(T))\), que é a complexidade computacional da DFS. Os caminhos encontrados são armazenados em uma lista encadeada.
 
 \subsection{Geração da consulta em SQL}
 
