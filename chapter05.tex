@@ -11,7 +11,8 @@
 
  % definição, etc
  
-\section{Tipos de rastros de proveniência}
+\section{Tipos de rastros de proveniência}%
+\label{sec:tipos-de-rastros-de-proveniencia}
 
 % explicação + exemplo + complemento de uma (sub)seção anterior
 
@@ -194,7 +195,7 @@ function findPaths(D,dsOrigin,dsDestination,dsIncludes,dsExcludes)
     state.dsDestination = dsDestination
     state.dsIncludes = dsIncludes
     state.dsExcludes = dsExcludes
-    depthFirstSearch(D, state)%~\quad%#%~\autoref{lst:algorithm-dfs}%
+    depthFirstSearch(D,state)%~\quad%#%~\autoref{lst:algorithm-dfs}%
     return state.paths
 end function
 \end{lstlisting}
@@ -223,7 +224,7 @@ function depthFirstSearch(D,state)
             continue
         end if
         state.visited %\leftarrow% state.visited + {node}
-        depthFirstSearch(state)
+        depthFirstSearch(D,state)
         state.visited.pop()
     end do
 end function
@@ -232,11 +233,22 @@ end function
 
 A função \texttt{depthFirstSearch} é responsável por realizar uma busca no grafo do fluxo de dados \(D\), tratando cada conjunto de dados como um vértice do grafo. Dois vértices são considerados adjacentes se existe uma transformação de dados que consome um dos vértices e produz o outro. A DFS opera recursivamente, utilizando a estrutura \texttt{state} para salvar dados intermediários durante a busca, e também para popular a coleção \texttt{state.paths} com os caminhos encontrados. A coleção de conjuntos de dados \texttt{state.visited} armazena os conjuntos de dados que já foram processados, a fim de evitar que a busca seja executada indefinidamente.
 
-A complexidade computacional desse par de funções (\texttt{findPaths} e \texttt{depthFirstSearch}) é da ordem de \(O(\#(S) + \#(T))\), que é a complexidade computacional da DFS. Os caminhos encontrados são armazenados em uma lista encadeada.
+A complexidade computacional desse par de funções (\texttt{findPaths} e \texttt{depthFirstSearch}) é da ordem de \(O(\#(S) + \#(T))\), que é a complexidade computacional da DFS\footnote{\textbf{Observação:} a complexidade computacional da função \texttt{getNextDatasets} é de $O(\#(D.\Phi)^2)$. No entanto, como existe um pré-processamento das estruturas de dados (\textit{c.f.} \autoref{subsec:preprocessamento}), podemos desprezar essa complexidade, levando em conta apenas o resultado originalmente obtido.}. Os caminhos encontrados são armazenados em uma lista encadeada.
 
 \subsection{Geração da consulta em SQL}
 
-\perrotta{TODO: everything. Autoref code label, Bold title, Introduction with caption repeating + algorithm explanation. Later: Complexity, data structures.}
+O \autoref{lst:algorithm-generate-sql-query} é uma versão simplificada do algoritmo responsável pela \textbf{geração da consulta na linguagem SQL} a partir das especificações providas pelo usuário. A assinatura da função possui os seguintes argumentos:
+
+\begin{itemize}
+    \item \texttt{D}: o fluxo de dados a ser analisado;
+    \item \texttt{dsOrigins}: os conjuntos de dados que serão usados como origem na busca de caminhos do \autoref{lst:algorithm-find-paths};
+    \item \texttt{dsDestinations}: os conjuntos de dados que serão usados como destino na busca de caminhos do \autoref{lst:algorithm-find-paths}. Um produto cartesiano entre \texttt{dsDestinations} e \texttt{dsOrigins} é realizado, gerando todos os pares possíveis entre cada conjunto de dados dessas coleções, cada um dos quais são utilizados na busca de caminhos;
+    \item \texttt{dsIncludes}: utilizado como filtro para o \autoref{lst:algorithm-find-paths}; somente os caminhos contendo \emph{todos} os conjuntos de dados especificados nessa coleção serão utilizados na consulta;
+    \item \texttt{dsExcludes}: o oposto do item anterior; somente os caminhos que não contêm \emph{nenhum} dos conjuntos de dados especificados nessa coleção serão utilizados na consulta; é utilizado como filtro para o \autoref{lst:algorithm-find-paths}.
+    \item \texttt{type}: o tipo de mapeamento de atributos que será utilizado na especificação das seleções em SQL, conforme abordado na \autoref{sec:tipos-de-rastros-de-proveniencia} e no \autoref{lst:algorithm-attribute-mappings}.
+    \item \texttt{projections}: especificação das projeções pelo usuário, optando por quais atributos devem ser incluídos na cláusula \textsc{SELECT} do SQL;
+    \item \texttt{selections}: especificação das seleções pelo usuário, optando por quais condições devem ser incluídas na cláusula \textsc{WHERE} do SQL.
+\end{itemize}
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-generate-sql-query},caption={[Geração da consulta em SQL]Geração da consulta na linguagem SQL a partir das especificações do usuário.}]
@@ -277,8 +289,14 @@ end function
 \end{lstlisting}
 \end{minipage}
 
+O algoritmo funciona...
+
+\perrotta{TODO: everything. algorithm explanation. Later: Complexity, data structures.}
+
 \subsection{Pré-processamento}%
 \label{subsec:preprocessamento}
+
+\perrotta{TODO: EXPAND}
 
 \section{Um exemplo}
 

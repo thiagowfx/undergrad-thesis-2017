@@ -152,3 +152,19 @@ function getPreviousDatasets(D, dt):
 end function
 \end{lstlisting}
 \end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=pseudocode,label={lst:get-next-datasets-2},caption={[Obtenção dos próximos conjuntos de dados de um conjunto de dados]Obtenção dos próximos conjuntos de dados de um conjunto de dados.}]
+function getNextDatasets(D, ds):
+    datasets %\leftarrow% {}
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.ds$% = ds:
+            datasets %\leftarrow% datasets + {getNextDatasets(%$\phi.dt_{\textup{next}}$%)}%~\quad%#%~\autoref{lst:get-next-datasets}%
+        end if
+    end do
+    return datasets
+end function
+\end{lstlisting}
+\end{minipage}
