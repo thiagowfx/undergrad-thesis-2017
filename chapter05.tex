@@ -25,7 +25,20 @@
 
 \section{Query Processor}
 
-O Query Processor foi implementado na linguagem de programação Java...
+O Query Processor foi implementado na linguagem de programação Java, a qual foi escolhida pelas seguintes razões:
+
+\begin{itemize}
+    \item possui um bom suporte a orientação a objetos;
+    \item está bastante consolidada no mercado e na academia, sendo uma escolha tradicional;
+    \item facilita a integração do Query Processor com os outros componentes do DfAnalyzer, já que eles também foram implementados em Java.
+\end{itemize}
+
+O projeto foi gerenciado e compilado pelo \texttt{Apache Maven 3.5.0}, tendo sido desenvolvido no ambiente de desenvolvimento integrado \texttt{NetBeans 8.2}, com a versão 1.8 do \texttt{JDK} do \texttt{Java}. O \textit{git} foi utilizado como sistema de controle de versão para o código, que consiste de:
+
+\begin{itemize}
+\item 22 arquivos-fonte \texttt{*.java};
+\item 152 testes, utilizando o \textit{framework} JUnit.
+\end{itemize}
 
 \perrotta{TODO: EXPAND ++ TODO: Mencionar o pré-processamento e as otimizações que fiz}
 
@@ -192,11 +205,9 @@ end function
 function depthFirstSearch(D,state)
     nodes %\leftarrow% getNextDatasets(D,state.visited.getLast())
     for each node %\in% nodes do:
-        # Pular nós que já foram visitados.
         if node %\in% state.visited then:
             continue
         end if
-        # Checar se está no fim da DFS.
         if node = state.dsDestination then:
             state.visited %\leftarrow% state.visited + {node}
             path %\leftarrow% new Path(state.visited)
