@@ -4,17 +4,16 @@
 
 \chapter{Abordagem para análise de rastros de proveniência}%
 \label{chap:rastros-de-proveniencia}
-
-% ilustrar com query SQL, tabela, grafo (img)
-
-\section{Visão geral sobre a análise de rastros de proveniência}
-
- % definição, etc
  
 \section{Tipos de rastros de proveniência}%
 \label{sec:tipos-de-rastros-de-proveniencia}
 
+% former section: Visão geral sobre a análise de rastros de proveniência
 % explicação + exemplo + complemento de uma (sub)seção anterior
+% ilustrar com query SQL, tabela, grafo (img)
+ % definição, etc
+ 
+ \perrotta{TODO: Exemplo (não criar uma nova subseção só para ele)}
 
 \subsection{Físico}
 
@@ -22,33 +21,31 @@
 
 \subsection{Híbrido}
 
-% \section{DfAnalyzer: Uma instanciação da arquitetura ARMFUL para análise dos rastros de proveniência}
+\section{Desenvolvimento do Processador de Consultas}
 
-\section{Query Processor}
-
-O Query Processor foi implementado na linguagem de programação Java, a qual foi escolhida pelas seguintes razões:
+Com o objetivo de permitir o desenvolvimento da abordagem para análise de rastros de proveniência em simulações computacionais, foi desenvolvido o \textbf{Query Processor}. Ele foi implementado na linguagem de programação Java, a qual foi escolhida pelas seguintes razões:
 
 \begin{itemize}
     \item possui um bom suporte a orientação a objetos;
     \item está bastante consolidada no mercado e na academia, sendo uma escolha tradicional;
-    \item facilita a integração do Query Processor com os outros componentes do DfAnalyzer, já que eles também foram implementados em Java.
+    \item facilita a integração do Query Processor com os outros componentes do DfAnalyzer, uma vez que eles também foram implementados em Java.
 \end{itemize}
 
-O projeto foi gerenciado e compilado pelo \texttt{Apache Maven 3.5.0}, tendo sido desenvolvido no ambiente de desenvolvimento integrado \texttt{NetBeans 8.2}, com a versão 1.8 do \texttt{JDK} do \texttt{Java}. O \textit{git} foi utilizado como sistema de controle de versão para o código, que consiste de:
+O projeto foi gerenciado e compilado pelo \texttt{Apache Maven 3.5.0}, tendo sido desenvolvido no ambiente de desenvolvimento integrado \texttt{NetBeans 8.2}, com a versão 1.8 do \texttt{JDK} (\textit{kit} de desenvolvimento) do \texttt{Java}. O \texttt{git} foi utilizado como sistema de controle de versão distribuído para o projeto, o qual consiste de:
 
 \begin{itemize}
 \item 22 arquivos-fonte \texttt{*.java};
 \item 152 testes, utilizando o \textit{framework} JUnit.
+% TODO: SLOC
+% TODO: número de classes (Java)
 \end{itemize}
-
-\perrotta{TODO: EXPAND ++ TODO: Mencionar o pré-processamento e as otimizações que fiz}
 
 \section{Algoritmos utilizados}%
 \label{sec:algoritmos-utilizados}
 
 Nessa seção serão abordados os principais algoritmos e funções utilizadas no Query Processor. Funções auxiliares referenciadas pelos mesmos estão definidas no \autoref{app:funcoes-auxiliares}. A notação utilizada é de pseudocódigo, e as definições dos algoritmos e nomes das variáveis utilizados foram ligeiramente alterados e simplificados em relação à implementação original, visando uma melhor clarificação e apresentação do código.
 
-\perrotta{REVIEW: mencionar algo a mais sobre a notação?}
+\perrotta{REVIEW: mencionar algo a mais sobre a notação utilizada para o pseudocódigo?}
 
 \subsection{Detecção das últimas transformações de dados}
 
@@ -296,8 +293,8 @@ O algoritmo funciona...
 \subsection{Pré-processamento}%
 \label{subsec:preprocessamento}
 
-\perrotta{TODO: EXPAND}
+\perrotta{TODO: mencionar o pré-processamento e as otimizações que fiz}
 
 \section{Um exemplo}
 
-\perrotta{como rodar o algoritmo -- explicar a assinatura da função principal e exemplos de uso (chamadas)}
+\perrotta{como rodar o algoritmo -- explicar a assinatura da função principal e exemplos de uso (chamadas). Um exemplo para o híbrido, e outro para lógico.}

@@ -86,21 +86,27 @@ Nas próximas subseções, os principais componentes do DfAnalyzer serão aborda
 
 O \textbf{Provenance Data Gatherer} (PDG) é o componente do DfAnalyzer responsável por \textbf{capturar proveniência} de dados (\textit{c.f.} \autoref{subsec:ingestao-de-dados}) assim como dados específicos do domínio a partir do código da aplicação, gerando um arquivo JSON com o conteúdo extraído e as suas respectivas dependências de dados~\cite{silva2016situ}. Após a captura, a proveniência e os dados de domínio são carregados em um banco de dados que é compatível com um esquema (do inglês \textit{schema}) pré-definido e que é gerenciado pelo SGBD MonetDB~\cite{boncz2008breaking}, que é um banco de dados orientado a colunas compatível com a linguagem SQL.
 
-Existem duas fontes de proveniência para o PDG. Uma é a \textit{libMesh-sedimentation solver}, mencionada anteriormente na \autoref{subsec:dfanalyzer-visao-geral}, que contribui com dados científicos diretamente relacionados à simulação de dinâmica de fluidos computacionais. A outra é o ParaView Catalyst~\cite{ayachit2015paraview}, que é um SGWfC com o qual o DfAnalyzer pode comunicar-se para aproveitar-se dos dados gerenciados por ele e relacioná-los com o banco de dados de proveniência, além de prover uma biblioteca de visualização e de processamento de dados. O Paraview Catalyst pode ser utilizado para extrair dados que estão em memória, complementando a \textit{libMesh-sedimentation} e os arquivos científicos.
+O motivo do MonetDB ter sido escolhido como o SGBD para o gerenciamento e armazenamento da proveniência dos dados deve-se principalmente ao fato do mesmo ser orientado e otimizado para a consulta de dados através de colunas --- diferentemente da maioria dos SGBDs tradicionais, como o MySQL e o SQLite, que são orientados a linhas. Isso é importante pois, em geral, o principal interesse nas consultas das simulações computacionais consiste na obtenção de um apenas um subconjunto dos atributos presentes.
+% https://www.monetdb.org/Documentation/Manuals/SQLreference/Indices
+Além disso, o MonetDB trata suas cláusulas de indexação de forma peculiar e dinâmica: diferentemente de SGBDs tradicionais, essas cláusulas são postergadas, interpretadas meramente como \textit{hints}, sendo o MonetDB o responsável por tomar as decisões finais de manutenção e de criação de índices, visando assim acelerar o posterior acesso aos dados~\cite{url:monetdb}.
 
-\perrotta{TODO: por que usamos o MonetDB?}
+\perrotta{REVIEW: Também mencionar ``carga alta de dados: indexam tupla a tupla?''}
+
+Existem duas fontes de proveniência para o PDG. Uma é a \textit{libMesh-sedimentation solver}, mencionada anteriormente na \autoref{subsec:dfanalyzer-visao-geral}, que contribui com dados científicos diretamente relacionados à simulação de dinâmica de fluidos computacionais. A outra é o ParaView Catalyst~\cite{ayachit2015paraview}, que é um SGWfC com o qual o DfAnalyzer pode comunicar-se para aproveitar-se dos dados gerenciados por ele e relacioná-los com o banco de dados de proveniência, além de prover uma biblioteca de visualização e de processamento de dados. O Paraview Catalyst pode ser utilizado para extrair dados que estão em memória, complementando a \textit{libMesh-sedimentation} e os arquivos científicos.
 
 \subsection{Raw Data Extractor (RDE)}
 
 Uma vez que o PDG especializa-se em coletar proveniência e dados de domínio, o \textbf{Raw Data Extractor} (RDE) o complementa, sendo o componente responsável por \textbf{extrair} os dados científicos que estão presentes em arquivos científicos (\textit{c.f.} \autoref{subsec:extracao-e-indexacao-de-dados-cientificos}). Esses arquivos usualmente contêm seus dados em formato binário, total ou parcialmente, sendo responsabilidade do RDE a leitura, filtragem e análise do conteúdo desses dados, transformando-os em um formato adequado para ser armazenado nos tipos e tabelas disponíveis no MonetDB. Dependendo da aplicação e da simulação científica, o conteúdo desses arquivos científicos pode ser ora armazenado diretamente no SGBD, ora armazenado indiretamente, através de ponteiros, referências de arquivos, ou estruturas de dados em formatos intermediários de representação.
 
-\perrotta{TODO: que tipos de arquivos ou dados são coletados na libMesh-sedimentation?}
+\perrotta{REVIEW: que tipos de arquivos ou dados são coletados na libMesh-sedimentation?}
 
 \subsection{Raw Data Indexer (RDI)}
 
-O \textbf{Raw Data Indexer} (RDI) é o componente do DfAnalyzer responsável por criar índices de dados dos arquivos científicos, com o objetivo de agilizar subsequentes acessos aos mesmos durante a execução das consultas pelos usuários, diminuindo o tempo médio delas (\textit{c.f.} \autoref{subsec:extracao-e-indexacao-de-dados-cientificos}).
+O \textbf{Raw Data Indexer} (RDI) é o componente do DfAnalyzer responsável por criar índices de dados dos arquivos científicos, com o objetivo de agilizar subsequentes acessos aos mesmos durante a execução das consultsas pelos usuários, diminuindo o tempo médio delas (\textit{c.f.} \autoref{subsec:extracao-e-indexacao-de-dados-cientificos}).
 
-\perrotta{TODO: existe alguma indexação na libMesh-sedimentation? Qual?}
+\perrotta{REVIEW: existe alguma indexação na libMesh-sedimentation? Qual?}
+
+\perrotta{REVIEW: como não existe muita discussão sobre isso no paper da SC computing, não consegui expandir mais do que isso.}
 
 \subsection{Query Processor (QP)}
 
@@ -108,8 +114,7 @@ O \textbf{Query Processor} (QP) é o componente responsável por auxiliar os usu
 
 Com o objetivo de facilitar o aprendizado e a execução de consultas por novos usuários, sem a necessidade de que eles aprendam a sintaxe da linguagem SQL, uma sintaxe (representação) intermediária para descrever as consultas foi desenvolvida, a qual traduz e converte a consulta do usuário para SQL, e é essa conversão que é enviada ao MonetDB, o qual retorna os resultados para o usuário.
 
-Essa conversão possui duas vantagens básicas: a primeira, mencionada anteriormente, é a facilidade para novos usuários interagirem com o DfAnalyzer, de forma mais intuitiva e direta, sem a necessidade de descrever uma consulta em SQL completa e válida. A segunda é a possibilidade do Query Processor realizar otimizações na consulta antes de enviá-la de forma crua, diretamente ao MonetDB. Por exemplo, em dada consulta, a cláusula \textsc{FROM} pode ser otimizada, filtrando tabelas que não sejam realmente necessárias na consulta em questão, diminuindo a sobrecarga ao SGBD e recuperando apenas os dados realmente necessários à consulta.
+Essa conversão possui duas vantagens básicas: a primeira, mencionada anteriormente, é a facilidade para novos usuários interagirem com o DfAnalyzer, de forma mais intuitiva e direta, sem a necessidade de descrever uma consulta em SQL completa e válida, e nem a necessidade de conhecer completamente todos os dados do domínio. A segunda é a possibilidade do Query Processor realizar otimizações na consulta antes de enviá-la de forma crua, diretamente ao MonetDB. Por exemplo, em dada consulta, a cláusula \textsc{FROM} pode ser otimizada, filtrando tabelas que não sejam realmente necessárias na consulta em questão, diminuindo a sobrecarga ao SGBD e recuperando apenas os dados realmente necessários para o sucesso da consulta.
 
-\textbf{A principal contribuição desse trabalho encontra-se especificamente na implementação deste componente, a qual será detalhadamente discutida no \autoref{chap:rastros-de-proveniencia}}.
-
-\perrotta{TODO: EXPAND}
+O Query Processor é capaz de realizar todos os três tipos de consultas mencionados anteriormente na \autoref{sec:tipos-de-consulta}: \((i)\) análise de dados científicos isolados de um único arquivo; \((ii)\) rastreio de fluxos de múltiplos arquivos relacionados; e \((iii)\) rastreio de elementos de dados relacionados e múltiplos arquivos. 
+A principal contribuição desse trabalho encontra-se especificamente na implementação deste componente, a qual será detalhadamente discutida no \autoref{chap:rastros-de-proveniencia}.
