@@ -8,6 +8,8 @@
 \section{Tipos de rastros de proveniência}%
 \label{sec:tipos-de-rastros-de-proveniencia}
 
+% O mapeamento de atributos é essencial para tratar e prover suporte para a análise de rastros de proveniência no físico...
+
 % former section: Visão geral sobre a análise de rastros de proveniência
 % explicação + exemplo + complemento de uma (sub)seção anterior
 % ilustrar com query SQL, tabela, grafo (img)
@@ -283,9 +285,15 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-O algoritmo funciona...
+O algoritmo do \autoref{lst:algorithm-generate-sql-query} torna-se simples, desde que delega as tarefas mais complexas para o \texttt{findPaths} (\autoref{lst:algorithm-find-paths}) e para o \texttt{getAttributesMapping} (\autoref{lst:algorithm-attribute-mappings}). Em princípio, todos os caminhos entre cada par do produto cartesiano entre os conjuntos de dados de origem \texttt{dsOrigins} e os de saída \texttt{dsDestinations} são encontrados. Então, para cada caminho, os mapeamentos de atributos entre cada par de conjuntos de dados adjacentes do mesmo são determinados e anotados.
 
-\perrotta{TODO: everything. algorithm explanation. Later: Complexity, data structures.}
+Depois, são definidas cada uma das cláusulas fundamentais da linguagem SQL: \textsc{SELECT}, \textsc{FROM} e \textsc{WHERE}, as quais passam a ser populadas, uma a uma, através dos algoritmos e estruturas de dados apresentados anteriormente:
+
+\begin{itemize}
+    \item a cláusula \textsc{FROM} é populada automaticamente e não-extensivamente incluindo, par fins de performance, \emph{somente} as tabelas (atributos de conjuntos de dados) necessárias para a apresentação dos resultados da consulta ao usuário;
+    \item a cláusula \textsc{SELECT} é populada de acordo com a especificação do usuário no argumento \texttt{projections}: uma vez que é o usuário quem deve escolher quais atributos ele deseja visualizar e consultar, o algoritmo não interfere de forma alguma nessa cláusula. No entanto, para fins de usabilidade, caso o usuário não especifique nenhuma projeção de atributo, o algoritmo popula a cláusula automaticamente e extensivamente, utilizando todos os atributos mapeados entre todo par de conjuntos de dados especificados como origem e destino (em \texttt{dsOrigins} e \texttt{dsDestinations}, respectivamente);
+    \item finalmente, a cláusula \textsc{WHERE} é a mais importante do ponto de vista de análise de rastros de proveniência, uma vez que é ela quem atua como filtro e seleção, limitando a consulta somente aos dados que realmente satisfazem a especificação do usuário. Desse modo, ela é populada automaticamente pelo algoritmo, inclusive com todos os mapeamentos de atributos (físico, lógico ou híbrido, dependendo do valor da variável \texttt{type}) encontrados nos caminhos entre o produto cartesiano de \texttt{dsOrigins} e \texttt{dsDestinations}. Além da população implícita e automática pelo algoritmo, o usuário também pode especificar seleções adicionais a serem incluídas nessa cláusula através da variável \texttt{selections}.
+\end{itemize}s
 
 \subsection{Pré-processamento}%
 \label{subsec:preprocessamento}
