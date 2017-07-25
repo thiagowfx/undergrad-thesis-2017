@@ -142,9 +142,7 @@ A complexidade de tempo do algoritmo é a mesma do algoritmo do \autoref{lst:alg
 
 \subsection{Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados}
 
-O \autoref{lst:algorithm-attribute-mappings} demonstra como obter \textbf{múltiplos mapeamentos de atributos}...
-
-\perrotta{TODO: introduction with caption repeating + algorithm explanation. Reiterate the definition of mapeamentos de atributos (seção 2, das definições).}
+O \autoref{lst:algorithm-attribute-mappings} demonstra como obter \textbf{múltiplos mapeamentos de atributos} entre dois conjuntos de dados \(ds_{\textup{input}}\) e \(ds_{\textup{output}}\). Assume-se que ambos os conjuntos de dados sejam adjacentes, compartilhando uma mesma transformação de dados \texttt{dt} em comum, de modo que um desses conjuntos de dados é consumido e o outro é produzido pela mesma. Além disso, como mencionado na \autoref{sec:tipos-de-rastros-de-proveniencia}, esses mapeamentos de atributos podem ser de três tipos \texttt{type}: lógico, físico e híbrido.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-attribute-mappings},caption={[Obtenção de múltiplos mapeamentos de atributos]Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados adjacentes.}]
@@ -166,6 +164,12 @@ function getAttributesMapping(dt,%\(ds_{\textrm{input}}\)%,%\(ds_{\textrm{output
 end function
 \end{lstlisting}
 \end{minipage}
+
+No caso do mapeamento de atributos do tipo \emph{lógico}, o algoritmo itera sobre o produto cartesiano entre os atributos dos dois conjuntos de dados. Para cada par desses atributos, verifica-se se: \((i)\) eles possuem o mesmo identificador (nome) e se \((ii)\) eles possuem o mesmo tipo; caso positivo para ambos, diz-se que esse par de atributos possui um mapeamento lógico, o qual é armazenado em uma lista encadeada retornada pelo algoritmo.
+
+No caso do mapeamento de atributos do tipo físico, o mapeamento existe...
+
+\perrotta{TODO: físico + híbrido}
 
 \perrotta{TODO: complexity and data structures}
 
