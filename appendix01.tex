@@ -168,3 +168,20 @@ function getNextDatasets(D, ds):
 end function
 \end{lstlisting}
 \end{minipage}
+
+\vfill{}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=pseudocode,label={lst:get-transformation},caption={[Obtenção da transformação entre dois conjuntos de dados]Obtenção da transformação de dados associada a dois conjuntos de dados.}]
+function getTransformation(D, %$ds_1$%, %$ds_2$%):
+    for each %\phi% %\in% %D.\Phi% do:
+        if %$\phi.ds$% = %$ds_1$% and %$ds_2$% %\in% getNextDatasets(%$\phi.dt_{\textup{next}}$%) then:%~\quad%#%~\autoref{lst:get-next-datasets}%
+            return %$\phi.dt_{\textup{next}}$%
+        else if %$\phi.ds$% = %$ds_2$% and %$ds_1$% %\in% getNextDatasets(%$\phi.dt_{\textup{next}}$%) then:%~\quad%#%~\autoref{lst:get-next-datasets}%
+            return %$\phi.dt_{\textup{next}}$%
+        end if
+    end do
+    return %\varnothing%
+end function
+\end{lstlisting}
+\end{minipage}

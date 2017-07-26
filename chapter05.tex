@@ -275,7 +275,7 @@ function generateSqlQuery(D,dsOrigins,dsDestinations,dsIncludes, dsExcludes,type
                 for (i %\leftarrow% 1; i < path.size(); i %\leftarrow% i + 1) do:
                     prevDs %\leftarrow% path[i - 1]
                     nextDs %\leftarrow% path[i]
-                    attrMapping %\leftarrow% getAttributesMapping(D.getTransformation(prevDs, nextDs), prevDs, nextDs, type)%~\quad%#%~\autoref{lst:algorithm-attribute-mappings}%
+                    attrMapping %\leftarrow% getAttributesMapping(getTransformation(D, prevDs,nextDs),prevDs,nextDs, type)%~\quad%#%~\autoref{lst:algorithm-attribute-mappings}%
                     for each attr %\in% attrMapping do:
                         whereClause.addSelection(prevDs.attr, "=", nextDs.attr)
                         if projections is empty then:
