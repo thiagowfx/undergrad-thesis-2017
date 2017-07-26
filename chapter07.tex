@@ -5,15 +5,17 @@
 \chapter{Conclusão}%
 \label{chap:conclusao}
 
-\section{Conclusão}
+\section{Considerações Finais}
 
-Nessa monografia foi apresentada a implementação de um Processador de Consultas (\textit{Query Processor}) como um componente integrante ao DfAnalyzer, instanciando a arquitetura ARMFUL para a análise de simulações computacionais em larga escala.
+Nessa monografia foi apresentada a implementação de um \textbf{Processador de Consultas (\textit{Query Processor})} como um componente integrante ao DfAnalyzer, instanciando a arquitetura ARMFUL para a análise de simulações computacionais e fluxo de dados em larga escala. Foram abordados os diversos tipos de rastros de proveniência, gerência de fluxo de dados e mapeamento de atributos de dados comumente utilizados em consultas científicas, assim como os tipos de proveniência prospectiva e retrospectiva.
 
-\perrotta{TODO: EXPAND}
+No \autoref{chap:experimentos},...
+
+\perrotta{TODO: Considerações Finais. Depende dos resultados dos experimentos do capítulo 06.}
 
 \section{Trabalhos Futuros}
 
-Dentre algumas ideias de trabalhos futuros para o projeto do processador de consultas, destaca-se:
+Dentre algumas ideias de trabalhos futuros para o projeto do processador de consultas, destacam-se:
 
 \begin{itemize}
     % Projeto da Débora: visualizador
@@ -22,7 +24,3 @@ Dentre algumas ideias de trabalhos futuros para o projeto do processador de cons
     \item aumentar a \textbf{performance das consultas} em SQL, com uma (\(i\)) diminuição do \textit{overhead} do processador de consultas, através do aumento do desempenho da conversão das especificações do usuário para a linguagem SQL; e da (\(ii\)) otimização da consulta em si, por exemplo, através de melhorias nas técnicas de indexação, ou da diminuição do número de projeções incluídos na mesma, ou mesmo via um melhor aproveitamento das informações e dados de proveniência disponíveis no banco de dados.
     \item implementar uma forma de \textbf{validação nas especificações do usuário}, permitindo apenas a geração de consultas sintática e semanticamente válidas, com o intuito de melhorar o \textit{design} de interação e diminuir a probabilidade de erros por parte do mesmo, \textit{e.g.} permitir apenas conjuntos de dados existentes nas projeções especificadas pelo usuário.
 \end{itemize}
-
-\section{Considerações Finais}
-
-\perrotta{Capítulo 07 --- TODO: Considerações Finais. Depende dos resultados dos experimentos.}

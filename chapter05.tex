@@ -321,6 +321,72 @@ Os itens 1 e 2 eliminam completamente a necessidade de iteração sobre as depen
 
 Essas otimizações de pré-processamento, pré-computação e \textit{memoization} foram fundamentais para garantir uma boa performance para o Query Processor.
 
-\section{Um exemplo}
+\section{Um exemplo de consulta}
 
-\perrotta{como rodar o algoritmo -- explicar a assinatura da função principal e exemplos de uso (chamadas). Um exemplo para o híbrido, e outro para lógico.}
+Para ilustrar uma consulta utilizando o \autoref{lst:algorithm-generate-sql-query} (\texttt{generateSqlQuery}), vamos considerar como exemplo o fluxo de dados \(D^{\prime}\) da figura~. % TODO: \autoref{fig:example-query-dataflow}
+
+\missingfigure{dataflow}
+
+\subsection*{Exemplo~\#1}
+
+\perrotta{TODO: expand exemplo 1}
+
+Considere a consulta envolvendo os conjuntos de dados TODO como origem e TODO como destino, especificada na \autoref{tab:example-query-arguments-1}. O código em SQL gerado pelo Query Processor para essa consulta encontra-se na \autoref{lst:example-query-output-1}.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c}
+\textbf{Argumento}          & \textbf{Valor} \\ \hline
+\texttt{D}                  & \(D^{\prime}\) \\
+\texttt{dsOrigins}          & \(\{ds_{1}\}\) \\
+\texttt{dsDestinations}     & \(\{ds_{1}\}\) \\
+\texttt{dsIncludes}         & \varnothing    \\
+\texttt{dsExcludes}         & \varnothing    \\
+\texttt{type}               & hybrid         \\
+\texttt{projections}        & \varnothing    \\
+\texttt{selections}         & \varnothing              
+\end{tabular}
+\caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#1]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#1.}%
+\label{tab:example-query-arguments-1}
+\end{table}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=sql,label={lst:example-query-output-1},caption={[Código SQ gerado no exemplo~\#1]Código SQL gerado pela função \texttt{generateSqlQuery} no exemplo~\#1.}]
+SELECT *
+FROM ds
+WHERE
+;
+\end{lstlisting}
+\end{minipage}
+
+\subsection*{Exemplo~\#2}
+
+\perrotta{TODO: expand exemplo 2}
+
+Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados TODO como origem e TODO como destino, especificada na \autoref{tab:example-query-arguments-2}. que gera o código em SQL apresentado na \autoref{lst:example-query-output-2}.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c}
+\textbf{Argumento}          & \textbf{Valor} \\ \hline
+\texttt{D}                  & \(D^{\prime}\) \\
+\texttt{dsOrigins}          & \(\{ds_{1}\}\) \\
+\texttt{dsDestinations}     & \(\{ds_{1}\}\) \\
+\texttt{dsIncludes}         & \varnothing    \\
+\texttt{dsExcludes}         & \varnothing    \\
+\texttt{type}               & logic          \\
+\texttt{projections}        & \varnothing    \\
+\texttt{selections}         & \varnothing              
+\end{tabular}
+\caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#2]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#2.}%
+\label{tab:example-query-arguments-2}
+\end{table}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=sql,label={lst:example-query-output-2},caption={[Código SQ gerado no exemplo~\#2]Código SQL gerado pela função \texttt{generateSqlQuery} no exemplo~\#2.}]
+SELECT *
+FROM ds
+WHERE
+;
+\end{lstlisting}
+\end{minipage}
