@@ -67,15 +67,15 @@ end function
 
 A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), isto é, proporcional ao número de dependências de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário acesso aleatório a essa estrutura de dados. Entretanto, na prática, com o objetivo de amortizar um pouco a complexidade, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP (c.f. \autoref{subsec:preprocessamento}).
 
-\subsection{Detecção das trilhas de transformações}%
+\subsection{Detecção das trilhas de transformações de dados}%
 \label{subsec:deteccao-das-trilhas-de-transformacoes}
 
-O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações} \texttt{dtTracks} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (do inglês, \textit{splits}) em \( D \). Tais separações existem no grafo do fluxo de dados em interseções de transformações que possuem mais de uma transformação de entrada ou de saída (\textit{i.e.}, grau do vértice maior do que 1). Por exemplo, na \autoref{fig:transformation-tracks}, podemos visualizar um exemplo de divisão e agrupamento de transformações de dados em trilhas.
+O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{trilhas de transformações de dados} \texttt{dtTracks} de um fluxo de dados \( D \). As trilhas são uma maneira natural de separar e agrupar transformações de dados em vários subconjuntos, definidos e limitados através de separações (do inglês, \textit{splits}) em \( D \). Tais separações existem no grafo do fluxo de dados em interseções de transformações que possuem mais de uma transformação de entrada ou de saída (\textit{i.e.}, grau do vértice maior do que 1). Por exemplo, na \autoref{fig:transformation-tracks}, podemos visualizar um exemplo de divisão e agrupamento de transformações de dados em trilhas.
 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{img/transformation-tracks}
-    \caption[Exemplo de detecção das trilhas de transformações.]{Exemplo de detecção das trilhas de transformações de um fluxo de dados. Na figura existem três trilhas de transformações (\textsc{TT}).}%
+    \caption[Exemplo de detecção das trilhas de transformações.]{Exemplo de detecção das trilhas de transformações de dados de um fluxo de dados. Na figura existem três trilhas de transformações (\textsc{TT}).}%
     \label{fig:transformation-tracks}
 \end{figure}
 
@@ -305,7 +305,21 @@ Depois, são definidas cada uma das cláusulas fundamentais da linguagem SQL: \t
 \subsection{Pré-processamento}%
 \label{subsec:preprocessamento}
 
-\perrotta{TODO: mencionar o pré-processamento e as otimizações que fiz}
+Os algoritmos apresentados anteriormente possuem, \emph{em geral}, uma complexidade computacional de \textbf{ordem linear} em relação ao número de conjuntos de dados, de transformações de dados, de dependências de dados ou de atributos de dados, dependendo do algoritmo e da função auxiliar utilizada. Isso se deve ao fato de que a maioria das estruturas de dados empregadas inicialmente é do tipo lista encadeada, e os laços presentes nos algoritmos usualmente iteram sobre toda a lista em questão. Além disso, existem algumas funções como a presente no \autoref{lst:get-next-datasets-2} que possuem complexidade computacional da \textbf{ordem quadrática} em relação ao número de dependências de dados presentes no fluxo de dados.
+
+Uma vez que um dos principais interesses do Query Processor é a aplicação do mesmo em simulações computacionais de larga escala, que incluem potencialmente uma quantidade enorme de dependências de dados e de atributos de dados, torna-se necessário melhorar o seu desempenho, não se limitando por algoritmos de ordem quadrática de complexidade temporal.
+
+A fim de resolver esse problema, diversas \textbf{otimizações de pré-processamento de dados e de metadados} foram empregadas e computadas, efetivamente diminuindo a complexidade computacional dos algoritmos anteriores e das funções auxiliares utilizadas neles, trocando tempo por espaço / armazenamento. Na prática, isso significa o seguinte:
+
+\begin{enumerate}
+    \item as \emph{próximas} transformações de dados e os \emph{próximos} conjuntos de dados de cada conjunto de dados e de cada transformação de dados foram computadas no instante da instanciação do fluxo de dados, tendo sido armazenados em \textit{HashMultimaps}; \perrotta{REVIEW: Devo remover essa referência à \emph{HashMultimaps}? Talvez não seja tão importante assim.}
+    \item analogamente, as transformações de dados \emph{anteriores} e os conjuntos de dados \emph{anteriores} também foram pré-computados;
+    \item as últimas transformações de dados (\autoref{lst:algorithm-last-transformations}), as trilhas de transformações de dados (\autoref{lst:algorithm-transformation-tracks}) e as trilhas de conjuntos de dados (\autoref{lst:algorithm-dataset-tracks}) foram computadas uma única vez, e então permanentemente armazenadas para uso posterior --- em vez de, por exemplo, serem recomputadas a cada referência às mesmas.
+\end{enumerate}
+
+Os itens 1 e 2 eliminam completamente a necessidade de iteração sobre as dependências de dados, eliminando a complexidade computacional de ordem quadrática dos algoritmos, aumentando significativamente a performance dos mesmos. O item 3 emprega uma técnica chamada \textit{memoization}, que evita computar mais de uma vez o mesmo dado: os acessos após o primeiro são realizados em \(O(1)\).
+
+Essas otimizações de pré-processamento, pré-computação e \textit{memoization} foram fundamentais para garantir uma boa performance para o Query Processor.
 
 \section{Um exemplo}
 
