@@ -142,15 +142,16 @@ A complexidade de tempo do algoritmo é a mesma do algoritmo do \autoref{lst:alg
 
 \subsection{Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados}
 
-O \autoref{lst:algorithm-attribute-mappings} demonstra como obter \textbf{múltiplos mapeamentos de atributos} entre dois conjuntos de dados \(ds_{\textup{input}}\) e \(ds_{\textup{output}}\). Assume-se que ambos os conjuntos de dados sejam adjacentes, compartilhando uma mesma transformação de dados \texttt{dt} em comum, de modo que um desses conjuntos de dados é consumido e o outro é produzido pela mesma. Além disso, como mencionado na \autoref{sec:tipos-de-rastros-de-proveniencia}, esses mapeamentos de atributos podem ser de três tipos \texttt{type}: lógico, físico e híbrido.
+O \autoref{lst:algorithm-attribute-mappings} demonstra como obter \textbf{múltiplos mapeamentos de atributos} entre dois conjuntos de dados \(ds_{\textup{input}}\) e \(ds_{\textup{output}}\). Assume-se que ambos os conjuntos de dados sejam adjacentes, compartilhando uma mesma transformação de dados \texttt{dt} em comum, de modo que um desses conjuntos de dados é consumido e o outro é produzido pela mesma. Além disso, como mencionado na \autoref{sec:tipos-de-rastros-de-proveniencia}, esses mapeamentos de atributos podem ser de três tipos \texttt{type}: lógico, físico e híbrido:
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-attribute-mappings},caption={[Obtenção de múltiplos mapeamentos de atributos]Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados adjacentes.}]
 function getAttributesMapping(dt,%\(ds_{\textrm{input}}\)%,%\(ds_{\textrm{output}}\)%,type)
    attrs %\leftarrow% {}
-   if type = physical then:
-       attrs %\leftarrow% attrs + {t.getInstanceAttribute()}
-   else:
+   if type %\in% {physical, hybrid} then:
+       attrs %\leftarrow% attrs + {t.getTaskIdAttribute()}
+   end if
+   if type %\in% {logical, hybrid} then:
        for each inAttr %\in% %\(ds_{\textrm{input}}\).A% do:
            for each outAttr %\in% %\(ds_{\textrm{output}}\).A% do:
                if inAttr.name = outAttr.name
@@ -160,18 +161,20 @@ function getAttributesMapping(dt,%\(ds_{\textrm{input}}\)%,%\(ds_{\textrm{output
            end do
        end do
    end if
-   return attributesMapping(attrs,dt,%\(ds_{\textrm{input}}\)%,%\(ds_{\textrm{output}}\)%)
+   return attrs
 end function
 \end{lstlisting}
 \end{minipage}
 
-No caso do mapeamento de atributos do tipo \emph{lógico}, o algoritmo itera sobre o produto cartesiano entre os atributos dos dois conjuntos de dados. Para cada par desses atributos, verifica-se se: \((i)\) eles possuem o mesmo identificador (nome) e se \((ii)\) eles possuem o mesmo tipo; caso positivo para ambos, diz-se que esse par de atributos possui um mapeamento lógico, o qual é armazenado em uma lista encadeada retornada pelo algoritmo.
+\begin{itemize}
+    \item No caso do mapeamento de atributos do tipo \emph{lógico}, o algoritmo itera sobre o produto cartesiano entre os atributos dos dois conjuntos de dados. Para cada par desses atributos, verifica-se se: \((i)\) eles possuem o mesmo identificador (nome) e se \((ii)\) eles possuem o mesmo tipo; caso positivo para ambos, diz-se que esse par de atributos possui um mapeamento lógico, o qual é armazenado em uma lista encadeada retornada pelo algoritmo.
 
-No caso do mapeamento de atributos do tipo físico, o mapeamento existe...
+    \item No caso do mapeamento de atributos do tipo \emph{físico}, o único atributo que é levado em conta entre os dois conjuntos de dados é o \textit{task id} da transformação de dados \texttt{dt} associada a ambos, responsável por identificar a proveniência retrospectiva da simulação computacional.
 
-\perrotta{TODO: físico + híbrido}
+    \item Por fim, o mapeamento do tipo \emph{híbrido} engloba a união de todos os atributos dos mapeamentos lógico e físico.
+\end{itemize}
 
-\perrotta{TODO: complexity and data structures}
+A complexidade computacional do algoritmo é da ordem do produto do número de atributos de cada conjunto de dados: \(O(\#(ds_{\textup{input}}.A) \times \#(ds_{\textup{output}}.A))\), e os mapeamentos de atributos são armazenados em listas encadeadas.
 
 \subsection{Obtenção dos caminhos entre dois conjuntos de dados}
 
