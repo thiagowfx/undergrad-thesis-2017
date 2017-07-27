@@ -321,17 +321,39 @@ Os itens 1 e 2 eliminam completamente a necessidade de iteração sobre as depen
 
 Essas otimizações de pré-processamento, pré-computação e \textit{memoization} foram fundamentais para garantir uma boa performance para o Query Processor.
 
-\section{Um exemplo de consulta}
+\section{Um exemplo de consulta}%
+\label{sec:um-exemplo-de-consulta}
 
-Para ilustrar uma consulta utilizando o \autoref{lst:algorithm-generate-sql-query} (\texttt{generateSqlQuery}), vamos considerar como exemplo o fluxo de dados \(D^{\prime}\) da figura~. % TODO: \autoref{fig:example-query-dataflow}
+Para ilustrar uma consulta utilizando o \autoref{lst:algorithm-generate-sql-query} (\texttt{generateSqlQuery}), vamos considerar como exemplo o fluxo de dados \(D^{\prime}\) da \autoref{fig:example-query-dataflow}, cujos atributos estão listados na \autoref{tab:example-query-attributes}.
 
-\missingfigure{dataflow}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/example-query-dataflow}
+    \caption[Fluxo de dados de exemplo]{Fluxo de dados \(D^{\prime}\) utilizado como exemplo para a \autoref{sec:um-exemplo-de-consulta}.}%
+    \label{fig:example-query-dataflow}
+\end{figure}
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c|c}
+    \textbf{Conjunto de dados} & \textbf{Nome do atributo} & \textbf{Tipo do atributo} \\ \hline
+$ds_1$                        & $da_1$                        & inteiro                 \\
+$ds_1$                        & $da_2$                        & booleano                \\
+$ds_1$                        & $\textup{taskid\_}dt_1$      & inteiro                 \\ \hline
+$ds_2$                        & $da_1$                        & inteiro                 \\
+$ds_2$                        & $da_2$                        & inteiro                 \\
+$ds_2$                        & $\textup{taskid\_}dt_1$      & inteiro                 \\
+$ds_2$                        & $\textup{taskid\_}dt_2$      & inteiro                 \\ \hline
+$ds_4$                        & $da_3$                        & string                  \\
+$ds_4$                        & $\textup{taskid\_}dt_2$      & inteiro                  
+    \end{tabular}
+    \caption[Atributos de dados do fluxo de dados \(D^{\prime}\)]{Atributos de dados do fluxo de dados \(D^{\prime}\).}
+    \label{tab:example-query-attributes}
+\end{table}
 
 \subsection*{Exemplo~\#1}
 
-\perrotta{TODO: expand exemplo 1}
-
-Considere a consulta envolvendo os conjuntos de dados TODO como origem e TODO como destino, especificada na \autoref{tab:example-query-arguments-1}. O código em SQL gerado pelo Query Processor para essa consulta encontra-se na \autoref{lst:example-query-output-1}.
+Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \(ds_{4}\) como destino, especificada na \autoref{tab:example-query-arguments-1}. O caminho de conjuntos de dados obtido no fluxo de dados \(D^{\prime}\) pelo Query Processor pode ser visualizado na \autoref{fig:example-query-dataflow-1}, e o código em SQL gerado para essa consulta encontra-se no \autoref{lst:example-query-output-1}.
 
 \begin{table}[htb]
     \centering
@@ -339,23 +361,32 @@ Considere a consulta envolvendo os conjuntos de dados TODO como origem e TODO co
 \textbf{Argumento}          & \textbf{Valor} \\ \hline
 \texttt{D}                  & \(D^{\prime}\) \\
 \texttt{dsOrigins}          & \(\{ds_{1}\}\) \\
-\texttt{dsDestinations}     & \(\{ds_{1}\}\) \\
+\texttt{dsDestinations}     & \(\{ds_{4}\}\) \\
 \texttt{dsIncludes}         & \varnothing    \\
 \texttt{dsExcludes}         & \varnothing    \\
 \texttt{type}               & hybrid         \\
-\texttt{projections}        & \varnothing    \\
-\texttt{selections}         & \varnothing              
-\end{tabular}
-\caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#1]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#1.}%
-\label{tab:example-query-arguments-1}
+\texttt{projections}        & \{$ds_{1}.da_{1}$, $ds_{1}.da_{2}$, $ds_{2}.da_{1}$, $ds_{2}.da_{2}$\}    \\
+\texttt{selections}         & \{$ds_{1}.da_{1} > 100$\}              
+    \end{tabular}
+    \caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#1]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#1.}%
+    \label{tab:example-query-arguments-1}
 \end{table}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/example-query-dataflow-1}
+    \caption[Caminho obtido na consulta do exemplo \#1]{Caminho de conjuntos de dados obtido na consulta do exemplo \#1: \(\{ds_{1} \rightarrow ds_{2} \rightarrow ds_{4}\}.\)}%
+    \label{fig:example-query-dataflow-1}
+\end{figure}
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=sql,label={lst:example-query-output-1},caption={[Código SQ gerado no exemplo~\#1]Código SQL gerado pela função \texttt{generateSqlQuery} no exemplo~\#1.}]
-SELECT *
-FROM ds
-WHERE
-;
+SELECT %$ds_{1}.da_{1}$%, %$ds_{1}.da_{2}$%, %$ds_{2}.da_{1}$%, %$ds_{2}.da_{2}$%, %$ds_{4}.da_{3}$%
+FROM %$ds_{1}$%,%$ds_{2}$%,%$ds_{4}$%
+WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$% and -- mapeamento físico
+      %$ds_{2}.\textup{taskid}\_dt_{2} = ds_{4}.\textup{taskid}\_dt_{2}$% and -- mapeamento físico
+      %$ds_{1}.da_{1} = ds_{2}.da_{1}$% and          -- mapeamento lógico
+      %$ds_{1} > 100$%;                   -- seleção provida pelo usuário
 \end{lstlisting}
 \end{minipage}
 
@@ -374,7 +405,7 @@ Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados TODO
 \texttt{dsDestinations}     & \(\{ds_{1}\}\) \\
 \texttt{dsIncludes}         & \varnothing    \\
 \texttt{dsExcludes}         & \varnothing    \\
-\texttt{type}               & logic          \\
+\texttt{type}               & hybrid         \\
 \texttt{projections}        & \varnothing    \\
 \texttt{selections}         & \varnothing              
 \end{tabular}
