@@ -15,6 +15,12 @@
 % ilustrar com query SQL, tabela, grafo (img)
  % definição, etc
  
+% Dúvidas
+
+% task_id
+% Atributos de domínio
+% Híbrido
+ 
  \perrotta{TODO: Exemplo (não criar uma nova subseção só para ele)}
 
 \subsection{Físico}
@@ -372,7 +378,7 @@ $de_3$          & \multicolumn{2}{c|}{charlie}      & \multicolumn{2}{c|}{2}    
     \label{tab:example-query-data-elements}
 \end{table}
 
-\subsection*{Exemplo~\#1}
+\subsection{Exemplo~\#1}
 
 Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \(ds_{4}\) como destino, especificada na \autoref{tab:example-query-arguments-1}. O caminho de conjuntos de dados obtido no fluxo de dados \(D^{\prime}\) pelo Query Processor pode ser visualizado na \autoref{fig:example-query-dataflow-1}, e o código em SQL gerado para essa consulta encontra-se no \autoref{lst:example-query-output-1}. Os resultados (elementos de dados) retornados pela consulta em SQL estão na \autoref{tab:example-query-results-1}.
 
@@ -386,7 +392,7 @@ Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \
 \texttt{dsIncludes}         & \varnothing    \\
 \texttt{dsExcludes}         & \varnothing    \\
 \texttt{type}               & hybrid         \\
-\texttt{projections}        & \{$ds_{1}.da_{1}$, $ds_{1}.da_{2}$, $ds_{2}.da_{1}$, $ds_{2}.da_{2}$\}    \\
+\texttt{projections}        & \{$ds_{1}.da_{1}$, $ds_{1}.da_{2}$, $ds_{2}.da_{1}$, $ds_{2}.da_{2}$,$ds_{4}.da_{3}$\}    \\
 \texttt{selections}         & \{$ds_{1}.da_{1} > 100$\}              
     \end{tabular}
     \caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#1]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#1.}%
@@ -424,11 +430,9 @@ WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$% and --
     \label{tab:example-query-results-1}
 \end{table}
 
-\subsection*{Exemplo~\#2}
+\subsection{Exemplo~\#2}
 
-\perrotta{TODO: expand exemplo 2}
-
-Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados TODO como origem e TODO como destino, especificada na \autoref{tab:example-query-arguments-2}. que gera o código em SQL apresentado na \autoref{lst:example-query-output-2}.
+Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados $ds_1$ como origem e $ds_2$ como destino, especificada na \autoref{tab:example-query-arguments-2}. que gera o código em SQL apresentado no \autoref{lst:example-query-output-2}. Os resultados obtidos pela consulta em SQL podem ser observados na \autoref{tab:example-query-results-2}.
 
 \begin{table}[htb]
     \centering
@@ -436,11 +440,11 @@ Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados TODO
 \textbf{Argumento}          & \textbf{Valor} \\ \hline
 \texttt{D}                  & \(D^{\prime}\) \\
 \texttt{dsOrigins}          & \(\{ds_{1}\}\) \\
-\texttt{dsDestinations}     & \(\{ds_{1}\}\) \\
+\texttt{dsDestinations}     & \(\{ds_{2}\}\) \\
 \texttt{dsIncludes}         & \varnothing    \\
 \texttt{dsExcludes}         & \varnothing    \\
-\texttt{type}               & hybrid         \\
-\texttt{projections}        & \varnothing    \\
+\texttt{type}               & physical       \\
+\texttt{projections}        & \{$ds_{1}.da_{1}$, $ds_{1}.da_{2}$, $ds_{2}.da_{2}$\}    \\
 \texttt{selections}         & \varnothing
 \end{tabular}
 \caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#2]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#2.}%
@@ -449,9 +453,22 @@ Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados TODO
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=sql,label={lst:example-query-output-2},caption={[Código SQ gerado no exemplo~\#2]Código SQL gerado pela função \texttt{generateSqlQuery} no exemplo~\#2.}]
-SELECT *
-FROM ds
-WHERE
-;
+SELECT %$ds_{1}.da_{1}$%, %$ds_{1}.da_{2}$%, %$ds_{2}.da_{2}$%
+FROM %$ds_{1}$%,%$ds_{2}$%
+WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$%;
 \end{lstlisting}
 \end{minipage}
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c|c}
+\textbf{ds\textsubscript{1}.da\textsubscript{1}} & \textbf{ds\textsubscript{1}.da\textsubscript{2}} & \textbf{ds\textsubscript{2}.da\textsubscript{2}} \\ \hline
+100              & verdadeiro       & -20              \\
+100              & verdadeiro       & -45              \\
+200              & falso            & -20              \\
+200              & falso            & -45              \\
+300              & verdadeiro       & 42              
+    \end{tabular}
+    \caption[Resultados obtidos com a consulta em SQL do exemplo \#2]{Resultados obtidos com a consulta em SQL do exemplo \#2.}
+    \label{tab:example-query-results-2}
+\end{table}

@@ -25,7 +25,7 @@ end function
 
 \vfill{}
 
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-output-datasets},caption={[Contagem dos conjuntos de dados de saída de uma transformação]Contagem dos conjuntos de dados de saída de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que 1, e falso caso contrário.}]
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-output-datasets},caption={[Contagem dos conjuntos de dados de saída de uma transformação]Contagem dos conjuntos de dados de saída de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
 function hasManyOutputDatasets(D, dt):
     count %\leftarrow% 0
     for each %\phi% %\in% %D.\Phi% do:
@@ -43,7 +43,7 @@ end function
 
 \vfill{}
 
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-next-transformations},caption={[Contagem das próximas transformações de dados de uma transformação]Contagem das próximas transformações de dados de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que 1, e falso caso contrário.}]
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-next-transformations},caption={[Contagem das próximas transformações de dados de uma transformação]Contagem das próximas transformações de dados de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
 function hasManyNextTransformations(D, dt):
     count %\leftarrow% 0
     for each %\phi% %\in% %D.\Phi% do:
@@ -61,7 +61,7 @@ end function
 
 \vfill{}
 
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:any-transformation-has-many-input-datasets},caption={[Determinação de se pelo menos uma transformação possui mais de 1 conjunto de dados de entrada.]Determinação de se pelo menos uma transformação de dados possui mais de 1 conjunto de dados de entrada. Retorna verdadeiro caso positivo, e falso caso contrário.}]
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:any-transformation-has-many-input-datasets},caption={[Determinação de se pelo menos uma transformação possui mais de um conjunto de dados de entrada.]Determinação de se pelo menos uma transformação de dados possui mais de um conjunto de dados de entrada. Retorna verdadeiro caso positivo, e falso caso contrário.}]
 function anyTransformationHasManyInputDatasets(D, dts):
     for each dt %\in% dts do:
         if hasManyInputDatasets(D, dt) then:%~\quad%#%~\autoref{lst:has-many-input-datasets}%
@@ -75,7 +75,7 @@ end function
 
 \vfill{}
 
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-input-datasets},caption={[Contagem dos conjuntos de dados anteriores a uma transformação]Contagem dos conjuntos de dados anteriores a uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que 1, e falso caso contrário.}]
+\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-input-datasets},caption={[Contagem dos conjuntos de dados anteriores a uma transformação]Contagem dos conjuntos de dados anteriores a uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
 function hasManyInputDatasets(D, dt):
     count %\leftarrow% 0
     for each %\phi% %\in% %D.\Phi% do:
