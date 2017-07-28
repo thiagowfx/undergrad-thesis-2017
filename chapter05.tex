@@ -324,7 +324,7 @@ Essas otimizações de pré-processamento, pré-computação e \textit{memoizati
 \section{Um exemplo de consulta}%
 \label{sec:um-exemplo-de-consulta}
 
-Para ilustrar uma consulta utilizando o \autoref{lst:algorithm-generate-sql-query} (\texttt{generateSqlQuery}), vamos considerar como exemplo o fluxo de dados \(D^{\prime}\) da \autoref{fig:example-query-dataflow}, cujos atributos estão listados na \autoref{tab:example-query-attributes}.
+Para ilustrar uma consulta utilizando o \autoref{lst:algorithm-generate-sql-query} (\texttt{generateSqlQuery}), vamos considerar como exemplo o fluxo de dados \(D^{\prime}\) da \autoref{fig:example-query-dataflow}, cujos atributos estão listados na \autoref{tab:example-query-attributes} e cujos elementos de dados estão listados na \autoref{tab:example-query-data-elements}.
 
 \begin{figure}[htb]
     \centering
@@ -351,9 +351,30 @@ $ds_4$                        & $\textup{taskid\_}dt_2$      & inteiro
     \label{tab:example-query-attributes}
 \end{table}
 
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{ds\textsubscript{1}} & \textbf{da\textsubscript{1}}    & \textbf{da\textsubscript{2}}    & \multicolumn{2}{c|}{\textbf{taskid\_dt\textsubscript{1}}}   \\ \hline
+$de_1$          & 100             & verdadeiro      & \multicolumn{2}{c|}{1}                      \\
+$de_2$          & 200             & falso           & \multicolumn{2}{c|}{1}                      \\
+$de_3$          & 300             & verdadeiro      & \multicolumn{2}{c|}{2}                      \\ \hline
+\textbf{ds\textsubscript{2}} & \textbf{da\textsubscript{1}}    & \textbf{da\textsubscript{2}}    & \textbf{taskid\_dt\textsubscript{1}} & \textbf{taskid\_dt\textsubscript{2}} \\ \hline
+$de_1$          & 100             & -20             & 1                    & 1                    \\
+$de_2$          & 200             & -45             & 1                    & 2                    \\
+$de_3$          & 300             & 42              & 2                    & 2                    \\ \hline
+\textbf{ds\textsubscript{4}} & \multicolumn{2}{c|}{\textbf{da\textsubscript{3}}} & \multicolumn{2}{c|}{\textbf{taskid\_dt\textsubscript{2}}}   \\ \hline
+$de_1$          & \multicolumn{2}{c|}{alpha}        & \multicolumn{2}{c|}{1}                      \\
+$de_2$          & \multicolumn{2}{c|}{bravo}        & \multicolumn{2}{c|}{2}                      \\
+$de_3$          & \multicolumn{2}{c|}{charlie}      & \multicolumn{2}{c|}{2}                      \\ \hline
+    \end{tabular}
+    \caption[Elementos de dados do fluxo de dados \(D^{\prime}\)]{Elementos de dados do fluxo de dados \(D^{\prime}\).}
+    \label{tab:example-query-data-elements}
+\end{table}
+
 \subsection*{Exemplo~\#1}
 
-Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \(ds_{4}\) como destino, especificada na \autoref{tab:example-query-arguments-1}. O caminho de conjuntos de dados obtido no fluxo de dados \(D^{\prime}\) pelo Query Processor pode ser visualizado na \autoref{fig:example-query-dataflow-1}, e o código em SQL gerado para essa consulta encontra-se no \autoref{lst:example-query-output-1}.
+Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \(ds_{4}\) como destino, especificada na \autoref{tab:example-query-arguments-1}. O caminho de conjuntos de dados obtido no fluxo de dados \(D^{\prime}\) pelo Query Processor pode ser visualizado na \autoref{fig:example-query-dataflow-1}, e o código em SQL gerado para essa consulta encontra-se no \autoref{lst:example-query-output-1}. Os resultados (elementos de dados) retornados pela consulta em SQL estão na \autoref{tab:example-query-results-1}.
 
 \begin{table}[htb]
     \centering
@@ -385,10 +406,23 @@ SELECT %$ds_{1}.da_{1}$%, %$ds_{1}.da_{2}$%, %$ds_{2}.da_{1}$%, %$ds_{2}.da_{2}$
 FROM %$ds_{1}$%,%$ds_{2}$%,%$ds_{4}$%
 WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$% and -- mapeamento físico
       %$ds_{2}.\textup{taskid}\_dt_{2} = ds_{4}.\textup{taskid}\_dt_{2}$% and -- mapeamento físico
-      %$ds_{1}.da_{1} = ds_{2}.da_{1}$% and          -- mapeamento lógico
-      %$ds_{1} > 100$%;                   -- seleção provida pelo usuário
+      %$ds_{1}.da_{1} = ds_{2}.da_{1}$% and           -- mapeamento lógico
+      %$ds_{1}.da_{1} > 100$%;                 -- seleção provida pelo usuário
 \end{lstlisting}
 \end{minipage}
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c|c|c|c}
+\textbf{ds\textsubscript{1}.da\textsubscript{1}} & \textbf{ds\textsubscript{1}.da\textsubscript{2}} & \textbf{ds\textsubscript{2}.da\textsubscript{1}} & \textbf{ds\textsubscript{2}.da\textsubscript{2}} & \textbf{ds\textsubscript{4}.da\textsubscript{3}} \\ \hline
+200              & falso            & 200              & -45              & bravo            \\
+200              & falso            & 200              & -45              & charlie          \\
+300              & verdadeiro       & 300              & 42               & bravo            \\
+300              & verdadeiro       & 300              & 42               & charlie         
+    \end{tabular}
+    \caption[Resultados obtidos com a consulta em SQL do exemplo \#1]{Resultados obtidos com a consulta em SQL do exemplo \#1.}
+    \label{tab:example-query-results-1}
+\end{table}
 
 \subsection*{Exemplo~\#2}
 
@@ -407,7 +441,7 @@ Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados TODO
 \texttt{dsExcludes}         & \varnothing    \\
 \texttt{type}               & hybrid         \\
 \texttt{projections}        & \varnothing    \\
-\texttt{selections}         & \varnothing              
+\texttt{selections}         & \varnothing
 \end{tabular}
 \caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#2]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#2.}%
 \label{tab:example-query-arguments-2}
