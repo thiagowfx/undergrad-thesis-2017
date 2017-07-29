@@ -4,30 +4,66 @@
 
 \chapter{Abordagem para análise de rastros de proveniência}%
 \label{chap:rastros-de-proveniencia}
- 
+
+Nesse capítulo será apresentado o Processador de Consultas (Query Processor), juntamente com a sua implementação e seus algoritmos. Além disso, será abordada a relação entre os diversos tipos de rastros de proveniência existentes e a influência da seleção de um desses tipos na execução do QP.
+
+\perrotta{REVIEW: rastreio, rastro, ou rastreamento? Consistência!}
+
+Conforme abordado na \autoref{sec:rastreamento-de-dados-de-proveniencia}, o \textbf{rastreio de dados de proveniência} em uma simulação computacional é realizado através do \textbf{mapeamento de atributos} de dados dos conjuntos de dados, sendo indispensável para tal. Reitera-se a definição de mapeamento de atributos da \autoref{subsec:mapeamento-de-atributos}, destacando que diz-se que existe um mapeamento de atributos entre dois atributos de dados \(da_1\) de um conjunto de dados \(ds_1\) e \(da_2\) de um conjunto de dados \(ds_2\) desde que ambos os atributos apresentem \((i)\) o mesmo identificador (nome) e \((ii)\) o mesmo tipo, e desde que \((iii)\) \(ds_1\) e \(ds_2\) sejam adjacentes no mesmo fluxo de dados, \textit{i.e.} devem possir uma transformação de dados em comum, sendo um deles a entrada e o outro a saída da mesma.
+
 \section{Tipos de rastros de proveniência}%
 \label{sec:tipos-de-rastros-de-proveniencia}
 
-% O mapeamento de atributos é essencial para tratar e prover suporte para a análise de rastros de proveniência no físico...
-
 % former section: Visão geral sobre a análise de rastros de proveniência
 % explicação + exemplo + complemento de uma (sub)seção anterior
-% ilustrar com query SQL, tabela, grafo (img)
- % definição, etc
- 
-% Dúvidas
+% definição, etc
 
-% task_id
-% Atributos de domínio
-% Híbrido
- 
- \perrotta{TODO: Exemplo (não criar uma nova subseção só para ele)}
+A fim de ilustrar as definições das próximas subseções, considere o fluxo de dados  \(D\ast\) da \autoref{fig:simple-dataflow-for-diff}, cujos atributos de dados \(A\ast\) estão listados na \autoref{tab:simple-attributes-for-diff}. 
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/simple-dataflow-for-diff}
+    \caption[Exemplo de fluxo de dados para a seção \autoref{sec:tipos-de-rastros-de-proveniencia}]{Exemplo de fluxo de dados \(D\ast\) para a seção \autoref{sec:tipos-de-rastros-de-proveniencia}.}%
+    \label{fig:simple-dataflow-for-diff}
+\end{figure}
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c|c}
+    \textbf{Conjunto de dados} & \textbf{Nome do atributo} & \textbf{Tipo do atributo} \\ \hline
+$ds_1$                        & $da_1$                        & inteiro                 \\
+$ds_1$                        & $da_2$                        & booleano                \\
+$ds_1$                        & $\textup{taskid\_}dt_1$      & inteiro                 \\ \hline
+$ds_2$                        & $da_1$                        & inteiro                 \\
+$ds_2$                        & $da_2$                        & inteiro                 \\
+$ds_2$                        & $\textup{taskid\_}dt_1$      & inteiro                
+    \end{tabular}
+    \caption[Atributos de dados do fluxo de dados da \autoref{fig:simple-dataflow-for-diff}]{Atributos de dados \(A\ast\) do fluxo de dados \(D\ast\) da \autoref{fig:simple-dataflow-for-diff}.}
+    \label{tab:simple-attributes-for-diff}
+\end{table}
 
 \subsection{Físico}
 
+O mapeamento de atributos de dados do \textbf{tipo físico}
+
 \subsection{Lógico}
 
+O mapeamento de atributos de dados do \textbf{tipo lógico} ocorre entre os \textbf{atributos de domínio} dos conjuntos de dados de uma simulação científica. Esses atributos de domínio necessariamente \emph{não} podem incluir o \emph{task id} mencionado na subseção anterior.
+
+No exemplo dessa seção, o mapeamento lógico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.da_1\) e \(ds_2.da_1\). Note que \emph{não} existe mapeamento lógico entre \(ds_1.da_2\) e \(ds_2.da_2\) pois, apesar de possuírem o mesmo nome, esses atributos de dados possuem tipos de dados diferentes (inteiro e booleano).
+
 \subsection{Híbrido}
+
+O mapeamento de atributos de dados do \textbf{tipo híbrido} consiste na combinação --- ou, mais precisamente, na \emph{união} --- de ambos os tipos de mapeamentos de atributos anteriores: o físico e o lógico.
+
+\perrotta{REVIEW: devemos dizer que esse mapeamento de atributos é original desse trabalho? Como?}
+
+Assim, no exemplo dessa seção, esse mapeamento envolve os seguintes atributos:
+
+\begin{itemize}
+    \item \(ds_1.da_1\) e \(ds_2.da_1\) (lógico); e
+    \item \(ds_1.\textup{taskid\_}dt_1\) e \(ds_2.\textup{taskid\_}dt_1\) (físico).
+\end{itemize}
 
 \section{Desenvolvimento do Processador de Consultas}
 
@@ -81,7 +117,7 @@ O \autoref{lst:algorithm-transformation-tracks} demonstra como obter as \textbf{
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{img/transformation-tracks}
-    \caption[Exemplo de detecção das trilhas de transformações.]{Exemplo de detecção das trilhas de transformações de dados de um fluxo de dados. Na figura existem três trilhas de transformações (\textsc{TT}).}%
+    \caption[Exemplo de detecção das trilhas de transformações]{Exemplo de detecção das trilhas de transformações de dados de um fluxo de dados. Na figura existem três trilhas de transformações (\textsc{TT}).}%
     \label{fig:transformation-tracks}
 \end{figure}
 
@@ -195,7 +231,7 @@ Como podem existir potencialmente vários caminhos entre esse par de conjuntos d
 \end{itemize}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=pseudocode,label={lst:algorithm-find-paths},caption={[Obtenção dos caminhos entre dois conjuntos de dados.]Obtenção de todos os caminhos entre dois conjuntos de dados, inicializando a \textsc{DFS} com um estado inicial apropriado.}]
+\begin{lstlisting}[language=pseudocode,label={lst:algorithm-find-paths},caption={[Obtenção dos caminhos entre dois conjuntos de dados]Obtenção de todos os caminhos entre dois conjuntos de dados, inicializando a \textsc{DFS} com um estado inicial apropriado.}]
 function findPaths(D,dsOrigin,dsDestination,dsIncludes,dsExcludes)
     state %\leftarrow% {}
     state.visited %\leftarrow% {dsOrigin}
