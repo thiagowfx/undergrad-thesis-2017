@@ -44,11 +44,13 @@ $ds_2$                        & $\textup{taskid\_}dt_1$      & inteiro
 
 \subsection{Físico}
 
-O mapeamento de atributos de dados do \textbf{tipo físico}
+O mapeamento de atributos de dados do \textbf{tipo físico} ocorre \emph{somente} entre pares de atributos de dados (de conjuntos de dados) especiais, que fazem parte de uma mesma tarefa de execução~/~processamento de uma mesma instância de uma simulação computacional, especialmente denotados por um identificador cujo nome é da forma \texttt{taskid\_\ast}, onde \ast{} representa um número arbitrário (\textit{i.e.} um ou mais) de caracteres. O tipo desse atributo necessariamente deve ser um inteiro positivo. O propósito desse atributo é agrupar elementos de dados que foram processados em uma mesma instância de execução~/~tarefa de uma simulação computacional.
+
+No exemplo dessa seção, o mapeamento físico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.\textup{taskid\_}dt1\) e \(dt_2.\textup{taskid\_}dt2\), pois esses são os únicos atributos do tipo \textit{taskid} presentes em \(D\ast\).
 
 \subsection{Lógico}
 
-O mapeamento de atributos de dados do \textbf{tipo lógico} ocorre entre os \textbf{atributos de domínio} dos conjuntos de dados de uma simulação científica. Esses atributos de domínio necessariamente \emph{não} podem incluir o \emph{task id} mencionado na subseção anterior.
+O mapeamento de atributos de dados do \textbf{tipo lógico} ocorre entre os \textbf{atributos de domínio} dos conjuntos de dados de uma simulação científica. Esses atributos de domínio necessariamente \emph{não} podem denotar o tipo \texttt{taskid} mencionado na subseção anterior.
 
 No exemplo dessa seção, o mapeamento lógico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.da_1\) e \(ds_2.da_1\). Note que \emph{não} existe mapeamento lógico entre \(ds_1.da_2\) e \(ds_2.da_2\) pois, apesar de possuírem o mesmo nome, esses atributos de dados possuem tipos de dados diferentes (inteiro e booleano).
 
