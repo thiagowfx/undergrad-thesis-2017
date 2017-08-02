@@ -171,7 +171,7 @@ Além disso, podemos ver alguns dos atributos de dados do conjunto de dados \tex
     \label{tab:iinputmesh-values}
 \end{table}
 
-\section{Proveniência de dados}
+\section{Dados de proveniência}
 
 \subsection{Definição}
 
@@ -206,7 +206,7 @@ Existem dois tipos de dados de proveniência envolvidos na gerência de fluxo de
 
 Por meio dos dois tipos citados de dados de proveniência, um sistema de fluxo de dados é capaz de orquestrar e prover diferentes níveis de abstração para a execução de uma simulação científica~\cite{murta2014noworkflow}, os quais são inexistentes em programas de simulação, tais como \textit{scripts}. Como iniciativas para a gerência de dados de proveniência, pode-se citar o NoWorkflow~\cite{murta2014noworkflow}, o YesWorkflow~\cite{mcphillips2015yesworkflow}, o DfAnalyzer~\cite{silva2016situ} e a biblioteca Tigres~\cite{hendrix2016tigres}.
 
-Ademais, a captura de proveniência de dados pode ser realizada de duas formas distintas, \textit{offline} e \textit{online}~\cite{silva2015propostadoutorado}. A captura \textit{offline} consiste em armazenar os dados de uma simulação computacional em um determinado repositório logo \textbf{após} a execução da mesma --- por exemplo, como realizado pelo Kepler~\cite{ludascher2006scientific}. Em contrapartida, a captura \textit{online} consiste na obtenção e no armazenamento de dados \textbf{em tempo de execução}, como realizado no Pegasus~\cite{deelman2005pegasus} e no Swift/T~\cite{zhao2007swift}.
+Ademais, a captura de dados de proveniência pode ser realizada de duas formas distintas, \textit{offline} e \textit{online}~\cite{silva2015propostadoutorado}. A captura \textit{offline} consiste em armazenar os dados de uma simulação computacional em um determinado repositório logo \textbf{após} a execução da mesma --- por exemplo, como realizado pelo Kepler~\cite{ludascher2006scientific}. Em contrapartida, a captura \textit{online} consiste na obtenção e no armazenamento de dados \textbf{em tempo de execução}, como realizado no Pegasus~\cite{deelman2005pegasus} e no Swift/T~\cite{zhao2007swift}.
 
 Uma simples observação é que o desempenho da captura de proveniência \textit{online} tende a ser ligeiramente pior do que a \textit{offline}, devido à possível sobrecarga do armazenamento de dados de proveniência concorrentemente ao processamento dos programas de simulação. Em outra perspectiva, vale enfatizar que a captura \textit{online} é mais flexível e tem um potencial analítico maior, pois permite que os usuários realizem consultas mesmo antes do término da simulação, o que possui um valor inestimável, uma vez que simulações computacionais são comumente realizadas em larga escala e, portanto, custosas e demoradas.
 

@@ -5,11 +5,9 @@
 \chapter{Abordagem para análise de rastros de proveniência}%
 \label{chap:rastros-de-proveniencia}
 
-Nesse capítulo será apresentado o Processador de Consultas (Query Processor), juntamente com a sua implementação e seus algoritmos. Além disso, será abordada a relação entre os diversos tipos de rastros de proveniência existentes e a influência da seleção de um desses tipos na execução do QP.
+Nesse capítulo é apresentado o Processador de Consultas (Query Processor), juntamente com a sua implementação e seus algoritmos. Além disso, aborda-se a relação entre os diversos tipos de rastros de proveniência existentes e a influência da seleção de um desses tipos na execução do QP.
 
-\perrotta{REVIEW: rastreio, rastro, ou rastreamento? Consistência!}
-
-Conforme abordado na \autoref{sec:rastreamento-de-dados-de-proveniencia}, o \textbf{rastreio de dados de proveniência} em uma simulação computacional é realizado através do \textbf{mapeamento de atributos} de dados dos conjuntos de dados, sendo indispensável para tal. Reitera-se a definição de mapeamento de atributos da \autoref{subsec:mapeamento-de-atributos}, destacando que diz-se que existe um mapeamento de atributos entre dois atributos de dados \(da_1\) de um conjunto de dados \(ds_1\) e \(da_2\) de um conjunto de dados \(ds_2\) desde que ambos os atributos apresentem \((i)\) o mesmo identificador (nome) e \((ii)\) o mesmo tipo, e desde que \((iii)\) \(ds_1\) e \(ds_2\) sejam adjacentes no mesmo fluxo de dados, \textit{i.e.} devem possir uma transformação de dados em comum, sendo um deles a entrada e o outro a saída da mesma.
+Conforme abordado na \autoref{sec:rastreamento-de-dados-de-proveniencia}, o \textbf{rastreamento de dados de proveniência} em uma simulação computacional é realizado através do \textbf{mapeamento de atributos} de dados dos conjuntos de dados, sendo indispensável para tal. Reitera-se a definição de mapeamento de atributos da \autoref{subsec:mapeamento-de-atributos}, destacando que diz-se que existe um mapeamento de atributos entre dois atributos de dados \(da_1\) de um conjunto de dados \(ds_1\) e \(da_2\) de um conjunto de dados \(ds_2\), desde que ambos os atributos apresentem \((i)\) o mesmo identificador (nome) e \((ii)\) o mesmo tipo, e desde que \((iii)\) \(ds_1\) e \(ds_2\) sejam adjacentes no mesmo fluxo de dados, \textit{i.e.}, eles devem possuir uma transformação de dados em comum, sendo um deles a entrada e o outro a saída da mesma.
 
 \section{Tipos de rastros de proveniência}%
 \label{sec:tipos-de-rastros-de-proveniencia}
@@ -44,21 +42,19 @@ $ds_2$                        & $\textup{taskid\_}dt_1$      & inteiro
 
 \subsection{Físico}
 
-O mapeamento de atributos de dados do \textbf{tipo físico} ocorre \emph{somente} entre pares de atributos de dados (de conjuntos de dados) especiais, que fazem parte de uma mesma tarefa de execução~/~processamento de uma mesma instância de uma simulação computacional, especialmente denotados por um identificador cujo nome é da forma \texttt{taskid\_\ast}, onde \ast{} representa um número arbitrário (\textit{i.e.} um ou mais) de caracteres. O tipo desse atributo necessariamente deve ser um inteiro positivo. O propósito desse atributo é agrupar elementos de dados que foram processados em uma mesma instância de execução~/~tarefa de uma simulação computacional.
-
-No exemplo dessa seção, o mapeamento físico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.\textup{taskid\_}dt1\) e \(dt_2.\textup{taskid\_}dt2\), pois esses são os únicos atributos do tipo \textit{taskid} presentes em \(D\ast\).
+O mapeamento de atributos de dados do \textbf{tipo físico} ocorre \emph{somente} entre pares de atributos de dados (de conjuntos de dados) especiais, que fazem parte de uma mesma tarefa (execução de uma transformação de dados) de uma mesma instância da simulação computacional, sendo denotadas por um identificador cujo nome é da forma \texttt{taskid\_\ast}, onde \ast{} representa um número arbitrário (\textit{i.e.}, um ou mais) de caracteres. O tipo desse atributo necessariamente deve ser um inteiro positivo. O propósito desse atributo é agrupar elementos de dados que foram processados em uma mesma instância de execução~/~tarefa de uma simulação computacional. No exemplo dessa seção, o mapeamento físico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.\textup{taskid\_}dt1\) e \(dt_2.\textup{taskid\_}dt1\), pois esses são os únicos atributos do tipo \textit{taskid} presentes em \(D\ast\).
 
 \subsection{Lógico}
 
-O mapeamento de atributos de dados do \textbf{tipo lógico} ocorre entre os \textbf{atributos de domínio} dos conjuntos de dados de uma simulação científica. Esses atributos de domínio necessariamente \emph{não} podem denotar o tipo \texttt{taskid} mencionado na subseção anterior.
+O mapeamento de atributos de dados do \textbf{tipo lógico} ocorre entre os \textbf{atributos de domínio} dos conjuntos de dados de uma simulação científica. Esses atributos de domínio necessariamente \emph{não} podem denotar o tipo \texttt{taskid} mencionado na subseção anterior. Sendo assim, o mapeamento lógico permite que as junções, regularmente realizadas pelos usuários ao desenvolver suas consultas, sejam expressas pelos mapeamentos lógicos de atributos. Consequentemente, assim como o mapeamento físico, o mapeamento lógico também pode reduzir o esforço necessário por parte do usuário ao desenvolver suas consultas, já que os principais relacionamentos entre conjuntos de dados poderiam ser representados~/~expressos pelos mapeamentos de atributos.
 
-No exemplo dessa seção, o mapeamento lógico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.da_1\) e \(ds_2.da_1\). Note que \emph{não} existe mapeamento lógico entre \(ds_1.da_2\) e \(ds_2.da_2\) pois, apesar de possuírem o mesmo nome, esses atributos de dados possuem tipos de dados diferentes (inteiro e booleano).
+No exemplo dessa seção, o mapeamento lógico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.da_1\) e \(ds_2.da_1\). Note que \emph{não} existe mapeamento lógico entre \(ds_1.da_2\) e \(ds_2.da_2\) pois, apesar de possuírem o mesmo nome, esses atributos de dados possuem tipos de dados diferentes (inteiro e booleano). Além disso, o atributo \(taskid\textup{\_}dt1\) não foi considerado por ser específico do mapeamento físico.
 
 \subsection{Híbrido}
 
-O mapeamento de atributos de dados do \textbf{tipo híbrido} consiste na combinação --- ou, mais precisamente, na \emph{união} --- de ambos os tipos de mapeamentos de atributos anteriores: o físico e o lógico.
+Existe também cenários em que o usuário precise considerar os mapeamentos de atributos físico e lógico. Nesse cenário, o mapeamento de atributos de dados do \textbf{tipo híbrido} consiste na combinação --- ou, mais precisamente, na \emph{união} --- de ambos os tipos de mapeamentos de atributos anteriores: o físico e o lógico. 
 
-\perrotta{REVIEW: devemos dizer que esse mapeamento de atributos é original desse trabalho? Como?}
+Sendo assim, por meio da definição desses três tipos de mapeamentos de atributos, o usuário poderia especificar que tipos de relacionamentos são importantes de serem expressos~/~considerados ao realizar análises nos resultados obtidos em simulações computacionais. Esses relacionamentos, por exemplo, poderiam ser considerados ao longo de toda a simulação computacional (entre todos os relacionamentos entre transformações de dados) ou em determinadas transformações de dados.
 
 Assim, no exemplo dessa seção, esse mapeamento envolve os seguintes atributos:
 
@@ -74,12 +70,12 @@ Com o objetivo de permitir o desenvolvimento da abordagem para análise de rastr
 \begin{itemize}
     \item possui um bom suporte a orientação a objetos;
     \item está bastante consolidada no mercado e na academia, sendo uma escolha tradicional;
-    \item facilita a integração do Query Processor com os outros componentes do DfAnalyzer, uma vez que eles também foram implementados em Java.
+    \item facilita a integração do Query Processor com os outros componentes do DfAnalyzer, uma vez que eles também foram implementados originalmente em Java.
 \end{itemize}
 
 O projeto foi gerenciado e compilado pelo \texttt{Apache Maven~3.5.0}, tendo sido desenvolvido no ambiente de desenvolvimento integrado \texttt{NetBeans~8.2}, com a versão~1.8 do \texttt{JDK} (\textit{kit} de desenvolvimento) do \texttt{Java}. O \texttt{git} foi utilizado como sistema de controle de versão distribuído para o projeto, o qual consiste de
 % Linhas de código contadas com CLOC: https://github.com/AlDanial/cloc
-22 arquivos-fonte~\texttt{*.java} e 23~classes, totalizando quase 2000~linhas de código.
+22 arquivos-fonte~\texttt{*.java} e 23~classes, totalizando quase 2.000~linhas de código.
 
 Além disso, para garantir a confiabilidade e a qualidade do projeto, 152 testes unitários foram implementados utilizando o \textit{framework} JUnit, distribuídos entre 15 arquivos-fonte.
 
@@ -88,11 +84,9 @@ Além disso, para garantir a confiabilidade e a qualidade do projeto, 152 testes
 
 Nessa seção serão abordados os principais algoritmos e funções utilizadas no Query Processor. Funções auxiliares referenciadas pelos mesmos estão definidas no \autoref{app:funcoes-auxiliares}. A notação utilizada é de pseudocódigo, e as definições dos algoritmos e nomes das variáveis utilizados foram ligeiramente alterados e simplificados em relação à implementação original, visando uma melhor clarificação e apresentação do código.
 
-\perrotta{REVIEW: mencionar algo a mais sobre a notação utilizada para o pseudocódigo?}
-
 \subsection{Detecção das últimas transformações de dados}
 
-O \autoref{lst:algorithm-last-transformations} demonstra como obter as \textbf{últimas transformações de dados} \texttt{transformations} de um fluxo de dados \( D \), isto é, as transformações de dados \(dt\) as quais não possuem nenhuma outra transformação de saída após as mesmas. A ideia do algoritmo é bastante simples: basta checar todas as dependências de dados \( \phi \) --- do conjunto de dependência de dados do fluxo de dados \( D.\Phi \) --- cujo \( dt_{\textrm{next}} \) é nulo, e tomar o \( dt_{\textrm{previous}} \) das mesmas.
+Primeiramente, desenvolvemos um algoritmo para a detecção das últimas transformações de dados, a fim de que seja possível utilizar essas transformações para compreender melhor o encadeamento dos conjuntos de dados, conforme é apresentado nas próximas subseções. O \autoref{lst:algorithm-last-transformations} demonstra como obter as \textbf{últimas transformações de dados} \texttt{transformations} de um fluxo de dados \( D \), isto é, as transformações de dados \(dt\) as quais não possuem nenhuma outra transformação de saída após as mesmas. A ideia do algoritmo é bastante simples: basta checar todas as dependências de dados \( \phi \) --- do conjunto de dependência de dados do fluxo de dados \( D.\Phi \) --- cujo \( dt_{\textrm{next}} \) é nulo, e tomar o \( dt_{\textrm{previous}} \) das mesmas.
 
 % https://tex.stackexchange.com/questions/73231/avoid-page-breaks-in-lstlistings
 \begin{minipage}[c]{0.95\textwidth}
@@ -109,7 +103,7 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), isto é, proporcional ao número de dependências de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário acesso aleatório a essa estrutura de dados. Entretanto, na prática, com o objetivo de amortizar um pouco a complexidade, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP (c.f. \autoref{subsec:preprocessamento}).
+A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), isto é, proporcional ao número de dependências de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário acesso aleatório a essa estrutura de dados. Entretanto, na prática, com o objetivo de amortizar um pouco a complexidade, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP (\textit{c.f.} \autoref{subsec:preprocessamento}).
 
 \subsection{Detecção das trilhas de transformações de dados}%
 \label{subsec:deteccao-das-trilhas-de-transformacoes}
@@ -186,7 +180,7 @@ A complexidade de tempo do algoritmo é a mesma do algoritmo do \autoref{lst:alg
 
 \subsection{Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados}
 
-O \autoref{lst:algorithm-attribute-mappings} demonstra como obter \textbf{múltiplos mapeamentos de atributos} entre dois conjuntos de dados \(ds_{\textup{input}}\) e \(ds_{\textup{output}}\). Assume-se que ambos os conjuntos de dados sejam adjacentes, compartilhando uma mesma transformação de dados \texttt{dt} em comum, de modo que um desses conjuntos de dados é consumido e o outro é produzido pela mesma. Além disso, como mencionado na \autoref{sec:tipos-de-rastros-de-proveniencia}, esses mapeamentos de atributos podem ser de três tipos \texttt{type}: lógico, físico e híbrido:
+O \autoref{lst:algorithm-attribute-mappings} demonstra como obter \textbf{múltiplos mapeamentos de atributos} entre dois conjuntos de dados \(ds_{\textup{input}}\) e \(ds_{\textup{output}}\). Assume-se que ambos os conjuntos de dados sejam adjacentes, compartilhando uma mesma transformação de dados \texttt{dt} em comum, de modo que um desses conjuntos de dados é consumido e o outro é produzido pela mesma. Além disso, como mencionado na \autoref{sec:tipos-de-rastros-de-proveniencia}, esses mapeamentos de atributos podem ser de três tipos (variável \texttt{type} no pseudo-código): lógico, físico e híbrido.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-attribute-mappings},caption={[Obtenção de múltiplos mapeamentos de atributos]Obtenção de múltiplos mapeamentos de atributos entre dois conjuntos de dados adjacentes.}]
@@ -290,16 +284,17 @@ O \autoref{lst:algorithm-generate-sql-query} é uma versão simplificada do algo
     \item \texttt{D}: o fluxo de dados a ser analisado;
     \item \texttt{dsOrigins}: os conjuntos de dados que serão usados como origem na busca de caminhos do \autoref{lst:algorithm-find-paths};
     \item \texttt{dsDestinations}: os conjuntos de dados que serão usados como destino na busca de caminhos do \autoref{lst:algorithm-find-paths}. Um produto cartesiano entre \texttt{dsDestinations} e \texttt{dsOrigins} é realizado, gerando todos os pares possíveis entre cada conjunto de dados dessas coleções, cada um dos quais são utilizados na busca de caminhos;
-    \item \texttt{dsIncludes}: utilizado como filtro para o \autoref{lst:algorithm-find-paths}; somente os caminhos contendo \emph{todos} os conjuntos de dados especificados nessa coleção serão utilizados na consulta;
-    \item \texttt{dsExcludes}: o oposto do item anterior; somente os caminhos que não contêm \emph{nenhum} dos conjuntos de dados especificados nessa coleção serão utilizados na consulta; é utilizado como filtro para o \autoref{lst:algorithm-find-paths}.
     \item \texttt{type}: o tipo de mapeamento de atributos que será utilizado na especificação das seleções em SQL, conforme abordado na \autoref{sec:tipos-de-rastros-de-proveniencia} e no \autoref{lst:algorithm-attribute-mappings}.
     \item \texttt{projections}: especificação das projeções pelo usuário, optando por quais atributos devem ser incluídos na cláusula \textsc{SELECT} do SQL;
     \item \texttt{selections}: especificação das seleções pelo usuário, optando por quais condições devem ser incluídas na cláusula \textsc{WHERE} do SQL.
+    \item \texttt{dsIncludes}: utilizado como filtro para o \autoref{lst:algorithm-find-paths}; somente os caminhos contendo \emph{todos} os conjuntos de dados especificados nessa coleção serão utilizados na consulta;
+    \item \texttt{dsExcludes}: o oposto do item anterior; somente os caminhos que não contêm \emph{nenhum} dos conjuntos de dados especificados nessa coleção serão utilizados na consulta; é utilizado como filtro para o \autoref{lst:algorithm-find-paths}.
 \end{itemize}
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-generate-sql-query},caption={[Geração da consulta em SQL]Geração da consulta na linguagem SQL a partir das especificações do usuário.}]
-function generateSqlQuery(D,dsOrigins,dsDestinations,dsIncludes, dsExcludes,type,projections,selections)
+function generateSqlQuery(D,dsOrigins,dsDestinations,type,
+projections,selections,dsIncludes, dsExcludes)
     selectClause %\leftarrow% {}
     fromClause   %\leftarrow% {}
     whereClause  %\leftarrow% {}
@@ -343,7 +338,7 @@ Depois, são definidas cada uma das cláusulas fundamentais da linguagem SQL: \t
 \begin{itemize}
     \item a cláusula \textsc{FROM} é populada automaticamente e não-extensivamente incluindo, par fins de performance, \emph{somente} as tabelas (atributos de conjuntos de dados) necessárias para a apresentação dos resultados da consulta ao usuário;
     \item a cláusula \textsc{SELECT} é populada de acordo com a especificação do usuário no argumento \texttt{projections}: uma vez que é o usuário quem deve escolher quais atributos ele deseja visualizar e consultar, o algoritmo não interfere de forma alguma nessa cláusula. No entanto, para fins de usabilidade, caso o usuário não especifique nenhuma projeção de atributo, o algoritmo popula a cláusula automaticamente e extensivamente, utilizando todos os atributos mapeados entre todo par de conjuntos de dados especificados como origem e destino (em \texttt{dsOrigins} e \texttt{dsDestinations}, respectivamente);
-    \item finalmente, a cláusula \textsc{WHERE} é a mais importante do ponto de vista de análise de rastros de proveniência, uma vez que é ela quem atua como filtro e seleção, limitando a consulta somente aos dados que realmente satisfazem a especificação do usuário. Desse modo, ela é populada automaticamente pelo algoritmo, inclusive com todos os mapeamentos de atributos (físico, lógico ou híbrido, dependendo do valor da variável \texttt{type}) encontrados nos caminhos entre o produto cartesiano de \texttt{dsOrigins} e \texttt{dsDestinations}. Além da população implícita e automática pelo algoritmo, o usuário também pode especificar seleções adicionais a serem incluídas nessa cláusula através da variável \texttt{selections}.
+    \item finalmente, a cláusula \textsc{WHERE} é a mais importante do ponto de vista de análise de rastros de proveniência, uma vez que é ela quem atua como filtro~/~seleção, limitando a consulta somente aos dados que realmente satisfazem a especificação do usuário. Desse modo, ela é populada automaticamente pelo algoritmo, inclusive com todos os mapeamentos de atributos (físico, lógico ou híbrido, dependendo do valor da variável \texttt{type}) encontrados nos caminhos entre o produto cartesiano de \texttt{dsOrigins} e \texttt{dsDestinations}. Além da população implícita e automática pelo algoritmo, o usuário também pode especificar seleções adicionais a serem incluídas nessa cláusula através da variável \texttt{selections}.
 \end{itemize}
 
 \subsection{Pré-processamento}%
@@ -356,28 +351,26 @@ Uma vez que um dos principais interesses do Query Processor é a aplicação do 
 A fim de resolver esse problema, diversas \textbf{otimizações de pré-processamento de dados e de metadados} foram empregadas e computadas, efetivamente diminuindo a complexidade computacional dos algoritmos anteriores e das funções auxiliares utilizadas neles, trocando tempo por espaço / armazenamento. Na prática, isso significa o seguinte:
 
 \begin{enumerate}
-    \item as \emph{próximas} transformações de dados e os \emph{próximos} conjuntos de dados de cada conjunto de dados e de cada transformação de dados foram computadas no instante da instanciação do fluxo de dados, tendo sido armazenados em \textit{HashMultimaps}; \perrotta{REVIEW: Devo remover essa referência à \emph{HashMultimaps}? Talvez não seja tão importante assim.}
+    \item as \emph{próximas} transformações de dados e os \emph{próximos} conjuntos de dados de cada conjunto de dados e de cada transformação de dados foram computadas no instante da instanciação do fluxo de dados, tendo sido armazenados em \textit{HashMultimaps}\footnote{\textit{HashMultimap} é uma estrutura de dados da biblioteca Guava da Google (\url{https://github.com/google/guava}) que provê armazenamento e consulta de pares de dados chave e valor em uma \textit{hashtable}.};
     \item analogamente, as transformações de dados \emph{anteriores} e os conjuntos de dados \emph{anteriores} também foram pré-computados;
     \item as últimas transformações de dados (\autoref{lst:algorithm-last-transformations}), as trilhas de transformações de dados (\autoref{lst:algorithm-transformation-tracks}) e as trilhas de conjuntos de dados (\autoref{lst:algorithm-dataset-tracks}) foram computadas uma única vez, e então permanentemente armazenadas para uso posterior --- em vez de, por exemplo, serem recomputadas a cada referência às mesmas.
 \end{enumerate}
 
-Os itens 1 e 2 eliminam completamente a necessidade de iteração sobre as dependências de dados, eliminando a complexidade computacional de ordem quadrática dos algoritmos, aumentando significativamente a performance dos mesmos. O item 3 emprega uma técnica chamada \textit{memoization}, que evita computar mais de uma vez o mesmo dado: os acessos após o primeiro são realizados em \(O(1)\).
-
-Essas otimizações de pré-processamento, pré-computação e \textit{memoization} foram fundamentais para garantir uma boa performance para o Query Processor.
+Os itens 1 e 2 eliminam completamente a necessidade de iteração sobre as dependências de dados, eliminando a complexidade computacional de ordem quadrática dos algoritmos, aumentando significativamente a performance dos mesmos. O item 3 emprega uma técnica chamada \textit{memoization}, que evita computar mais de uma vez o mesmo dado: os acessos após o primeiro são realizados em \(O(1)\). Essas otimizações de pré-processamento, pré-computação e \textit{memoization} foram fundamentais para garantir uma boa performance para o Query Processor.
 
 \section{Um exemplo de consulta}%
 \label{sec:um-exemplo-de-consulta}
 
 Para ilustrar uma consulta utilizando o \autoref{lst:algorithm-generate-sql-query} (\texttt{generateSqlQuery}), vamos considerar como exemplo o fluxo de dados \(D^{\prime}\) da \autoref{fig:example-query-dataflow}, cujos atributos estão listados na \autoref{tab:example-query-attributes} e cujos elementos de dados estão listados na \autoref{tab:example-query-data-elements}.
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{img/example-query-dataflow}
     \caption[Fluxo de dados de exemplo]{Fluxo de dados \(D^{\prime}\) utilizado como exemplo para a \autoref{sec:um-exemplo-de-consulta}.}%
     \label{fig:example-query-dataflow}
 \end{figure}
 
-\begin{table}[htb]
+\begin{table}[!htb]
     \centering
     \begin{tabular}{c|c|c}
     \textbf{Conjunto de dados} & \textbf{Nome do atributo} & \textbf{Tipo do atributo} \\ \hline
@@ -395,7 +388,7 @@ $ds_4$                        & $\textup{taskid\_}dt_2$      & inteiro
     \label{tab:example-query-attributes}
 \end{table}
 
-\begin{table}[htb]
+\begin{table}[!htb]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -418,26 +411,69 @@ $de_3$          & \multicolumn{2}{c|}{charlie}      & \multicolumn{2}{c|}{2}    
 
 \subsection{Exemplo~\#1}
 
+Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados $ds_1$ como origem e $ds_2$ como destino, especificada na \autoref{tab:example-query-arguments-2}. que gera o código em SQL apresentado no \autoref{lst:example-query-output-2}. Os resultados obtidos pela consulta em SQL podem ser observados na \autoref{tab:example-query-results-2}.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{c|c}
+\textbf{Argumento}          & \textbf{Valor} \\ \hline
+\texttt{D}                  & \(D^{\prime}\) \\
+\texttt{dsOrigins}          & \(\{ds_{1}\}\) \\
+\texttt{dsDestinations}     & \(\{ds_{2}\}\) \\
+\texttt{type}               & physical       \\
+\texttt{projections}        & \{$ds_{1}.da_{1}$, $ds_{1}.da_{2}$, $ds_{2}.da_{2}$\}    \\
+\texttt{selections}         & \varnothing \\
+\texttt{dsIncludes}         & \varnothing    \\
+\texttt{dsExcludes}         & \varnothing    \\
+\end{tabular}
+\caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#2]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#2.}%
+\label{tab:example-query-arguments-2}
+\end{table}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=sql,label={lst:example-query-output-2},caption={[Código SQ gerado no exemplo~\#2]Código SQL gerado pela função \texttt{generateSqlQuery} no exemplo~\#2.}]
+SELECT %$ds_{1}.da_{1}$%, %$ds_{1}.da_{2}$%, %$ds_{2}.da_{2}$%
+FROM %$ds_{1}$%,%$ds_{2}$%
+WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$%;
+\end{lstlisting}
+\end{minipage}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{c|c|c}
+\textbf{ds\textsubscript{1}.da\textsubscript{1}} & \textbf{ds\textsubscript{1}.da\textsubscript{2}} & \textbf{ds\textsubscript{2}.da\textsubscript{2}} \\ \hline
+100              & verdadeiro       & -20              \\
+100              & verdadeiro       & -45              \\
+200              & falso            & -20              \\
+200              & falso            & -45              \\
+300              & verdadeiro       & 42              
+    \end{tabular}
+    \caption[Resultados obtidos com a consulta em SQL do exemplo \#2]{Resultados obtidos com a consulta em SQL do exemplo \#2.}
+    \label{tab:example-query-results-2}
+\end{table}
+
+\subsection{Exemplo~\#2}
+
 Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \(ds_{4}\) como destino, especificada na \autoref{tab:example-query-arguments-1}. O caminho de conjuntos de dados obtido no fluxo de dados \(D^{\prime}\) pelo Query Processor pode ser visualizado na \autoref{fig:example-query-dataflow-1}, e o código em SQL gerado para essa consulta encontra-se no \autoref{lst:example-query-output-1}. Os resultados (elementos de dados) retornados pela consulta em SQL estão na \autoref{tab:example-query-results-1}.
 
-\begin{table}[htb]
+\begin{table}[!htb]
     \centering
     \begin{tabular}{c|c}
 \textbf{Argumento}          & \textbf{Valor} \\ \hline
 \texttt{D}                  & \(D^{\prime}\) \\
 \texttt{dsOrigins}          & \(\{ds_{1}\}\) \\
 \texttt{dsDestinations}     & \(\{ds_{4}\}\) \\
-\texttt{dsIncludes}         & \varnothing    \\
-\texttt{dsExcludes}         & \varnothing    \\
 \texttt{type}               & hybrid         \\
 \texttt{projections}        & \{$ds_{1}.da_{1}$, $ds_{1}.da_{2}$, $ds_{2}.da_{1}$, $ds_{2}.da_{2}$,$ds_{4}.da_{3}$\}    \\
-\texttt{selections}         & \{$ds_{1}.da_{1} > 100$\}              
+\texttt{selections}         & \{$ds_{1}.da_{1} > 100$\} \\
+\texttt{dsIncludes}         & \varnothing    \\
+\texttt{dsExcludes}         & \varnothing    \\
     \end{tabular}
     \caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#1]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#1.}%
     \label{tab:example-query-arguments-1}
 \end{table}
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{img/example-query-dataflow-1}
     \caption[Caminho obtido na consulta do exemplo \#1]{Caminho de conjuntos de dados obtido na consulta do exemplo \#1: \(\{ds_{1} \rightarrow ds_{2} \rightarrow ds_{4}\}.\)}%
@@ -455,7 +491,7 @@ WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$% and --
 \end{lstlisting}
 \end{minipage}
 
-\begin{table}[htb]
+\begin{table}[!htb]
     \centering
     \begin{tabular}{c|c|c|c|c}
 \textbf{ds\textsubscript{1}.da\textsubscript{1}} & \textbf{ds\textsubscript{1}.da\textsubscript{2}} & \textbf{ds\textsubscript{2}.da\textsubscript{1}} & \textbf{ds\textsubscript{2}.da\textsubscript{2}} & \textbf{ds\textsubscript{4}.da\textsubscript{3}} \\ \hline
@@ -466,47 +502,4 @@ WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$% and --
     \end{tabular}
     \caption[Resultados obtidos com a consulta em SQL do exemplo \#1]{Resultados obtidos com a consulta em SQL do exemplo \#1.}
     \label{tab:example-query-results-1}
-\end{table}
-
-\subsection{Exemplo~\#2}
-
-Como segundo exemplo, considere a consulta envolvendo os conjuntos de dados $ds_1$ como origem e $ds_2$ como destino, especificada na \autoref{tab:example-query-arguments-2}. que gera o código em SQL apresentado no \autoref{lst:example-query-output-2}. Os resultados obtidos pela consulta em SQL podem ser observados na \autoref{tab:example-query-results-2}.
-
-\begin{table}[htb]
-    \centering
-    \begin{tabular}{c|c}
-\textbf{Argumento}          & \textbf{Valor} \\ \hline
-\texttt{D}                  & \(D^{\prime}\) \\
-\texttt{dsOrigins}          & \(\{ds_{1}\}\) \\
-\texttt{dsDestinations}     & \(\{ds_{2}\}\) \\
-\texttt{dsIncludes}         & \varnothing    \\
-\texttt{dsExcludes}         & \varnothing    \\
-\texttt{type}               & physical       \\
-\texttt{projections}        & \{$ds_{1}.da_{1}$, $ds_{1}.da_{2}$, $ds_{2}.da_{2}$\}    \\
-\texttt{selections}         & \varnothing
-\end{tabular}
-\caption[Argumentos da função \texttt{generateSqlQuery} para o Exemplo \#2]{Argumentos da função \texttt{generateSqlQuery} para o Exemplo~\#2.}%
-\label{tab:example-query-arguments-2}
-\end{table}
-
-\begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sql,label={lst:example-query-output-2},caption={[Código SQ gerado no exemplo~\#2]Código SQL gerado pela função \texttt{generateSqlQuery} no exemplo~\#2.}]
-SELECT %$ds_{1}.da_{1}$%, %$ds_{1}.da_{2}$%, %$ds_{2}.da_{2}$%
-FROM %$ds_{1}$%,%$ds_{2}$%
-WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$%;
-\end{lstlisting}
-\end{minipage}
-
-\begin{table}[htb]
-    \centering
-    \begin{tabular}{c|c|c}
-\textbf{ds\textsubscript{1}.da\textsubscript{1}} & \textbf{ds\textsubscript{1}.da\textsubscript{2}} & \textbf{ds\textsubscript{2}.da\textsubscript{2}} \\ \hline
-100              & verdadeiro       & -20              \\
-100              & verdadeiro       & -45              \\
-200              & falso            & -20              \\
-200              & falso            & -45              \\
-300              & verdadeiro       & 42              
-    \end{tabular}
-    \caption[Resultados obtidos com a consulta em SQL do exemplo \#2]{Resultados obtidos com a consulta em SQL do exemplo \#2.}
-    \label{tab:example-query-results-2}
 \end{table}
