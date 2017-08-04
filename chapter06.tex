@@ -10,12 +10,18 @@ Esse capítulo apresentará alguns exemplos de experimentos e de simulações co
 \section{Simulação Computacional em Sedimentação}
 
 % introduzir o dataflow de exemplo
-
 % - imagem
 % - nao incluir os atributos de dados (ou só incluir alguns)
 % - referenciar supercomputing (SC 2016)
 
 \perrotta{Capítulo 06 --- Ilustrar o dataset de exemplo}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/experiments-dataflow}
+    \caption[Fluxo de dados $D^{\dagger}$ utilizado nos experimentos]{Fluxo de dados $D^{\dagger}$ utilizado nos experimentos.}%
+    \label{fig:experiments-dataflow}
+\end{figure}
 
 \section{Experimentos}
 
@@ -26,6 +32,63 @@ Os experimentos relacionados ao Query Processor foram executados em um computado
     \item Processador Intel Core i5 2,7~GHz;
     \item 8~GB de memória RAM DDR3.
 \end{itemize}
+
+\subsection{Consulta \#1}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{c|c}
+\textbf{Argumento}          & \textbf{Valor} \\ \hline
+\texttt{D}                  & $D^{\dagger}$ \\
+\texttt{dsOrigins}          & \{\texttt{osolversimulationtransport}\} \\
+\texttt{dsDestinations}     & \{\texttt{oline2extraction}, \texttt{omeshwriter}\} \\
+\texttt{type}               & physical \\
+\texttt{projections}        & \{\texttt{osolversimulationtransport.time}, \texttt{AVG(oline2extraction.d)}\} \\
+\texttt{selections}         & \varnothing \\
+\texttt{dsIncludes}         & \varnothing \\
+\texttt{dsExcludes}         & \varnothing \\
+    \end{tabular}
+    \caption[Argumentos da função \texttt{generateSqlQuery} para a consulta \#1]{Especificação dos argumentos da função \texttt{generateSqlQuery} para a consulta~\#1.}%
+    \label{tab:experiments-1-especificacao}
+\end{table}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-1}
+    \caption[Caminho rastreado na consulta \#1]{Caminho rastreado na consulta \#1.}%
+    \label{fig:experiments-dataflow-1}
+\end{figure}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=sql,label={lst:experiments-1-sql},caption={[Código SQL gerado na consulta~\#1]Código SQL gerado na consulta~\#1.}]
+SELECT osolversimulationtransport.time,AVG(oline2extraction.d)
+FROM osolversimulationtransport,oline2extraction,omeshwriter
+WHERE (osolversimulationtransport.line2extraction_task_id = oline2extraction.line2extraction_task_id) and
+      (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id);
+\end{lstlisting}
+\end{minipage}
+
+\begin{verbatim}
++--------------------------+--------------------------+
+| time                     | L71                      |
++==========================+==========================+
+|                1.3398483 |     1.74129306930693e-44 |
+|                3.1009347 |  -1.0847045643564339e-44 |
+|                5.4124618 |    7.853749801980205e-39 |
+|                7.8695609 |  -1.8180726336633645e-33 |
+|               10.1307669 |   1.0729463267326738e-27 |
+|               12.6055519 |   1.0473414950495052e-24 |
+|                       15 |   -8.768540693069305e-22 |
++--------------------------+--------------------------+
+7 tuples (2.068ms)
+\end{verbatim}
+
+\subsection{Consulta \#2}
+
+\subsection{Consulta \#3}
+
+\subsection{Consulta \#4}
+
 
 % Base em si
 % Dados
