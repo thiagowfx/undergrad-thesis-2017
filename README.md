@@ -6,10 +6,19 @@ Computer and Information Engineering Bachelor's degree.
 
 It uses the [Coppetex](http://coppetex.sourceforge.net/) standard.
 
+Nice-to-have
+============
+
+These are not really mandatory, but you might have to change some settings if
+they are not available:
+
+* Lualatex
+* Fira Mono monospace font installed in your system
+
 How to produce the PDF
 ======================
 
-- Step 1. install `texlive`
+- Step 1. install `texlive` (for example, through homebrew)
 - Step 2. run `make`
 
 How to edit continuously on macOS
