@@ -68,19 +68,15 @@ Uma vez que todos os dados científicos e toda a proveniência sejam devidamente
 
 O processador de consultas é um componente bastante importante, já que é a principal interface entre os usuários e uma instância da arquitetura ARMFUL, e todas as consultas ao banco de dados são iniciadas (e especificadas) a partir dele.
 
-\section{DfAnalyzer: uma instância da arquitetura ARMFUL}
+\section{DfAnalyzer: uma instância da arquitetura ARMFUL}%
+\label{sec:dfanalyzer-uma-instancia-da-arquitetura-armful}
 
 \subsection{Visão Geral}%
 \label{subsec:dfanalyzer-visao-geral}
 
-Como vimos na seção anterior, a arquitetura ARMFUL é uma \textbf{abstração} que define e especifica componentes a fim de prover um mecanismo capaz de realizar consultas a um banco de dados, cujos dados de proveniência, execução e domínio foram oriundos de uma simulação computacional. Dito isso, o \textbf{DfAnalyzer} é uma \textbf{instância da arquitetura ARMFUL}; em outras palavras, ele consiste em uma implementação dessa arquitetura. Ele foi originalmente introduzido em~\cite{silva2016situ}. Nas próximas subseções, os principais componentes do DfAnalyzer são abordados.
+Como vimos na seção anterior, a arquitetura ARMFUL é uma \textbf{abstração} que define e especifica componentes a fim de prover um mecanismo capaz de realizar consultas a um banco de dados, cujos dados de proveniência, execução e domínio foram oriundos de uma simulação computacional. Dito isso, o \textbf{DfAnalyzer} é uma \textbf{instância da arquitetura ARMFUL}; em outras palavras, ele consiste em uma implementação dessa arquitetura. Ele foi originalmente introduzido em~\cite{silva2016situ}. Os principais componentes do DfAnalyzer são abordados nas próximas subseções.
 
-% Descrição geral / overview do DfAnalyzer.
-\silva{Isso não é uma descrição geral do DfAnalyzer. Aqui você mais apresentou o solver de sedimentação do que o DfAnalyzer. Ou seja, o DfAnalyzer não depende do solver. No caso, acho que você pode usar os dois próximos parágrafos no experimento.}
-
-% O DfAnalyzer utiliza a \textit{libMesh}, uma biblioteca \textit{open-source} implementada na linguagem C++, desenvolvida para facilitar a simulação de aplicações paralelas de refinamento de malhas e elementos finitos adaptativos~\cite{boncz2008breaking}, em um resolvedor chamado \textit{libMesh-sedimentation}. O propósito dessa aplicação é simular a turbidez e perturbação de correntes de fluidos tipicamente encontradas em processos geológicos. Os sedimentos que são transportados devido à dinâmica e ao movimento dos fluidos computacionais são descritos por um modelo matemático que resulta da equação de incompressibilidade de Navier-Stokes (fluido) combinada com uma equação de transporte dominada por advecção (concentração de sedimentos). A \textit{libMesh-sedimentation} emprega um método de elementos finitos de multi-escala variacional no qual uma abordagem escalonada é utilizada para representar e simular a evolução do tempo nas equações de acoplamento entre o fluido e os sedimentos. 
-
-% Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}. Nesse cenário a análise é possibilitada pelo DfAnalyzer o qual, devido a sua arquitetura em componentes herdada da ARMFUL, permite que consultas relacionadas a proveniência e aos dados científicos de múltiplos arquivos e transformações de dados sejam realizadas \textit{on-line}, ainda durante a execução da simulação computacional.
+\perrotta{TODO: Descrição geral / overview do DfAnalyzer, in order to replace the former sedimentation solver simulation text}
 
 \subsection{Provenance Data Gatherer (PDG)}
 
@@ -94,10 +90,7 @@ Existem duas fontes de proveniência para o PDG. Uma é a \textit{libMesh-sedime
 
 \subsection{Raw Data Extractor (RDE)}
 
-Uma vez que o PDG especializa-se em coletar proveniência e dados de domínio, o \textbf{Raw Data Extractor} (RDE) o complementa, sendo o componente responsável por \textbf{extrair} os dados científicos que estão presentes em arquivos científicos (\textit{c.f.} \autoref{subsec:extracao-e-indexacao-de-dados-cientificos}). Esses arquivos usualmente contêm seus dados em formato binário, total ou parcialmente, sendo responsabilidade do RDE a leitura, filtragem e análise do conteúdo desses dados, transformando-os em um formato adequado para ser armazenado nos tipos e tabelas disponíveis no MonetDB. Dependendo da aplicação e da simulação científica, o conteúdo desses arquivos científicos pode ser ora armazenado diretamente no SGBD, ora armazenado indiretamente, através de ponteiros, referências de arquivos, ou estruturas de dados em formatos intermediários de representação.
-
-\perrotta{REVIEW: que tipos de arquivos ou dados são coletados na libMesh-sedimentation?}
-\silva{No solver, capturamos dados referentes ao resíduo do solver ao resolver as equações para o fluido e os sedimentos. Para a gerência de arquivos, consideramos os raw data files nos formatos XDMF e HDF5.}
+Uma vez que o PDG especializa-se em coletar proveniência e dados de domínio, o \textbf{Raw Data Extractor} (RDE) o complementa, sendo o componente responsável por \textbf{extrair} os dados científicos que estão presentes em arquivos científicos (\textit{c.f.} \autoref{subsec:extracao-e-indexacao-de-dados-cientificos}). Esses arquivos usualmente mantêm seus dados em formato binário, total ou parcialmente, sendo responsabilidade do RDE a leitura, filtragem e análise do conteúdo desses dados, transformando-os em um formato adequado para ser armazenado nos tipos e tabelas disponíveis no MonetDB. Dependendo da aplicação e da simulação científica, o conteúdo desses arquivos científicos pode ser ora armazenado diretamente no SGBD, ora armazenado indiretamente, através de ponteiros (referências de arquivos), ou estruturas de dados em formatos intermediários de representação.
 
 \subsection{Raw Data Indexer (RDI)}
 

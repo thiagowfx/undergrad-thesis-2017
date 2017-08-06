@@ -5,19 +5,15 @@
 \chapter{Experimentos}%
 \label{chap:experimentos}
 
-Esse capítulo apresentará alguns exemplos de experimentos e de simulações computacionais, que foram executados a fim de ilustrar a implementação do Query Processor --- apresentado no \autoref{chap:rastros-de-proveniencia} ---, assim como os resultados obtidos com os mesmos.
+Esse capítulo apresenta alguns exemplos de experimentos e de simulações computacionais com base em uma aplicação do DfAnalyzer no campo de sedimentação de dinâmica de fluidos computacionais~\cite{silva2016situ}, os quais foram executados a fim de ilustrar a implementação e a utilização do Query Processor --- apresentado no \autoref{chap:rastros-de-proveniencia} ---, assim como os resultados obtidos com as consultas realizadas nos mesmos.
 
-\perrotta{TODO: EXPAND}
+\section{Simulação computacional em sedimentação}
 
-\section{Simulação Computacional em Sedimentação}
+O DfAnalyzer (\textit{c.f.} \autoref{sec:dfanalyzer-uma-instancia-da-arquitetura-armful}) utiliza a \textit{libMesh}, uma biblioteca \textit{open-source} implementada na linguagem C++, desenvolvida para facilitar a simulação de aplicações paralelas de refinamento de malhas e elementos finitos adaptativos~\cite{boncz2008breaking}, em um resolvedor chamado \textit{libMesh-sedimentation}. O propósito dessa aplicação é simular a turbidez e perturbação de correntes de fluidos tipicamente encontradas em processos geológicos. Os sedimentos que são transportados devido à dinâmica e ao movimento dos fluidos computacionais são descritos por um modelo matemático que resulta da equação de incompressibilidade de Navier-Stokes (fluido) combinada com uma equação de transporte dominada por advecção (concentração de sedimentos). A \textit{libMesh-sedimentation} emprega um método de elementos finitos de multi-escala variacional no qual uma abordagem escalonada é utilizada para representar e simular a evolução do tempo nas equações de acoplamento entre o fluido e os sedimentos. 
 
-% - referenciar supercomputing (SC 2016)
+Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial e rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}. Nesse cenário a análise é possibilitada pelo DfAnalyzer o qual, devido a sua arquitetura em componentes herdada da ARMFUL, permite que consultas relacionadas a proveniência e aos dados científicos de múltiplos arquivos e transformações de dados sejam realizadas \textit{on-line}, ainda durante a execução da simulação computacional.
 
-Todos os exemplos de consultas desse capítulo utilizam o mesmo fluxo de dados \(D^{\dagger}\) ilustrado na \autoref{fig:experiments-dataflow}.
-
-\perrotta{Introdução}
-
-\perrotta{Capítulo 06 --- Ilustrar o dataset de exemplo}
+Neste capítulo realizamos várias consultas com um fluxo de dados \(D^{\dagger}\) baseado no \textit{solver} de \textbf{simulação de sedimentação de dinâmica de fluidos computacionais} mencionado nos parágrafos anteriores. Esse fluxo de dados \(D^{\dagger}\) está ilustrado na \autoref{fig:experiments-dataflow}.
 
 \begin{figure}[!htb]
     \centering
@@ -26,15 +22,41 @@ Todos os exemplos de consultas desse capítulo utilizam o mesmo fluxo de dados \
     \label{fig:experiments-dataflow}
 \end{figure}
 
+Devido à grande quantidade de conjuntos de dados \(S^{\dagger}\) de \(D^{\dagger}\), não listamos todos os atributos de dados de \(S^{\dagger}\). No entanto, para fins de ilustração, alguns atributos de dados de \(S^{\dagger}\) podem ser visualizados na \autoref{tab:experiments-data-attributes}.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c|c|c}
+\textbf{Conjunto de dados}                  & \textbf{Atributo de dados} & \textbf{Tipo}   & \makecell{\textbf{Exemplo} \\ \textbf{de Valor}}             \\ \hline
+\multirow{3}{*}{osolversimulationtransport} & time                       & \makecell{ponto \\ flutuante} & 1e-05                                  \\ \cline{2-4}
+                                            & t\_step                    & inteiro         & 0                                      \\ \cline{2-4}
+                                            & meshwriter\_task\_id       & inteiro         & 17                                     \\ \hline
+\multirow{2}{*}{omeshaggregator}            & xdmf                       & arquivo         & \texttt{\textasciitilde/output\_48.xmf}             \\ \cline{2-4}
+                                            & n\_processors              & inteiro         & 480                                    \\ \hline
+omeshrefinement                             & first\_step\_refinement    & booleano        & falso                                  \\ \hline
+ovisualization                              & png                        & arquivo         & \texttt{\textasciitilde/image\_99.png} \\ \hline
+oinputmesh                                  & mesh\_file                 & arquivo         & \texttt{\textasciitilde/necker3d.mesh}               \\ \hline
+otimestepcontrolconfig                      & model\_name                & string          & PC11                                  
+    \end{tabular}
+    \caption[Exemplos de alguns atributos de dados de \(S^{\dagger}\)]{Exemplos de alguns atributos de dados de \(S^{\dagger}\).}%
+    \label{tab:experiments-data-attributes}
+\end{table}
+
+% \silva{REVIEW: que tipos de arquivos ou dados são coletados na libMesh-sedimentation?. No solver, capturamos dados referentes ao resíduo do solver ao resolver as equações para o fluido e os sedimentos. Para a gerência de arquivos, consideramos os raw data files nos formatos XDMF e HDF5.}
+
+\perrotta{TODO: citar artigo do email}
+
 \section{Experimentos}
 
-Os experimentos relacionados ao Query Processor foram executados em um computador com as seguintes especificações:
+As consultas dos experimentos das próximas subseções, relacionadas ao Query Processor, foram executadas em um computador com as seguintes especificações:
 
 \begin{itemize}
 	\item Macbook Pro Retina 2015, com o sistema operacional macOS Sierra 10.12.6;
     \item Processador Intel Core i5 2,7~GHz, com 4~CPUs;
     \item 8~GB de memória RAM do tipo DDR3.
 \end{itemize}
+
+Quatro consultas foram realizadas, cada uma das quais com diversos parâmetros para a função \texttt{generateSqlQuery} (\textit{c.f.} \autoref{subsec:geracao-da-consulta-em-sql}).
 
 \subsection{Consulta \#1}
 

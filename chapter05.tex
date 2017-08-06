@@ -12,10 +12,6 @@ Conforme abordado na \autoref{sec:rastreamento-de-dados-de-proveniencia}, o \tex
 \section{Tipos de rastros de proveniência}%
 \label{sec:tipos-de-rastros-de-proveniencia}
 
-% former section: Visão geral sobre a análise de rastros de proveniência
-% explicação + exemplo + complemento de uma (sub)seção anterior
-% definição, etc
-
 A fim de ilustrar as definições das próximas subseções, considere o fluxo de dados  \(D\ast\) da \autoref{fig:simple-dataflow-for-diff}, cujos atributos de dados \(A\ast\) estão listados na \autoref{tab:simple-attributes-for-diff}. 
 
 \begin{figure}[htb]
@@ -276,7 +272,8 @@ A função \texttt{depthFirstSearch} é responsável por realizar uma busca no g
 
 A complexidade computacional desse par de funções (\texttt{findPaths} e \texttt{depthFirstSearch}) é da ordem de \(O(\#(S) + \#(T))\), que é a complexidade computacional da DFS\footnote{\textbf{Observação:} a complexidade computacional da função \texttt{getNextDatasets} é de $O(\#(D.\Phi)^2)$. No entanto, como existe um pré-processamento das estruturas de dados (\textit{c.f.} \autoref{subsec:preprocessamento}), podemos desprezar essa complexidade, levando em conta apenas o resultado originalmente obtido.}. Os caminhos encontrados são armazenados em uma lista encadeada.
 
-\subsection{Geração da consulta em SQL}
+\subsection{Geração da consulta em SQL}%
+\label{subsec:geracao-da-consulta-em-sql}
 
 O \autoref{lst:algorithm-generate-sql-query} é uma versão simplificada do algoritmo responsável pela \textbf{geração da consulta na linguagem SQL} a partir das especificações providas pelo usuário. A assinatura da função possui os seguintes argumentos:
 
