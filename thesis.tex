@@ -69,9 +69,10 @@
 % source code listings
 \usepackage{listings}
 
+% https://www.overleaf.com/help/193-what-otf-slash-ttf-fonts-are-supported-via-fontspec
 \ifxetexorluatex
   \usepackage{fontspec}
-  \newfontfamily{\lstsansserif}[Scale=.80]{Source Code Pro}
+  \newfontfamily{\lstsansserif}[Scale=.80]{Fira Mono}
   \lstset{basicstyle=\lstsansserif}
 \else
   \lstset{basicstyle=\footnotesize\sf}
@@ -131,7 +132,7 @@
 \makeloabbreviations{}
 
 % typeset only the following chapters for faster typesetting times
-% \includeonly{chapter03,chapter04,chapter05}
+% \includeonly{chapter06}
 
 \begin{document}
   \title{Análise do Rastro de Proveniência em Simulações Computacionais em Larga Escala}
