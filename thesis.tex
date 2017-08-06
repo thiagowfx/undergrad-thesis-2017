@@ -7,6 +7,18 @@
 \documentclass[grad,numbers]{coppetex/coppe}
 
 \usepackage{iftex}
+% https://tex.stackexchange.com/questions/47576/combining-ifxetex-and-ifluatex-with-the-logical-or-operation
+\newif\ifxetexorluatex
+\ifxetex
+  \xetexorluatextrue
+\else
+  \ifluatex
+    \xetexorluatextrue
+  \else
+    \xetexorluatexfalse
+  \fi
+\fi
+
 \ifPDFTeX
   % use UTF-8 in pdftex (not needed in LuaTeX and XeTeX)
   \usepackage[utf8]{inputenc}
@@ -56,14 +68,24 @@
 
 % source code listings
 \usepackage{listings}
-\lstset{%
-  basicstyle=\footnotesize\sf, % the size of the fonts that are used for the code
+
+\ifxetexorluatex
+  \usepackage{fontspec}
+  \newfontfamily{\lstsansserif}[Scale=.80]{Source Code Pro}
+  \lstset{basicstyle=\lstsansserif}
+\else
+  \lstset{basicstyle=\footnotesize\sf}
+\fi
+
+\lstset{%,
   breakatwhitespace=true,      % sets if automatic breaks should only happen at whitespace
   breaklines=true,             % sets automatic line breaking
   captionpos=b,                % sets the caption-position
+  columns=fullflexible,
   commentstyle=\color{gray},   % sets the comments color
   escapechar=\%,               % write LaTeX inside listings
-  % frame=single,              % adds a frame around the code
+  framextopmargin=50pt,
+  frame=bottomline,            % adds a frame
   numbers=left,                % where to put the line-numbers
   numberstyle=\footnotesize,   % the size of the fonts that are used for the line-numbers
   showspaces=false,            % show spaces adding particular underscores
@@ -72,6 +94,13 @@
   stepnumber=1,                % the step between two line-numbers. If it's 1 each line
   tabsize=4,                   % sets default tabsize to 4 spaces
   title=\lstname,              % show the filename of files included with \lstinputlisting;
+}
+
+\lstdefinelanguage{sqlresults}{%
+  basicstyle=\footnotesize\ttfamily,
+  columns=fixed,
+  numbers=none,
+  frame=none,
 }
 
 % highlight the following keywords for pseudocode listings
@@ -95,6 +124,8 @@
   bookmarksopen=true,
   colorlinks=true,
 }
+
+\usepackage{makecell}
 
 \makelosymbols{}
 \makeloabbreviations{}
