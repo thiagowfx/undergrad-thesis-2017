@@ -36,7 +36,8 @@ $ds_2$                        & $\textup{taskid\_}dt_1$      & inteiro
     \label{tab:simple-attributes-for-diff}
 \end{table}
 
-\subsection{Físico}
+\subsection{Físico}%
+\label{subsec:rastro-de-proveniencia-do-tipo-fisico}
 
 O mapeamento de atributos de dados do \textbf{tipo físico} ocorre \emph{somente} entre pares de atributos de dados (de conjuntos de dados) especiais, que fazem parte de uma mesma tarefa (execução de uma transformação de dados) de uma mesma instância da simulação computacional, sendo denotadas por um identificador cujo nome é da forma \texttt{taskid\_\ast}, onde \ast{} representa um número arbitrário (\textit{i.e.}, um ou mais) de caracteres. O tipo desse atributo necessariamente deve ser um inteiro positivo. O propósito desse atributo é agrupar elementos de dados que foram processados em uma mesma instância de execução~/~tarefa de uma simulação computacional. No exemplo dessa seção, o mapeamento físico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.\textup{taskid\_}dt1\) e \(dt_2.\textup{taskid\_}dt1\), pois esses são os únicos atributos do tipo \textit{taskid} presentes em \(D\ast\).
 

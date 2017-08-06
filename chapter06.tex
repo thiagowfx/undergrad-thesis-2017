@@ -60,9 +60,7 @@ Quatro consultas foram realizadas, cada uma das quais com diversos parâmetros p
 
 \subsection{Consulta \#1}
 
-% Tempo: rodar 4 vezes, tirar a média das 3 últimas
-
-\perrotta{TODO: observação: GROUP BY}
+A primeira consulta envolve a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline2extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\) e emprega o mapeamento de atributos de dados para rastro de proveniência do tipo físico (\textit{c.f.} \autoref{subsec:rastro-de-proveniencia-do-tipo-fisico}). Apenas duas projeções são de interesse (\texttt{osolversimulation.time} e a média aritmética de \texttt{oline2extraction.d}). A especificação completa da consulta está disponível na \autoref{tab:experiments-1-especificacao}.
 
 \begin{table}[htb]
     \centering
@@ -81,15 +79,10 @@ Quatro consultas foram realizadas, cada uma das quais com diversos parâmetros p
     \label{tab:experiments-1-especificacao}
 \end{table}
 
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=\textwidth]{img/experiments-dataflow-1}
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1]{Caminho d fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1.}%
-    \label{fig:experiments-dataflow-1}
-\end{figure}
+A consulta \#1 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-1-sql}. \textbf{Observação:} uma vez que a função de média aritmética (\texttt{AVG}) é utilizada na projeção, faz-se necessária a utilização da cláusula \texttt{GROUP BY} da linguagem SQL para que a consulta \#1 fique sintaticamente válida e bem definida. Contudo, como o Query Processor não suporta essa cláusula, ela foi adicionada manualmente à consulta gerada pela função \texttt{generateSqlQuery}.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sql,label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1 (40,29~ms).}]
+\begin{lstlisting}[language=sql,label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1 (tempo médio: 40,29~ms).}]
 SELECT osolversimulationtransport.time, AVG(oline2extraction.d)
 FROM osolversimulationtransport, oline2extraction, omeshwriter
 WHERE (osolversimulationtransport.line2extraction_task_id = oline2extraction.line2extraction_task_id) 
@@ -98,8 +91,10 @@ GROUP BY osolversimulationtransport.time;
 \end{lstlisting}
 \end{minipage}
 
+O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
+
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1 (7 tuplas, 4,346~ms).}]
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1 (7 tuplas, tempo médio: 4,346~ms).}]
 +--------------------------+--------------------------+
 | time                     | L71                      |
 +==========================+==========================+
@@ -114,17 +109,24 @@ GROUP BY osolversimulationtransport.time;
 \end{lstlisting}
 \end{minipage}
 
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-1}
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1]{Caminho d fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1.}%
+    \label{fig:experiments-dataflow-1}
+\end{figure}
+
 \subsection{Consulta \#2}
 
-\perrotta{TODO: observação: LIMIT 10}
+A segunda consulta ilustra a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline0extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\), empregando o rastro de proveniência do tipo físico. Várias projeções são de interesse para o objetivo de analisar o comportamento do conjunto de dados \texttt{oline0extraction} ao longo do tempo (segundo o atributo de dados \texttt{osolversimulationtransporte.time}). A especificação completa da consulta está disponível na \autoref{tab:experiments-2-especificacao}.
 
 \begin{table}[htb]
     \centering
     \begin{tabular}{c|c}
 \textbf{Argumento}          & \textbf{Valor} \\ \hline
-\texttt{D}                  & $D^{\dagger}$ \\
-\texttt{dsOrigins}          & \{\texttt{osolversimulationtransport}\} \\
-\texttt{dsDestinations}     & \{\texttt{oline0extraction}, \texttt{omeshwriter}\} \\
+\texttt{D}                  & $D^{\dagger}$ \\ \hline
+\texttt{dsOrigins}          & \{\texttt{osolversimulationtransport}\} \\ \hline
+\texttt{dsDestinations}     & \{\texttt{oline0extraction}, \texttt{omeshwriter}\} \\ \hline
 \texttt{type}               & physical \\ \hline
 \texttt{projections}        & \makecell{\{\texttt{osolversimulationtransport.time}, \\
                                           \texttt{oline0extraction.points0}, \\ 
@@ -132,22 +134,17 @@ GROUP BY osolversimulationtransport.time;
                                           \texttt{oline0extraction.d}\}} \\ \hline
 \texttt{selections}         & \makecell{\{\texttt{osolversimulationtransport.time < 5.5}, \\
                                           \texttt{oline0extraction.d > 0.1}\}} \\ \hline
-\texttt{dsIncludes}         & \varnothing \\
+\texttt{dsIncludes}         & \varnothing \\ \hline
 \texttt{dsExcludes}         & \varnothing \\
     \end{tabular}
     \caption[Argumentos da função \texttt{generateSqlQuery} para a consulta \#2]{Especificação dos argumentos da função \texttt{generateSqlQuery} para a consulta~\#2.}%
     \label{tab:experiments-2-especificacao}
 \end{table}
 
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=\textwidth]{img/experiments-dataflow-2}
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2]{Caminho d fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2.}%
-    \label{fig:experiments-dataflow-2}
-\end{figure}
+A consulta \#2 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-2-sql}. \textbf{Observação:} como a cláusula \texttt{LIMIT} não é implementada pelo QP, ela foi adicionada manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sql,label={lst:experiments-2-sql},caption={[Código em SQL gerado na consulta~\#2]Código em SQL gerado na consulta~\#2 (15,45~ms).}]
+\begin{lstlisting}[language=sql,label={lst:experiments-2-sql},caption={[Código em SQL gerado na consulta~\#2]Código em SQL gerado na consulta~\#2 (tempo médio: 15,45~ms).}]
 SELECT osolversimulationtransport.time, oline0extraction.points0, oline0extraction.points1, oline0extraction.points2, oline0extraction.d
 FROM osolversimulationtransport, oline0extraction, omeshwriter
 WHERE (osolversimulationtransport.time < 5.5) 
@@ -158,8 +155,9 @@ LIMIT 10;
 \end{lstlisting}
 \end{minipage}
 
-\begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-2-sqlresults},caption={[Resultados da consulta \#2.]Resultados da consulta \#2 (10 tuplas, 5,92~ms).}]
+O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-2-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-2}.
+
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-2-sqlresults},caption={[Resultados da consulta \#2.]Resultados da consulta \#2 (10 tuplas, tempo médio: 5,92~ms).}]
 +--------------+-----------+---------+---------+----------+
 | time         | points0   | points1 | points2 | d        |
 +==============+===========+=========+=========+==========+
@@ -175,18 +173,25 @@ LIMIT 10;
 |    5.4124618 |      0.72 |       1 |       0 |  0.10825 |
 +--------------+-----------+---------+---------+----------+
 \end{lstlisting}
-\end{minipage}
+% |    5.4124618 |         0 |       1 |       0 |  0.10814 |
+% |    5.4124618 |      0.18 |       1 |       0 |   0.1082 |
+% |    5.4124618 |      0.36 |       1 |       0 |  0.10825 |
+% |    5.4124618 |      0.54 |       1 |       0 |  0.10825 |
+% |    5.4124618 |      0.72 |       1 |       0 |  0.10825 |
+% |    5.4124618 |         0 |       1 |       0 |  0.10814 |
+% |    5.4124618 |      0.18 |       1 |       0 |   0.1082 |
+% |    5.4124618 |      0.36 |       1 |       0 |  0.10825 |
+% |    5.4124618 |      0.54 |       1 |       0 |  0.10825 |
+% |    5.4124618 |      0.72 |       1 |       0 |  0.10825 |
 
-% |    5.4124618 |         0 |       1 |       0 |  0.10814 |
-% |    5.4124618 |      0.18 |       1 |       0 |   0.1082 |
-% |    5.4124618 |      0.36 |       1 |       0 |  0.10825 |
-% |    5.4124618 |      0.54 |       1 |       0 |  0.10825 |
-% |    5.4124618 |      0.72 |       1 |       0 |  0.10825 |
-% |    5.4124618 |         0 |       1 |       0 |  0.10814 |
-% |    5.4124618 |      0.18 |       1 |       0 |   0.1082 |
-% |    5.4124618 |      0.36 |       1 |       0 |  0.10825 |
-% |    5.4124618 |      0.54 |       1 |       0 |  0.10825 |
-% |    5.4124618 |      0.72 |       1 |       0 |  0.10825 |
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-2}
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2]{Caminho d fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2.}%
+    \label{fig:experiments-dataflow-2}
+\end{figure}
+
+\clearpage
 
 \subsection{Consulta \#3}
 
@@ -195,3 +200,5 @@ LIMIT 10;
 \subsection{Consulta \#4}
 
 \perrotta{TODO: consulta \#4}
+
+% TODO: mention: Tempo: rodar 4 vezes, tirar a média das 3 últimas
