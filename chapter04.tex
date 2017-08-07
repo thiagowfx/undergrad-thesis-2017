@@ -76,8 +76,6 @@ O processador de consultas é um componente bastante importante, já que é a pr
 
 Como vimos na seção anterior, a arquitetura ARMFUL é uma \textbf{abstração} que define e especifica componentes a fim de prover um mecanismo capaz de realizar consultas a um banco de dados, cujos dados de proveniência, execução e domínio foram oriundos de uma simulação computacional. Dito isso, o \textbf{DfAnalyzer} é uma \textbf{instância da arquitetura ARMFUL}; em outras palavras, ele consiste em uma implementação dessa arquitetura. Ele foi originalmente introduzido em~\cite{silva2016situ}. Os principais componentes do DfAnalyzer são abordados nas próximas subseções.
 
-\perrotta{TODO: Descrição geral / overview do DfAnalyzer, in order to replace the former sedimentation solver simulation text}
-
 \subsection{Provenance Data Gatherer (PDG)}
 
 O \textbf{Provenance Data Gatherer} (PDG) é o componente do DfAnalyzer responsável por \textbf{capturar dados de proveniência} (\textit{c.f.} \autoref{subsec:ingestao-de-dados}) assim como dados específicos do domínio a partir do código fonte da aplicação, gerando um arquivo JSON com o conteúdo extraído e as suas respectivas dependências de dados~\cite{silva2016situ}. Após a captura, a proveniência e os dados de domínio são carregados em um banco de dados que é compatível com um esquema (do inglês \textit{schema}) pré-definido e que é gerenciado pelo SGBD MonetDB~\cite{boncz2008breaking}, que consiste em um banco de dados orientado a colunas compatível com a linguagem SQL.

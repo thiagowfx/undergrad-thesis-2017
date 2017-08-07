@@ -2,6 +2,8 @@
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
 
+% metodologia para cálculo do tempo rodar 4 vezes, tomar a média das 3 últimas
+
 \chapter{Experimentos}%
 \label{chap:experimentos}
 
@@ -9,7 +11,7 @@ Esse capítulo apresenta alguns exemplos de experimentos e de simulações compu
 
 \section{Simulação computacional em sedimentação}
 
-O DfAnalyzer (\textit{c.f.} \autoref{sec:dfanalyzer-uma-instancia-da-arquitetura-armful}) utiliza a \textit{libMesh}, uma biblioteca \textit{open-source} implementada na linguagem C++, desenvolvida para facilitar a simulação de aplicações paralelas de refinamento de malhas e elementos finitos adaptativos~\cite{boncz2008breaking}, em um resolvedor chamado \textit{libMesh-sedimentation}. O propósito dessa aplicação é simular a turbidez e perturbação de correntes de fluidos tipicamente encontradas em processos geológicos. Os sedimentos que são transportados devido à dinâmica e ao movimento dos fluidos computacionais são descritos por um modelo matemático que resulta da equação de incompressibilidade de Navier-Stokes (fluido) combinada com uma equação de transporte dominada por advecção (concentração de sedimentos). A \textit{libMesh-sedimentation} emprega um método de elementos finitos de multi-escala variacional no qual uma abordagem escalonada é utilizada para representar e simular a evolução do tempo nas equações de acoplamento entre o fluido e os sedimentos. 
+Nesse capítulo, analisamos uma aplicação do DfAnalyzer (\textit{c.f.} \autoref{sec:dfanalyzer-uma-instancia-da-arquitetura-armful}) a qual utiliza a \textit{libMesh}, uma biblioteca \textit{open-source} implementada na linguagem C++, desenvolvida para facilitar a simulação de aplicações paralelas de refinamento de malhas e elementos finitos adaptativos~\cite{boncz2008breaking}, em um resolvedor chamado \textit{libMesh-sedimentation}. O propósito dessa aplicação é simular a turbidez e perturbação de correntes de fluidos tipicamente encontradas em processos geológicos. Os sedimentos que são transportados devido à dinâmica e ao movimento dos fluidos computacionais são descritos por um modelo matemático que resulta da equação de incompressibilidade de Navier-Stokes (fluido) combinada com uma equação de transporte dominada por advecção (concentração de sedimentos). A \textit{libMesh-sedimentation} emprega um método de elementos finitos de multi-escala variacional no qual uma abordagem escalonada é utilizada para representar e simular a evolução do tempo nas equações de acoplamento entre o fluido e os sedimentos. 
 
 Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial e rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}. Nesse cenário a análise é possibilitada pelo DfAnalyzer o qual, devido a sua arquitetura em componentes herdada da ARMFUL, permite que consultas relacionadas a proveniência e aos dados científicos de múltiplos arquivos e transformações de dados sejam realizadas \textit{on-line}, ainda durante a execução da simulação computacional.
 
@@ -278,4 +280,11 @@ O objetivo da terceira consulta é a análise da primeira variação negativa do
 
 \perrotta{TODO: consulta \#4}
 
-% TODO: mention: Tempo: rodar 4 vezes, tirar a média das 3 últimas
+O objetivo da quarta consulta é a análise dos resíduos e da ``norm delta'' dos últimas três passos executados.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-4}
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#4]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#4.}%
+    \label{fig:experiments-dataflow-4}
+\end{figure}
