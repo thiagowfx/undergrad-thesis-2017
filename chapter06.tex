@@ -60,7 +60,23 @@ Quatro consultas foram realizadas, cada uma das quais com diversos parâmetros p
 
 \subsection{Consulta \#1}
 
-A primeira consulta envolve a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline2extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\) e emprega o mapeamento de atributos de dados para rastro de proveniência do tipo físico (\textit{c.f.} \autoref{subsec:rastro-de-proveniencia-do-tipo-fisico}). Apenas duas projeções são de interesse (\texttt{osolversimulation.time} e a média aritmética de \texttt{oline2extraction.d}). A especificação completa da consulta está disponível na \autoref{tab:experiments-1-especificacao}.
+% Query gerada:
+%
+% SELECT osolversimulationtransport.time, A% VG(oline2extraction.d)
+% FROM osolversimulationtransport, oline2extraction, omeshwriter
+% WHERE (osolversimulationtransport.line2extraction_task_id = oline2extraction.line2extraction_task_id)
+% AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id);
+% GROUP BY osolversimulationtransport.time;
+
+% Query gerada (com GROUP BY):
+%
+% SELECT osolversimulationtransport.time, AVG(oline2extraction.d)
+% FROM osolversimulationtransport, oline2extraction, omeshwriter
+% WHERE (osolversimulationtransport.line2extraction_task_id = oline2extraction.line2extraction_task_id)
+% AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id)
+% GROUP BY osolversimulationtransport.time;
+
+O objetivo da primeira consulta é a análise da média da concentração de sedimentos em uma linha extraída (\textit{i.e.}, um conjunto de pontos) de arquivos científicos, variando o tempo da simulação. Ela envolve a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline2extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\) e emprega o mapeamento de atributos de dados para rastro de proveniência do tipo físico (\textit{c.f.} \autoref{subsec:rastro-de-proveniencia-do-tipo-fisico}). Apenas duas projeções são de interesse (\texttt{osolversimulation.time} e a média aritmética de \texttt{oline2extraction.d}). A especificação completa da consulta está disponível na \autoref{tab:experiments-1-especificacao}.
 
 \begin{table}[htb]
     \centering
@@ -93,7 +109,6 @@ GROUP BY osolversimulationtransport.time;
 
 O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
 
-\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1 (7 tuplas, tempo médio: 4,346~ms).}]
 +--------------------------+--------------------------+
 | time                     | L71                      |
@@ -107,7 +122,6 @@ O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carre
 |                       15 |   -8.768540693069305e-22 |
 +--------------------------+--------------------------+
 \end{lstlisting}
-\end{minipage}
 
 \begin{figure}[htb]
     \centering
@@ -118,7 +132,26 @@ O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carre
 
 \subsection{Consulta \#2}
 
-A segunda consulta ilustra a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline0extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\), empregando o rastro de proveniência do tipo físico. Várias projeções são de interesse para o objetivo de analisar o comportamento do conjunto de dados \texttt{oline0extraction} ao longo do tempo (segundo o atributo de dados \texttt{osolversimulationtransporte.time}). A especificação completa da consulta está disponível na \autoref{tab:experiments-2-especificacao}.
+% Query gerada:
+%
+% SELECT osolversimulationtransport.time, oline0extraction.points0, oline0extraction.points1, oline0extraction.points2, oline0extraction.d
+% FROM osolversimulationtransport, oline0extraction, omeshwriter
+% WHERE (osolversimulationtransport.time < 5.5)
+% AND (oline0extraction.d > 0.1)
+% AND (osolversimulationtransport.line0extraction_task_id = oline0extraction.line0extraction_task_id)
+% AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id);
+
+% Query gerada (com LIMIT):
+%
+% SELECT osolversimulationtransport.time, oline0extraction.points0, oline0extraction.points1, oline0extraction.points2, oline0extraction.d
+% FROM osolversimulationtransport, oline0extraction, omeshwriter
+% WHERE (osolversimulationtransport.time < 5.5)
+% AND (oline0extraction.d > 0.1)
+% AND (osolversimulationtransport.line0extraction_task_id = oline0extraction.line0extraction_task_id)
+% AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id)
+% LIMIT 10;
+
+O objetivo da segunda consulta é a análise da concentração de sedimentos em uma linha extraída de arquivos científicos, considerando um instante de tempo fixo e um intervalo específico de valores para a concentração de sedimentos especificada pelo usuário. Ela ilustra a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline0extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\), empregando o rastro de proveniência do tipo físico. Várias projeções são de interesse para o objetivo de analisar o comportamento do conjunto de dados \texttt{oline0extraction} ao longo do tempo (segundo o atributo de dados \texttt{osolversimulationtransporte.time}). A especificação completa da consulta está disponível na \autoref{tab:experiments-2-especificacao}.
 
 \begin{table}[htb]
     \centering
