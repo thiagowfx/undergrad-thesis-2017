@@ -126,7 +126,7 @@ O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carre
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{img/experiments-dataflow-1}
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1]{Caminho d fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1.}%
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1.}%
     \label{fig:experiments-dataflow-1}
 \end{figure}
 
@@ -220,13 +220,57 @@ O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carre
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{img/experiments-dataflow-2}
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2]{Caminho d fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2.}%
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2.}%
     \label{fig:experiments-dataflow-2}
 \end{figure}
 
-\clearpage
-
 \subsection{Consulta \#3}
+
+% Query a ser gerada:
+%
+% SELECT minSeds.time, minSeds.transport_n_linear_iterations,
+%     minSeds.transport_final_linear_residual as minResiduals, maxSeds.transport_final_linear_residual as maxResiduals,
+%     (maxSeds.transport_final_linear_residual - minSeds.transport_final_linear_residual) as variation
+% FROM osolversimulationtransport as minSeds,
+%     osolversimulationtransport as maxSeds,
+%     (
+%     SELECT seds.solversimulationtransport_task_id, seds.time, seds.transport_n_linear_iterations,
+%     min(seds.transport_l) as minIter, max(seds.transport_l) as maxIter
+%     FROM osolversimulationtransport as seds
+%     GROUP BY seds.solversimulationtransport_task_id, seds.time, seds.transport_n_linear_iterations
+%     ) as seds
+% WHERE seds.time = minSeds.time
+% AND seds.time = maxSeds.time
+% AND minSeds.transport_l = seds.minIter
+% AND maxSeds.transport_l = seds.maxIter
+% AND maxSeds.transport_final_linear_residual > minSeds.transport_final_linear_residual;
+
+O objetivo da terceira consulta é a análise da primeira variação negativa dos resíduos lineares finais durante a execução da simulação entre os primeiros e os últimos passos não-lineares. 
+
+% Ela ilustra a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline0extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\), empregando o rastro de proveniência do tipo físico. Várias projeções são de interesse para o objetivo de analisar o comportamento do conjunto de dados \texttt{oline0extraction} ao longo do tempo (segundo o atributo de dados \texttt{osolversimulationtransporte.time}). A especificação completa da consulta está disponível na \autoref{tab:experiments-2-especificacao}.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c}
+\textbf{Argumento}          & \textbf{Valor} \\ \hline
+\texttt{D}                  & $D^{\dagger}$ \\ \hline
+\texttt{dsOrigins}          & \{\texttt{}\} \\ \hline
+\texttt{dsDestinations}     & \{\texttt{}, \texttt{}\} \\ \hline
+\texttt{type}               & logical \\ \hline
+\texttt{projections}        & \{\texttt{}\} \\ \hline
+\texttt{selections}         & \makecell{
+                                        \texttt{seds.time = minSeds.time}, \\
+                                        \texttt{seds.time = maxSeds.time}, \\
+                                        \texttt{minSeds.transport\_l = seds.minIter}, \\
+                                        \texttt{maxSeds.transport\_l = seds.maxIter}, \\
+                                        \texttt{(maxSeds.transport\_final\_linear\_residual >} \\
+                                        \texttt{minSeds.transport\_final\_linear\_residual)}} \\ \hline
+\texttt{dsIncludes}         & \varnothing \\ \hline
+\texttt{dsExcludes}         & \varnothing \\
+    \end{tabular}
+    \caption[Argumentos da função \texttt{generateSqlQuery} para a consulta \#3]{Especificação dos argumentos da função \texttt{generateSqlQuery} para a consulta~\#3.}%
+    \label{tab:experiments-3-especificacao}
+\end{table}
 
 \perrotta{TODO: consulta \#3}
 

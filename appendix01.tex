@@ -5,11 +5,8 @@
 \chapter{Funções auxiliares}%
 \label{app:funcoes-auxiliares}
 
-Nesse capítulo são listadas as funções auxiliares (do inglês, \textit{helper functions}) referenciadas e utilizadas nos algoritmos da \autoref{sec:algoritmos-utilizados}, na ordem de aparecimento neste documento.
+Nesse capítulo são listadas as funções auxiliares referenciadas e utilizadas nos algoritmos da \autoref{sec:algoritmos-utilizados}, na ordem de aparecimento neste documento.
 
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:get-next-transformations},caption={[Obtenção das próximas transformações de dados de uma transformação]Obtenção das próximas transformações de dados de uma transformação de dados.}]
 function getNextTransformations(D, dt):
     transformations %\leftarrow% {}
@@ -21,11 +18,7 @@ function getNextTransformations(D, dt):
     return transformations
 end function
 \end{lstlisting}
-\end{minipage}
-
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-output-datasets},caption={[Contagem dos conjuntos de dados de saída de uma transformação]Contagem dos conjuntos de dados de saída de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
+ \begin{lstlisting}[language=pseudocode,label={lst:has-many-output-datasets},caption={[Contagem dos conjuntos de dados de saída de uma transformação]Contagem dos conjuntos de dados de saída de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
 function hasManyOutputDatasets(D, dt):
     count %\leftarrow% 0
     for each %\phi% %\in% %D.\Phi% do:
@@ -39,11 +32,7 @@ function hasManyOutputDatasets(D, dt):
     return false
 end function
 \end{lstlisting}
-\end{minipage}
-
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-next-transformations},caption={[Contagem das próximas transformações de dados de uma transformação]Contagem das próximas transformações de dados de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
+ \begin{lstlisting}[language=pseudocode,label={lst:has-many-next-transformations},caption={[Contagem das próximas transformações de dados de uma transformação]Contagem das próximas transformações de dados de uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
 function hasManyNextTransformations(D, dt):
     count %\leftarrow% 0
     for each %\phi% %\in% %D.\Phi% do:
@@ -57,11 +46,7 @@ function hasManyNextTransformations(D, dt):
     return false
 end function
 \end{lstlisting}
-\end{minipage}
-
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:any-transformation-has-many-input-datasets},caption={[Determinação de se pelo menos uma transformação possui mais de um conjunto de dados de entrada.]Determinação de se pelo menos uma transformação de dados possui mais de um conjunto de dados de entrada. Retorna verdadeiro caso positivo, e falso caso contrário.}]
+ \begin{lstlisting}[language=pseudocode,label={lst:any-transformation-has-many-input-datasets},caption={[Determinação de se pelo menos uma transformação possui mais de um conjunto de dados de entrada.]Determinação de se pelo menos uma transformação de dados possui mais de um conjunto de dados de entrada. Retorna verdadeiro caso positivo, e falso caso contrário.}]
 function anyTransformationHasManyInputDatasets(D, dts):
     for each dt %\in% dts do:
         if hasManyInputDatasets(D, dt) then:%~\quad%#%~\autoref{lst:has-many-input-datasets}%
@@ -71,11 +56,7 @@ function anyTransformationHasManyInputDatasets(D, dts):
     return false
 end function
 \end{lstlisting}
-\end{minipage}
-
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:has-many-input-datasets},caption={[Contagem dos conjuntos de dados anteriores a uma transformação]Contagem dos conjuntos de dados anteriores a uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
+ \begin{lstlisting}[language=pseudocode,label={lst:has-many-input-datasets},caption={[Contagem dos conjuntos de dados anteriores a uma transformação]Contagem dos conjuntos de dados anteriores a uma transformação de dados. Retorna verdadeiro caso essa quantidade seja maior do que um, e falso caso contrário.}]
 function hasManyInputDatasets(D, dt):
     count %\leftarrow% 0
     for each %\phi% %\in% %D.\Phi% do:
@@ -89,11 +70,7 @@ function hasManyInputDatasets(D, dt):
     return false
 end function
 \end{lstlisting}
-\end{minipage}
-
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth} \begin{lstlisting}[language=pseudocode,label={lst:get-transformation-track},caption={[Obtenção da trilha de transformações de uma transformação.]Obtenção da trilha de transformações de uma transformação.}]
+ \begin{lstlisting}[language=pseudocode,label={lst:get-transformation-track},caption={[Obtenção da trilha de transformações de uma transformação.]Obtenção da trilha de transformações de uma transformação.}]
 function getTransformationTrack(dtTracks,dt):
     for dtTrack %\in% dtTracks:
         if dt %\in% dtTrack then:
@@ -103,11 +80,7 @@ function getTransformationTrack(dtTracks,dt):
     return %\varnothing%
 end function
 \end{lstlisting}
-\end{minipage}
 
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:get-previous-transformations},caption={[Obtenção das transformações de dados anteriores a uma transformação]Obtenção das transformações de dados anteriores a uma transformação de dados.}]
 function getPreviousTransformations(D, dt):
     transformations %\leftarrow% {}
@@ -119,11 +92,7 @@ function getPreviousTransformations(D, dt):
     return transformations
 end function
 \end{lstlisting}
-\end{minipage}
 
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:get-next-datasets},caption={[Obtenção dos próximos conjuntos de dados de uma transformação]Obtenção dos próximos conjuntos de dados de uma transformação de dados.}]
 function getNextDatasets(D, dt):
     datasets %\leftarrow% {}
@@ -135,11 +104,7 @@ function getNextDatasets(D, dt):
     return datasets
 end function
 \end{lstlisting}
-\end{minipage}
 
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:get-previous-datasets},caption={[Obtenção dos conjuntos de dados anteriores a uma transformação]Obtenção dos conjuntos de dados anteriores a uma transformação de dados.}]
 function getPreviousDatasets(D, dt):
     datasets %\leftarrow% {}
@@ -151,11 +116,7 @@ function getPreviousDatasets(D, dt):
     return datasets
 end function
 \end{lstlisting}
-\end{minipage}
 
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:get-next-datasets-2},caption={[Obtenção dos próximos conjuntos de dados de um conjunto de dados]Obtenção dos próximos conjuntos de dados de um conjunto de dados.}]
 function getNextDatasets(D, ds):
     datasets %\leftarrow% {}
@@ -167,11 +128,7 @@ function getNextDatasets(D, ds):
     return datasets
 end function
 \end{lstlisting}
-\end{minipage}
 
-\vfill{}
-
-\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:get-transformation},caption={[Obtenção da transformação entre dois conjuntos de dados]Obtenção da transformação de dados associada a dois conjuntos de dados.}]
 function getTransformation(D, %$ds_1$%, %$ds_2$%):
     for each %\phi% %\in% %D.\Phi% do:
@@ -184,4 +141,3 @@ function getTransformation(D, %$ds_1$%, %$ds_2$%):
     return %\varnothing%
 end function
 \end{lstlisting}
-\end{minipage}
