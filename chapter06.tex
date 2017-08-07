@@ -249,30 +249,37 @@ O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carre
 
 O objetivo da terceira consulta é a análise da primeira variação negativa dos resíduos lineares finais durante a execução da simulação entre os primeiros e os últimos passos não-lineares. 
 
-\begin{table}[htb]
-    \centering
-    \begin{tabular}{c|c}
-\textbf{Argumento}          & \textbf{Valor} \\ \hline
-\texttt{D}                  & $D^{\dagger}$ \\ \hline
-\texttt{dsOrigins}          & \{\texttt{}\} \\ \hline
-\texttt{dsDestinations}     & \{\texttt{}, \texttt{}\} \\ \hline
-\texttt{type}               & logical \\ \hline
-\texttt{projections}        & \{\texttt{}\} \\ \hline
-\texttt{selections}         & \makecell{
-                                        \texttt{seds.time = minSeds.time}, \\
-                                        \texttt{seds.time = maxSeds.time}, \\
-                                        \texttt{minSeds.transport\_l = seds.minIter}, \\
-                                        \texttt{maxSeds.transport\_l = seds.maxIter}, \\
-                                        \texttt{(maxSeds.transport\_final\_linear\_residual >} \\
-                                        \texttt{minSeds.transport\_final\_linear\_residual)}} \\ \hline
-\texttt{dsIncludes}         & \varnothing \\ \hline
-\texttt{dsExcludes}         & \varnothing \\
-    \end{tabular}
-    \caption[Argumentos da função \texttt{generateSqlQuery} para a consulta \#3]{Especificação dos argumentos da função \texttt{generateSqlQuery} para a consulta~\#3.}%
-    \label{tab:experiments-3-especificacao}
-\end{table}
+% \begin{table}[htb]
+%     \centering
+%     \begin{tabular}{c|c}
+% \textbf{Argumento}          & \textbf{Valor} \\ \hline
+% \texttt{D}                  & $D^{\dagger}$ \\ \hline
+% \texttt{dsOrigins}          & \{\texttt{}\} \\ \hline
+% \texttt{dsDestinations}     & \{\texttt{}, \texttt{}\} \\ \hline
+% \texttt{type}               & logical \\ \hline
+% \texttt{projections}        & \{\texttt{}\} \\ \hline
+% \texttt{selections}         & \makecell{
+%                                         \texttt{seds.time = minSeds.time}, \\
+%                                         \texttt{seds.time = maxSeds.time}, \\
+%                                         \texttt{minSeds.transport\_l = seds.minIter}, \\
+%                                         \texttt{maxSeds.transport\_l = seds.maxIter}, \\
+%                                         \texttt{(maxSeds.transport\_final\_linear\_residual >} \\
+%                                         \texttt{minSeds.transport\_final\_linear\_residual)}} \\ \hline
+% \texttt{dsIncludes}         & \varnothing \\ \hline
+% \texttt{dsExcludes}         & \varnothing \\
+%     \end{tabular}
+%     \caption[Argumentos da função \texttt{generateSqlQuery} para a consulta \#3]{Especificação dos argumentos da função \texttt{generateSqlQuery} para a consulta~\#3.}%
+%     \label{tab:experiments-3-especificacao}
+% \end{table}
 
-\perrotta{TODO: consulta \#3}
+\perrotta{TODO: consulta \#3 ++ netbeans}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-3}
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#3]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#3.}%
+    \label{fig:experiments-dataflow-3}
+\end{figure}
 
 \subsection{Consulta \#4}
 
@@ -298,7 +305,7 @@ O objetivo da terceira consulta é a análise da primeira variação negativa do
 % AND fluid.t_step > 20000
 % LIMIT 5;
 
-O objetivo da quarta consulta é a análise dos resíduos e da normalização de delta dos últimas três passos executados. A especificação completa da consulta está disponível na \autoref{tab:experiments-4-especificacao}.
+O objetivo da quarta consulta é a análise dos resíduos e da normalização de delta dos últimos três passos executados. A especificação completa da consulta está disponível na \autoref{tab:experiments-4-especificacao}.
 
 A consulta \#4 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-4-sql}. \textbf{Observação:} como as cláusulas \texttt{SELECT DISTINCT} e \texttt{LIMIT} não são implementadas pelo QP, elas foram adicionadas manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}.
 
