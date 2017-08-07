@@ -249,8 +249,6 @@ O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carre
 
 O objetivo da terceira consulta é a análise da primeira variação negativa dos resíduos lineares finais durante a execução da simulação entre os primeiros e os últimos passos não-lineares. 
 
-% Ela ilustra a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline0extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\), empregando o rastro de proveniência do tipo físico. Várias projeções são de interesse para o objetivo de analisar o comportamento do conjunto de dados \texttt{oline0extraction} ao longo do tempo (segundo o atributo de dados \texttt{osolversimulationtransporte.time}). A especificação completa da consulta está disponível na \autoref{tab:experiments-2-especificacao}.
-
 \begin{table}[htb]
     \centering
     \begin{tabular}{c|c}
@@ -278,9 +276,67 @@ O objetivo da terceira consulta é a análise da primeira variação negativa do
 
 \subsection{Consulta \#4}
 
-\perrotta{TODO: consulta \#4}
+% SELECT DISTINCT osolversimulationflow.t_step,
+%        osolversimulationflow.flow_final_linear_residual,
+%        osolversimulationflow.flow_norm_delta,
+%        osolversimulationflow.flow_norm_delta_u,
+%        osolversimulationtransport.transport_final_linear_residual,
+%        osolversimulationtransport.transport_norm_delta,
+%        osolversimulationtransport.transport_norm_delta_u
+% FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter,
+% (SELECT t_step, max(r) as maxR, max(flow_l) as maxL FROM osolversimulationflow GROUP BY t_step) as fluid,
+% (SELECT t_step, max(r) as maxR, max(transport_l) as maxL FROM osolversimulationtransport GROUP BY t_step) as sediments
+% WHERE fluid.t_step = sediments.t_step
+% AND osolversimulationflow.t_step = fluid.t_step
+% AND osolversimulationflow.r = fluid.maxR
+% AND osolversimulationflow.flow_l = fluid.maxL
+% AND osolversimulationtransport.t_step = sediments.t_step
+% AND osolversimulationtransport.r = sediments.maxR
+% AND osolversimulationtransport.transport_l = sediments.maxL
+% AND osolversimulationflow.solversimulationtransport_task_id = osolversimulationtransport.solversimulationtransport_task_id
+% AND osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id
+% AND fluid.t_step > 20000
+% LIMIT 5;
 
-O objetivo da quarta consulta é a análise dos resíduos e da ``norm delta'' dos últimas três passos executados.
+O objetivo da quarta consulta é a análise dos resíduos e da normalização de delta dos últimas três passos executados. A especificação completa da consulta está disponível na \autoref{tab:experiments-4-especificacao}.
+
+A consulta \#4 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-4-sql}. \textbf{Observação:} como as cláusulas \texttt{SELECT DISTINCT} e \texttt{LIMIT} não são implementadas pelo QP, elas foram adicionadas manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}.
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[language=sql,label={lst:experiments-4-sql},caption={[Código em SQL gerado na consulta~\#4]Código em SQL gerado na consulta~\#4 (tempo médio: TODO~ms).}]
+SELECT DISTINCT osolversimulationflow.t_step,
+       osolversimulationflow.flow_final_linear_residual,
+       osolversimulationflow.flow_norm_delta,
+       osolversimulationflow.flow_norm_delta_u,
+       osolversimulationtransport.transport_final_linear_residual,
+       osolversimulationtransport.transport_norm_delta,
+       osolversimulationtransport.transport_norm_delta_u
+FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter,
+(SELECT t_step, max(r) as maxR, max(flow_l) as maxL FROM osolversimulationflow GROUP BY t_step) as fluid,
+(SELECT t_step, max(r) as maxR, max(transport_l) as maxL FROM osolversimulationtransport GROUP BY t_step) as sediments
+WHERE fluid.t_step = sediments.t_step
+AND osolversimulationflow.t_step = fluid.t_step
+AND osolversimulationflow.r = fluid.maxR
+AND osolversimulationflow.flow_l = fluid.maxL
+AND osolversimulationtransport.t_step = sediments.t_step
+AND osolversimulationtransport.r = sediments.maxR
+AND osolversimulationtransport.transport_l = sediments.maxL
+AND osolversimulationflow.solversimulationtransport_task_id = osolversimulationtransport.solversimulationtransport_task_id
+AND osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id
+AND fluid.t_step > 20000
+LIMIT 5;
+\end{lstlisting}
+\end{minipage}
+
+O resultado da consulta \#4, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-4-sqlresults}: suas colunas estão na mesma ordem da especificação das projeções em \autoref{lst:experiments-4-sql}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-4}.
+
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-4-sqlresults},caption={[Resultados da consulta \#4.]Resultados da consulta \#4 (3 tuplas, tempo médio: 13,62~ms).}]
++------+------------+------------+------------+------------+--+--+
+| 24999| 0.258204396| 3.147418846| 0.005086579| 0.000271997| 0| 0|
+| 29999| 0.202004362| 1.616387674| 0.002679455| 0.000155539| 0| 0|
+| 34788| 0.209178429| 0.571624422| 0.000893582| 0.000274076| 0| 0|
++------+------------+------------+------------+------------+--+--+
+\end{lstlisting}
 
 \begin{figure}[htb]
     \centering
@@ -288,3 +344,5 @@ O objetivo da quarta consulta é a análise dos resíduos e da ``norm delta'' do
     \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#4]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#4.}%
     \label{fig:experiments-dataflow-4}
 \end{figure}
+
+\perrotta{TODO: consulta \#4: tabela ++ netbeans}
