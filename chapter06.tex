@@ -15,7 +15,7 @@ Nesse capítulo, analisamos uma aplicação do DfAnalyzer (\textit{c.f.} \autore
 
 Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial e rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}. Nesse cenário a análise é possibilitada pelo DfAnalyzer o qual, devido a sua arquitetura em componentes herdada da ARMFUL, permite que consultas relacionadas a proveniência e aos dados científicos de múltiplos arquivos e transformações de dados sejam realizadas \textit{on-line}, ainda durante a execução da simulação computacional.
 
-Neste capítulo realizamos várias consultas com um fluxo de dados \(D^{\dagger}\) baseado no \textit{solver} de \textbf{simulação de sedimentação de dinâmica de fluidos computacionais} mencionado nos parágrafos anteriores. Esse fluxo de dados \(D^{\dagger}\) está ilustrado na \autoref{fig:experiments-dataflow}.
+Nesse capítulo, realizamos várias consultas com um fluxo de dados \(D^{\dagger}\) baseado no \textit{solver} de \textbf{simulação de sedimentação de dinâmica de fluidos computacionais} mencionado nos parágrafos anteriores. Esse fluxo de dados \(D^{\dagger}\) está ilustrado na \autoref{fig:experiments-dataflow}, cujos dados foram obtidos da execução paralela desse \textit{solver} com 480 cores no \textit{cluster} Lobo Carneiro\footnote{\url{http://www.nacad.ufrj.br/pt/recursos/sgiicex}} e armazenados no SGBD MonetDB.
 
 \begin{figure}[!htb]
     \centering
@@ -30,7 +30,7 @@ Devido à grande quantidade de conjuntos de dados \(S^{\dagger}\) de \(D^{\dagge
     \centering
     \begin{tabular}{c|c|c|c}
 \textbf{Conjunto de dados}                  & \textbf{Atributo de dados} & \textbf{Tipo}   & \makecell{\textbf{Exemplo} \\ \textbf{de Valor}}             \\ \hline
-\multirow{3}{*}{osolversimulationtransport} & time                       & \makecell{ponto \\ flutuante} & 1e-05                                  \\ \cline{2-4}
+\multirow{3}{*}{osolversimulationtransport} & time                       & \makecell{ponto \\ flutuante} & $\dfrac{1}{10^5}$                                  \\ \cline{2-4}
                                             & t\_step                    & inteiro         & 0                                      \\ \cline{2-4}
                                             & meshwriter\_task\_id       & inteiro         & 17                                     \\ \hline
 \multirow{2}{*}{omeshaggregator}            & xdmf                       & arquivo         & \texttt{\textasciitilde/output\_48.xmf}             \\ \cline{2-4}
@@ -56,7 +56,7 @@ As consultas dos experimentos das próximas subseções, relacionadas ao Query P
     \item 8~GB de memória RAM do tipo DDR3.
 \end{itemize}
 
-Quatro consultas foram realizadas, cada uma das quais com diversos parâmetros para a função \texttt{generateSqlQuery} (\textit{c.f.} \autoref{subsec:geracao-da-consulta-em-sql}).
+Três consultas foram realizadas, cada uma das quais com diversos parâmetros para a função \texttt{generateSqlQuery} (\textit{c.f.} \autoref{subsec:geracao-da-consulta-em-sql}).
 
 \subsection{Consulta \#1}
 
@@ -97,21 +97,20 @@ O objetivo da primeira consulta é a análise da média da concentração de sed
 
 A consulta \#1 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-1-sql}. \textbf{Observação:} uma vez que a função de média aritmética (\texttt{AVG}) é utilizada na projeção, faz-se necessária a utilização da cláusula \texttt{GROUP BY} da linguagem SQL para que a consulta \#1 fique sintaticamente válida e bem definida. Contudo, como o Query Processor não suporta essa cláusula, ela foi adicionada manualmente à consulta gerada pela função \texttt{generateSqlQuery}.
 
-\begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sql,label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1 (tempo médio: 40,29~ms).}]
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1 (tempo médio: 40,29~ms).}]
 SELECT osolversimulationtransport.time, AVG(oline2extraction.d)
 FROM osolversimulationtransport, oline2extraction, omeshwriter
 WHERE (osolversimulationtransport.line2extraction_task_id = oline2extraction.line2extraction_task_id) 
 AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id)
 GROUP BY osolversimulationtransport.time;
 \end{lstlisting}
-\end{minipage}
 
-O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
+O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, está disponível no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
 
+\begin{center}
 \begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1 (7 tuplas, tempo médio: 4,346~ms).}]
 +--------------------------+--------------------------+
-| time                     | L71                      |
+| time                     | AVG(oline2extraction)    |
 +==========================+==========================+
 |                1.3398483 |     1.74129306930693e-44 |
 |                3.1009347 |  -1.0847045643564339e-44 |
@@ -122,6 +121,7 @@ O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carre
 |                       15 |   -8.768540693069305e-22 |
 +--------------------------+--------------------------+
 \end{lstlisting}
+\end{center}
 
 \begin{figure}[htb]
     \centering
@@ -129,6 +129,8 @@ O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carre
     \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1.}%
     \label{fig:experiments-dataflow-1}
 \end{figure}
+
+\clearpage
 
 \subsection{Consulta \#2}
 
@@ -151,7 +153,7 @@ O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carre
 % AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id)
 % LIMIT 10;
 
-O objetivo da segunda consulta é a análise da concentração de sedimentos em uma linha extraída de arquivos científicos, considerando um instante de tempo fixo e um intervalo específico de valores para a concentração de sedimentos especificada pelo usuário. Ela ilustra a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline0extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\), empregando o rastro de proveniência do tipo físico. Várias projeções são de interesse para o objetivo de analisar o comportamento do conjunto de dados \texttt{oline0extraction} ao longo do tempo (segundo o atributo de dados \texttt{osolversimulationtransporte.time}). A especificação completa da consulta está disponível na \autoref{tab:experiments-2-especificacao}.
+O objetivo da segunda consulta é a análise da concentração de sedimentos em uma linha extraída de arquivos de dados científicos, considerando um instante de tempo fixo e um intervalo específico de valores para a concentração de sedimentos especificada pelo usuário. Ela ilustra a inspeção de três conjuntos de dados (\texttt{osolversimulationtransport}, \texttt{oline0extraction} e \texttt{omeshwriter}) de \(S^{\dagger}\), empregando o rastro de proveniência do tipo físico. Várias projeções são de interesse para o objetivo de analisar o comportamento do conjunto de dados \texttt{oline0extraction} ao longo do tempo (segundo o atributo de dados \texttt{osolversimulationtransporte.time}). A especificação completa da consulta está disponível na \autoref{tab:experiments-2-especificacao}.
 
 \begin{table}[htb]
     \centering
@@ -224,9 +226,11 @@ O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carre
     \label{fig:experiments-dataflow-2}
 \end{figure}
 
+\clearpage
+
 \subsection{Consulta \#3}
 
-% Query a ser gerada:
+% Query a ser gerada (antiga consulta 3):
 %
 % SELECT minSeds.time, minSeds.transport_n_linear_iterations,
 %     minSeds.transport_final_linear_residual as minResiduals, maxSeds.transport_final_linear_residual as maxResiduals,
@@ -244,43 +248,10 @@ O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carre
 % AND minSeds.transport_l = seds.minIter
 % AND maxSeds.transport_l = seds.maxIter
 % AND maxSeds.transport_final_linear_residual > minSeds.transport_final_linear_residual;
-
-O objetivo da terceira consulta é a análise da primeira variação negativa dos resíduos lineares finais durante a execução da simulação entre os primeiros e os últimos passos não-lineares. 
-
-% \begin{table}[htb]
-%     \centering
-%     \begin{tabular}{c|c}
-% \textbf{Argumento}          & \textbf{Valor} \\ \hline
-% \texttt{D}                  & $D^{\dagger}$ \\ \hline
-% \texttt{dsOrigins}          & \{\texttt{}\} \\ \hline
-% \texttt{dsDestinations}     & \{\texttt{}, \texttt{}\} \\ \hline
-% \texttt{type}               & logical \\ \hline
-% \texttt{projections}        & \{\texttt{}\} \\ \hline
-% \texttt{selections}         & \makecell{
-%                                         \texttt{seds.time = minSeds.time}, \\
-%                                         \texttt{seds.time = maxSeds.time}, \\
-%                                         \texttt{minSeds.transport\_l = seds.minIter}, \\
-%                                         \texttt{maxSeds.transport\_l = seds.maxIter}, \\
-%                                         \texttt{(maxSeds.transport\_final\_linear\_residual >} \\
-%                                         \texttt{minSeds.transport\_final\_linear\_residual)}} \\ \hline
-% \texttt{dsIncludes}         & \varnothing \\ \hline
-% \texttt{dsExcludes}         & \varnothing \\
-%     \end{tabular}
-%     \caption[Argumentos da função \texttt{generateSqlQuery} para a consulta \#3]{Especificação dos argumentos da função \texttt{generateSqlQuery} para a consulta~\#3.}%
-%     \label{tab:experiments-3-especificacao}
-% \end{table}
-
-\perrotta{TODO: consulta \#3 ++ netbeans}
-
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=\textwidth]{img/experiments-dataflow-3}
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#3]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#3.}%
-    \label{fig:experiments-dataflow-3}
-\end{figure}
-
-\subsection{Consulta \#4}
-
+%
+%
+% Query a ser gerada (antiga consulta 4):
+%
 % SELECT DISTINCT osolversimulationflow.t_step,
 %        osolversimulationflow.flow_final_linear_residual,
 %        osolversimulationflow.flow_norm_delta,
@@ -303,51 +274,40 @@ O objetivo da terceira consulta é a análise da primeira variação negativa do
 % AND fluid.t_step > 20000
 % LIMIT 5;
 
-O objetivo da quarta consulta é a análise dos resíduos e da normalização de delta dos últimos três passos executados. A especificação completa da consulta está disponível na \autoref{tab:experiments-4-especificacao}.
+O objetivo da terceira consulta é TODO. A especificação completa da consulta está disponível na \autoref{tab:experiments-3-especificacao}. A consulta \#3 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-3-sql}.
 
-A consulta \#4 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-4-sql}. \textbf{Observação:} como as cláusulas \texttt{SELECT DISTINCT} e \texttt{LIMIT} não são implementadas pelo QP, elas foram adicionadas manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}.
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{c|c}
+\textbf{Argumento}          & \textbf{Valor} \\ \hline
+\texttt{D}                  & $D^{\dagger}$ \\ \hline
+\texttt{dsOrigins}          & \{\texttt{}\} \\ \hline
+\texttt{dsDestinations}     & \{\texttt{}\} \\ \hline
+\texttt{type}               & logical \\ \hline
+\texttt{projections}        & \{\texttt{}\} \\ \hline
+\texttt{selections}         & \varnothing \\ \hline
+\texttt{dsIncludes}         & \varnothing \\ \hline
+\texttt{dsExcludes}         & \varnothing \\
+    \end{tabular}
+    \caption[Argumentos da função \texttt{generateSqlQuery} para a consulta \#3]{Especificação dos argumentos da função \texttt{generateSqlQuery} para a consulta~\#3.}%
+    \label{tab:experiments-3-especificacao}
+\end{table}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sql,label={lst:experiments-4-sql},caption={[Código em SQL gerado na consulta~\#4]Código em SQL gerado na consulta~\#4 (tempo médio: TODO~ms).}]
-SELECT DISTINCT osolversimulationflow.t_step,
-       osolversimulationflow.flow_final_linear_residual,
-       osolversimulationflow.flow_norm_delta,
-       osolversimulationflow.flow_norm_delta_u,
-       osolversimulationtransport.transport_final_linear_residual,
-       osolversimulationtransport.transport_norm_delta,
-       osolversimulationtransport.transport_norm_delta_u
-FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter,
-(SELECT t_step, max(r) as maxR, max(flow_l) as maxL FROM osolversimulationflow GROUP BY t_step) as fluid,
-(SELECT t_step, max(r) as maxR, max(transport_l) as maxL FROM osolversimulationtransport GROUP BY t_step) as sediments
-WHERE fluid.t_step = sediments.t_step
-AND osolversimulationflow.t_step = fluid.t_step
-AND osolversimulationflow.r = fluid.maxR
-AND osolversimulationflow.flow_l = fluid.maxL
-AND osolversimulationtransport.t_step = sediments.t_step
-AND osolversimulationtransport.r = sediments.maxR
-AND osolversimulationtransport.transport_l = sediments.maxL
-AND osolversimulationflow.solversimulationtransport_task_id = osolversimulationtransport.solversimulationtransport_task_id
-AND osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id
-AND fluid.t_step > 20000
-LIMIT 5;
+\begin{lstlisting}[language=sql,label={lst:experiments-3-sql},caption={[Código em SQL gerado na consulta~\#3]Código em SQL gerado na consulta~\#3 (tempo médio: TODO~ms).}]
+SELECT TODO
 \end{lstlisting}
 \end{minipage}
 
-O resultado da consulta \#4, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-4-sqlresults}: suas colunas estão na mesma ordem da especificação das projeções em \autoref{lst:experiments-4-sql}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-4}.
+O resultado da consulta \#3, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-3-sqlresults}: suas colunas estão na mesma ordem da especificação das projeções em \autoref{lst:experiments-3-sql}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-3}.
 
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-4-sqlresults},caption={[Resultados da consulta \#4.]Resultados da consulta \#4 (3 tuplas, tempo médio: 13,62~ms).}]
-+------+------------+------------+------------+------------+--+--+
-| 24999| 0.258204396| 3.147418846| 0.005086579| 0.000271997| 0| 0|
-| 29999| 0.202004362| 1.616387674| 0.002679455| 0.000155539| 0| 0|
-| 34788| 0.209178429| 0.571624422| 0.000893582| 0.000274076| 0| 0|
-+------+------------+------------+------------+------------+--+--+
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-3-sqlresults},caption={[Resultados da consulta \#3.]Resultados da consulta \#3 (TODO tuplas, tempo médio: TODO~ms).}]
+TODO
 \end{lstlisting}
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\textwidth]{img/experiments-dataflow-4}
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#4]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#4.}%
-    \label{fig:experiments-dataflow-4}
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-3}
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#3]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#3.}%
+    \label{fig:experiments-dataflow-3}
 \end{figure}
-
-\perrotta{TODO: consulta \#4: tabela ++ netbeans}

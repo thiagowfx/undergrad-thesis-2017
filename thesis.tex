@@ -3,8 +3,10 @@
 % vim: set fenc=utf-8
 
 % use coppetex style class
-% TODO: add final option
-\documentclass[grad,numbers]{coppetex/coppe}
+\documentclass[grad,numbers,final]{coppetex/coppe}
+
+% https://tex.stackexchange.com/questions/331430/produce-a-monochrome-pure-black-and-white-pdf-using-xelatex
+% \usepackage[monochrome]{xcolor}
 
 \usepackage{iftex}
 % https://tex.stackexchange.com/questions/47576/combining-ifxetex-and-ifluatex-with-the-logical-or-operation
@@ -79,26 +81,31 @@
   \lstset{basicstyle=\footnotesize\sf}
 \fi
 
-\lstset{%,
-  breakatwhitespace=true,      % sets if automatic breaks should only happen at whitespace
+\lstset{%
+  aboveskip=15pt,
+  belowskip=15pt,
+  breakatwhitespace=false,     % sets if automatic breaks should only happen at whitespace
   breaklines=true,             % sets automatic line breaking
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
   captionpos=b,                % sets the caption-position
   columns=fullflexible,
   commentstyle=\color{gray},   % sets the comments color
   escapechar=\%,               % write LaTeX inside listings
-  framextopmargin=50pt,
   frame=bottomline,            % adds a frame
   numbers=left,                % where to put the line-numbers
-  numberstyle=\footnotesize,   % the size of the fonts that are used for the line-numbers
+  numberstyle=\footnotesize\color{gray}, % the size of the fonts that are used for the line-numbers (alt: \tiny)
   showspaces=false,            % show spaces adding particular underscores
   showstringspaces=false,      % underline spaces within strings
   showtabs=false,              % show tabs within strings adding particular underscores
   stepnumber=1,                % the step between two line-numbers. If it's 1 each line
-  tabsize=4,                   % sets default tabsize to 4 spaces
+  stringstyle=\color{gray},
+  tabsize=2,                   % sets default tabsize to 4 spaces
   title=\lstname,              % show the filename of files included with \lstinputlisting;
 }
 
 \lstdefinelanguage{sqlresults}{%
+  aboveskip=5pt,
+  belowskip=5pt,
   basicstyle=\footnotesize\ttfamily,
   columns=fixed,
   numbers=none,
@@ -132,7 +139,7 @@
 \makelosymbols{}
 \makeloabbreviations{}
 
-% typeset only the following chapters for faster typesetting times
+% include only the following chapters (faster typesetting)
 % \includeonly{chapter06}
 
 \begin{document}
@@ -140,16 +147,16 @@
   \foreigntitle{Provenance Tracing Analysis on Large-Scale Computer Simulations}
 
   \author{Thiago}{Barroso Perrotta}
-  \advisor{Prof.}{Marta}{Lima de Queirós Mattoso}{D.Sc.}
+  \advisor{Profa.}{Marta}{Lima de Queirós Mattoso}{D.Sc.}
   \advisor{}{Vítor}{Silva Sousa}{M.Sc.}
 
   % TODO: include examiners in the latest revision
-  \examiner{Prof.}{Foo Bar}{D.Sc.}
+  \examiner{Prof.}{Foo Bar Baz}{D.Sc.}
+  \examiner{Prof.}{Alpha Bravo Charlie}{Ph.D.}
 
   \department{PESC}
 
-  % TODO: update date in the latest revision
-  \date{07}{2017}
+  \date{08}{2017}
 
   \keyword{\textit{Workflows} Científicos}
   \keyword{Análise de Dados Científicos}
@@ -168,7 +175,7 @@
   \maketitle
   \frontmatter{}
 
-  \include{thanks}
+  \include{acknowledgements}
 
   \include{abstract}
 
@@ -204,7 +211,7 @@
 
   \backmatter{}
   \appendix
-  \include{appendix01}
+  \include{appendix}
   
   \bibliographystyle{coppetex/coppe-unsrt}
   \bibliography{thesis} % Pro-Tip: use JabRef to manage this file

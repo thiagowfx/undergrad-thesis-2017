@@ -291,11 +291,8 @@ O \autoref{lst:algorithm-generate-sql-query} é uma versão simplificada do algo
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=pseudocode,label={lst:algorithm-generate-sql-query},caption={[Geração da consulta em SQL]Geração da consulta na linguagem SQL a partir das especificações do usuário.}]
-function generateSqlQuery(D,dsOrigins,dsDestinations,type,
-projections,selections,dsIncludes, dsExcludes)
-    selectClause %\leftarrow% {}
-    fromClause   %\leftarrow% {}
-    whereClause  %\leftarrow% {}
+function generateSqlQuery(D,dsOrigins,dsDestinations,type,projections,selections,dsIncludes, dsExcludes)
+    selectClause, fromClause, whereClause %\leftarrow% {}
     for each projection %\in% projections do:
         selectClause %\leftarrow% selectClause + {projection}
     end do
@@ -312,7 +309,7 @@ projections,selections,dsIncludes, dsExcludes)
                 for (i %\leftarrow% 1; i < path.size(); i %\leftarrow% i + 1) do:
                     prevDs %\leftarrow% path[i - 1]
                     nextDs %\leftarrow% path[i]
-                    attrMapping %\leftarrow% getAttributesMapping(getTransformation(D, prevDs,nextDs),prevDs,nextDs, type)%~\quad%#%~\autoref{lst:algorithm-attribute-mappings}%
+                    attrMapping %\leftarrow% getAttributesMapping( getTransformation(D, prevDs,nextDs),prevDs,nextDs, type)%~\quad%#%~\autoref{lst:algorithm-attribute-mappings}%
                     for each attr %\in% attrMapping do:
                         whereClause.addSelection(prevDs.attr, "=", nextDs.attr)
                         if projections is empty then:
@@ -323,8 +320,7 @@ projections,selections,dsIncludes, dsExcludes)
             end do
         end do
     end do
-    sqlQuery %\leftarrow% new SqlQuery(selectClause, fromClause, whereClause)
-    return sqlQuery
+    return new SqlQuery(selectClause, fromClause, whereClause)
 end function
 \end{lstlisting}
 \end{minipage}
@@ -473,7 +469,7 @@ Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \
 
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=\textwidth]{img/example-query-dataflow-1}
+    \includegraphics[width=0.9\textwidth]{img/example-query-dataflow-1}
     \caption[Caminho obtido na consulta do exemplo \#1]{Caminho de conjuntos de dados obtido na consulta do exemplo \#1: \(\{ds_{1} \rightarrow ds_{2} \rightarrow ds_{4}\}.\)}%
     \label{fig:example-query-dataflow-1}
 \end{figure}
