@@ -95,7 +95,7 @@ O objetivo da primeira consulta é a análise da média da concentração de sed
     \label{tab:experiments-1-especificacao}
 \end{table}
 
-A consulta \#1 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-1-sql}. \textbf{Observação:} uma vez que a função de média aritmética (\texttt{AVG}) é utilizada na projeção, faz-se necessária a utilização da cláusula \texttt{GROUP BY} da linguagem SQL para que a consulta \#1 fique sintaticamente válida e bem definida. Contudo, como o Query Processor não suporta essa cláusula, ela foi adicionada manualmente à consulta gerada pela função \texttt{generateSqlQuery}.
+A consulta \#1 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-1-sql}. \textbf{Observação:} uma vez que a função de média aritmética (\texttt{AVG}) é utilizada na projeção, faz-se necessária a utilização da cláusula \texttt{GROUP BY} da linguagem SQL para que a consulta \#1 fique sintaticamente válida e bem definida. Contudo, como o Query Processor não suporta essa cláusula, ela foi adicionada manualmente à consulta gerada pela função \texttt{generateSqlQuery}. O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, está disponível no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
 
 \begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1 (tempo médio: 40,29~ms).}]
 SELECT osolversimulationtransport.time, AVG(oline2extraction.d)
@@ -105,12 +105,10 @@ AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task
 GROUP BY osolversimulationtransport.time;
 \end{lstlisting}
 
-O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, está disponível no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
-
 \begin{center}
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1 (7 tuplas, tempo médio: 4,346~ms).}]
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1 (7 tuplas, tempo médio: 4,35~ms).}]
 +--------------------------+--------------------------+
-| time                     | AVG(oline2extraction)    |
+| time                     | AVG(oline2extraction.d)  |
 +==========================+==========================+
 |                1.3398483 |     1.74129306930693e-44 |
 |                3.1009347 |  -1.0847045643564339e-44 |
@@ -176,10 +174,10 @@ O objetivo da segunda consulta é a análise da concentração de sedimentos em 
     \label{tab:experiments-2-especificacao}
 \end{table}
 
-A consulta \#2 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-2-sql}. \textbf{Observação:} como a cláusula \texttt{LIMIT} não é implementada pelo QP, ela foi adicionada manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}.
+A consulta \#2 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-2-sql}. \textbf{Observação:} como a cláusula \texttt{LIMIT} não é implementada pelo QP, ela foi adicionada manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}. O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-2-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-2}.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sql,label={lst:experiments-2-sql},caption={[Código em SQL gerado na consulta~\#2]Código em SQL gerado na consulta~\#2 (tempo médio: 15,45~ms).}]
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-2-sql},caption={[Código em SQL gerado na consulta~\#2]Código em SQL gerado na consulta~\#2 (tempo médio: 15,45~ms).}]
 SELECT osolversimulationtransport.time, oline0extraction.points0, oline0extraction.points1, oline0extraction.points2, oline0extraction.d
 FROM osolversimulationtransport, oline0extraction, omeshwriter
 WHERE (osolversimulationtransport.time < 5.5) 
@@ -189,8 +187,6 @@ AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task
 LIMIT 10;
 \end{lstlisting}
 \end{minipage}
-
-O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-2-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-2}.
 
 \begin{lstlisting}[language=sqlresults,label={lst:experiments-2-sqlresults},caption={[Resultados da consulta \#2.]Resultados da consulta \#2 (10 tuplas, tempo médio: 5,92~ms).}]
 +--------------+-----------+---------+---------+----------+
@@ -274,40 +270,126 @@ O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carre
 % AND fluid.t_step > 20000
 % LIMIT 5;
 
-O objetivo da terceira consulta é TODO. A especificação completa da consulta está disponível na \autoref{tab:experiments-3-especificacao}. A consulta \#3 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-3-sql}.
+O objetivo da terceira consulta é a análise, ao longo do tempo, da evolução do resíduo linear final e da normalização de delta do fluxo e do transporte de sedimentos do \textit{solver}, assim como os arquivos de imagem (PNG) e XDMF a cada instante de tempo. A especificação completa da consulta está disponível na \autoref{tab:experiments-3-especificacao}; a fim de ilustrar a diferença entre os diversos tipos de mapeamento de atributos de dados implementados no algoritmo \autoref{lst:algorithm-attribute-mappings}, três consultas (\#3A, \#3B e \#3C) foram realizadas, cada qual com um tipo diferente no argumento \texttt{type}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessas consultas estão realçados em vermelho na \autoref{fig:experiments-dataflow-3}.
 
 \begin{table}[htb]
     \centering
     \begin{tabular}{c|c}
 \textbf{Argumento}          & \textbf{Valor} \\ \hline
 \texttt{D}                  & $D^{\dagger}$ \\ \hline
-\texttt{dsOrigins}          & \{\texttt{}\} \\ \hline
-\texttt{dsDestinations}     & \{\texttt{}\} \\ \hline
-\texttt{type}               & logical \\ \hline
-\texttt{projections}        & \{\texttt{}\} \\ \hline
-\texttt{selections}         & \varnothing \\ \hline
+\texttt{dsOrigins}          & \{\texttt{osolversimulationflow}\} \\ \hline
+\texttt{dsDestinations}     & \{\texttt{ovisualization}, \texttt{omeshwriter}\} \\ \hline
+\texttt{type}               & physical, logical e hybrid (3 consultas distintas) \\ \hline
+\texttt{projections}        & \makecell{\{%
+                                          \texttt{osolversimulationflow.time}, \\
+                                          \texttt{osolversimulationflow.flow\_final\_linear\_residual}, \\
+                                          \texttt{osolversimulationflow.flow\_norm\_delta\_u}, \\
+                                          \texttt{\tau.transport\_final\_linear\_residual}, \\
+                                          \texttt{\tau.transport\_norm\_delta\_u}, \\
+                                          \texttt{ovisualization.png}, \texttt{omeshwriter.xdmf}%
+                                        \}} \\ \hline
+\texttt{selections}         & \makecell{\{%
+                                          \texttt{osolversimulationflow.time > 2}, \\
+                                          \texttt{osolversimulationflow.time < 10}, \\
+                                          \texttt{osolversimulationflow.r = 1}%
+                                        \}} \\ \hline
 \texttt{dsIncludes}         & \varnothing \\ \hline
 \texttt{dsExcludes}         & \varnothing \\
     \end{tabular}
-    \caption[Argumentos da função \texttt{generateSqlQuery} para a consulta \#3]{Especificação dos argumentos da função \texttt{generateSqlQuery} para a consulta~\#3.}%
+    \caption[Argumentos da função \texttt{generateSqlQuery} para as consultas \#3A, \#3B e \#3C]{Especificação dos argumentos da função \texttt{generateSqlQuery} para as consultas \#3A, \#3B e \#3C. \textbf{Observação}: \tau{} representa \texttt{osolversimulationtransport}.}%
     \label{tab:experiments-3-especificacao}
 \end{table}
-
-\begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sql,label={lst:experiments-3-sql},caption={[Código em SQL gerado na consulta~\#3]Código em SQL gerado na consulta~\#3 (tempo médio: TODO~ms).}]
-SELECT TODO
-\end{lstlisting}
-\end{minipage}
-
-O resultado da consulta \#3, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-3-sqlresults}: suas colunas estão na mesma ordem da especificação das projeções em \autoref{lst:experiments-3-sql}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-3}.
-
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-3-sqlresults},caption={[Resultados da consulta \#3.]Resultados da consulta \#3 (TODO tuplas, tempo médio: TODO~ms).}]
-TODO
-\end{lstlisting}
 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{img/experiments-dataflow-3}
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#3]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#3.}%
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado nas consultas \#3A, \#3B e \#3C]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado nas consultas \#3A, \#3B e \#3C.}%
     \label{fig:experiments-dataflow-3}
 \end{figure}
+
+As consultas \#3A, \#3B e \#3C, geradas em SQL pelo Query Processor, estão listadas no \autoref{lst:experiments-3a-sql}, \autoref{lst:experiments-3b-sql} e \autoref{lst:experiments-3c-sql}, respectivamente. Os resultados das mesmas, executadas na base de dados de \(D^{\dagger}\) carregada no MonetDB, podem ser visualizados no \autoref{lst:experiments-3a-sqlresults}, \autoref{lst:experiments-3b-sqlresults} e \autoref{lst:experiments-3c-sqlresults}, respectivamente. Suas colunas estão na mesma ordem da especificação das projeções em \autoref{tab:experiments-3-especificacao}.
+
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},deletendkeywords={TIME},label={lst:experiments-3a-sql},caption={[Código em SQL gerado na consulta~\#3A]Código em SQL gerado na consulta~\#3A (tempo médio: 31,80~ms).}]
+SELECT osolversimulationflow.time, osolversimulationflow.flow_final_linear_residual, osolversimulationflow.flow_norm_delta_u, osolversimulationtransport.transport_final_linear_residual, osolversimulationtransport.transport_norm_delta_u, ovisualization.png, omeshwriter.xdmf
+FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter
+WHERE (osolversimulationflow.time > 2) 
+AND (osolversimulationflow.time < 10) 
+AND (osolversimulationflow.r = 1) 
+AND (osolversimulationflow.solversimulationtransport_task_id = osolversimulationtransport.solversimulationtransport_task_id) 
+AND (osolversimulationtransport.visualization_task_id = ovisualization.visualization_task_id) 
+AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id);
+\end{lstlisting}
+
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-3a-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3A.]Resultados da consulta \#3A (12 tuplas, tempo médio: 5,11~ms).}]
++-------+-------+-------+-------+---------+---------+-----+
+|3.10093|0.31609|0.00225|0.00030|. 0.00072| 9999.png|2.xmf|
+|3.10093|0.31609|0.00225|0.00030|        0| 9999.png|2.xmf|
+|3.10093|0.31609|0.00225|0.00025|2.224e-06| 9999.png|2.xmf|
+|3.10093|0.31609|0.00225|0.00025|        0| 9999.png|2.xmf|
+|5.41246|0.24713|0.00191|0.00073|0.0006674|14999.png|3.xmf|
+|5.41246|0.24713|0.00191|0.00073|        0|14999.png|3.xmf|
+|5.41246|0.24713|0.00191|0.00048|4.693e-06|14999.png|3.xmf|
+|5.41246|0.24713|0.00191|0.00048|        0|14999.png|3.xmf|
+|7.86956|0.27832|0.00563|0.00071|0.0007289|19999.png|4.xmf|
+|7.86956|0.27832|0.00563|0.00071|        0|19999.png|4.xmf|
+|7.86956|0.27832|0.00563|0.00026|2.551e-06|19999.png|4.xmf|
+|7.86956|0.27832|0.00563|0.00026|        0|19999.png|4.xmf|
++-------+-------+-------+-------+---------+---------+-----+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-3b-sql},caption={[Código em SQL gerado na consulta~\#3B]Código em SQL gerado na consulta~\#3B (tempo médio: 34,36~ms).}]
+SELECT osolversimulationflow.time, osolversimulationflow.flow_final_linear_residual, osolversimulationflow.flow_norm_delta_u, osolversimulationtransport.transport_final_linear_residual, osolversimulationtransport.transport_norm_delta_u, ovisualization.png, omeshwriter.xdmf
+FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter
+WHERE (osolversimulationflow.time > 2) 
+AND (osolversimulationflow.time < 10) 
+AND (osolversimulationflow.r = 1) 
+AND (osolversimulationflow.simulationid = osolversimulationtransport.simulationid) 
+AND (osolversimulationflow.t_step = osolversimulationtransport.t_step) 
+AND (osolversimulationflow.dt = osolversimulationtransport.dt) 
+AND (osolversimulationflow.time = osolversimulationtransport.time) 
+AND (osolversimulationflow.r = osolversimulationtransport.r) 
+AND (osolversimulationtransport.simulationid = ovisualization.simulationid) 
+AND (osolversimulationtransport.simulationid = omeshwriter.simulationid)
+LIMIT 6; -- esse limite foi adicionado devido ao grande número de resultados dessa consulta
+\end{lstlisting}
+
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-3b-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3B.]Resultados da consulta \#3B (6 tuplas, tempo médio: 19,85~ms).}]
++-------+-------+-------+-------+---------+-------+-----|
+|2.00058|0.24297|0.00118|0.00034|3.404e-06|999.png|1.xmf|
+|2.00058|0.24297|0.00118|0.00034|3.404e-06|999.png|2.xmf|
+|2.00058|0.24297|0.00118|0.00034|3.404e-06|999.png|3.xmf|
+|2.00058|0.24297|0.00118|0.00034|3.404e-06|999.png|4.xmf|
+|2.00058|0.24297|0.00118|0.00034|3.404e-06|999.png|5.xmf|
+|2.00058|0.24297|0.00118|0.00034|3.404e-06|999.png|6.xmf|
++-------+-------+-------+-------+---------+-------+-----+
+\end{lstlisting}
+
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-3c-sql},caption={[Código em SQL gerado na consulta~\#3C]Código em SQL gerado na consulta~\#3C (tempo médio: 43,20~ms).}]
+SELECT osolversimulationflow.time, osolversimulationflow.flow_final_linear_residual, osolversimulationflow.flow_norm_delta_u, osolversimulationtransport.transport_final_linear_residual, osolversimulationtransport.transport_norm_delta_u, ovisualization.png, omeshwriter.xdmf
+FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter
+WHERE (osolversimulationflow.time > 2) 
+AND (osolversimulationflow.time < 10) 
+AND (osolversimulationflow.r = 1) 
+AND (osolversimulationflow.solversimulationtransport_task_id = osolversimulationtransport.solversimulationtransport_task_id) 
+AND (osolversimulationflow.simulationid = osolversimulationtransport.simulationid) 
+AND (osolversimulationflow.t_step = osolversimulationtransport.t_step) 
+AND (osolversimulationflow.dt = osolversimulationtransport.dt) 
+AND (osolversimulationflow.time = osolversimulationtransport.time) 
+AND (osolversimulationflow.r = osolversimulationtransport.r) 
+AND (osolversimulationtransport.visualization_task_id = ovisualization.visualization_task_id) 
+AND (osolversimulationtransport.simulationid = ovisualization.simulationid) 
+AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id) 
+AND (osolversimulationtransport.simulationid = omeshwriter.simulationid);
+\end{lstlisting}
+
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-3c-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3C.]Resultados da consulta \#3C (6 tuplas, tempo médio: 11,88~ms).}]
++-------+-------+-------+-------+---------+---------+-----+
+|3.10093|0.31609|0.00225|0.00025|2.224e-06| 9999.png|2.xmf|
+|3.10093|0.31609|0.00225|0.00025|        0| 9999.png|2.xmf|
+|5.41246|0.24713|0.00191|0.00048|4.693e-06|14999.png|3.xmf|
+|5.41246|0.24713|0.00191|0.00048|        0|14999.png|3.xmf|
+|7.86956|0.27832|0.00563|0.00026|2.551e-06|19999.png|4.xmf|
+|7.86956|0.27832|0.00563|0.00026|        0|19999.png|4.xmf|
++-------+-------+-------+-------+---------+---------+-----+
+\end{lstlisting}
