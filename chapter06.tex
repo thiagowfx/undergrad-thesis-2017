@@ -7,7 +7,7 @@
 \chapter{Experimentos}%
 \label{chap:experimentos}
 
-Esse capítulo apresenta alguns exemplos de experimentos e de simulações computacionais com base em uma aplicação do DfAnalyzer no campo de sedimentação de dinâmica de fluidos computacionais~\cite{silva2016situ}, os quais foram executados a fim de ilustrar a implementação e a utilização do Query Processor --- apresentado no \autoref{chap:rastros-de-proveniencia} ---, assim como os resultados obtidos com as consultas realizadas nos mesmos.
+Esse capítulo apresenta alguns exemplos de experimentos e de simulações computacionais com base em uma aplicação do DfAnalyzer no campo de sedimentação de dinâmica de fluidos computacionais~\cite{silva2016situ}, os quais foram executados a fim de ilustrar a implementação e a utilização do Query Preprocessor --- apresentado no \autoref{chap:rastros-de-proveniencia} ---, assim como os resultados obtidos com as consultas realizadas nos mesmos.
 
 \section{Simulação computacional em sedimentação}
 
@@ -48,7 +48,7 @@ otimestepcontrolconfig                      & model\_name                & strin
 
 \section{Experimentos}
 
-As consultas dos experimentos das próximas subseções, relacionadas ao Query Processor, foram executadas em um computador com as seguintes especificações:
+As consultas dos experimentos das próximas subseções, relacionadas ao Query Preprocessor, foram executadas em um computador com as seguintes especificações:
 
 \begin{itemize}
 	\item Macbook Pro Retina 2015, com o sistema operacional macOS Sierra 10.12.6;
@@ -95,7 +95,7 @@ O objetivo da primeira consulta é a análise da média da concentração de sed
     \label{tab:experiments-1-especificacao}
 \end{table}
 
-A consulta \#1 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-1-sql}. \textbf{Observação:} uma vez que a função de média aritmética (\texttt{AVG}) é utilizada na projeção, faz-se necessária a utilização da cláusula \texttt{GROUP BY} da linguagem SQL para que a consulta \#1 fique sintaticamente válida e bem definida. Contudo, como o Query Processor não suporta essa cláusula, ela foi adicionada manualmente à consulta gerada pela função \texttt{generateSqlQuery}. O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, está disponível no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
+A consulta \#1 em SQL gerada pelo Query Preprocessor está listada no \autoref{lst:experiments-1-sql}. \textbf{Observação:} uma vez que a função de média aritmética (\texttt{AVG}) é utilizada na projeção, faz-se necessária a utilização da cláusula \texttt{GROUP BY} da linguagem SQL para que a consulta \#1 fique sintaticamente válida e bem definida. Contudo, como o Query Preprocessor não suporta essa cláusula, ela foi adicionada manualmente à consulta gerada pela função \texttt{generateSqlQuery}. O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, está disponível no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
 
 \begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1 (tempo médio: 40,29~ms).}]
 SELECT osolversimulationtransport.time, AVG(oline2extraction.d)
@@ -174,7 +174,7 @@ O objetivo da segunda consulta é a análise da concentração de sedimentos em 
     \label{tab:experiments-2-especificacao}
 \end{table}
 
-A consulta \#2 em SQL gerada pelo Query Processor está listada no \autoref{lst:experiments-2-sql}. \textbf{Observação:} como a cláusula \texttt{LIMIT} não é implementada pelo QP, ela foi adicionada manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}. O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-2-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-2}.
+A consulta \#2 em SQL gerada pelo Query Preprocessor está listada no \autoref{lst:experiments-2-sql}. \textbf{Observação:} como a cláusula \texttt{LIMIT} não é implementada pelo QPP, ela foi adicionada manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}. O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-2-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-2}.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-2-sql},caption={[Código em SQL gerado na consulta~\#2]Código em SQL gerado na consulta~\#2 (tempo médio: 15,45~ms).}]
@@ -307,7 +307,7 @@ O objetivo da terceira consulta é a análise, ao longo do tempo, da evolução 
     \label{fig:experiments-dataflow-3}
 \end{figure}
 
-As consultas \#3A, \#3B e \#3C, geradas em SQL pelo Query Processor, estão listadas no \autoref{lst:experiments-3a-sql}, \autoref{lst:experiments-3b-sql} e \autoref{lst:experiments-3c-sql}, respectivamente. Os resultados das mesmas, executadas na base de dados de \(D^{\dagger}\) carregada no MonetDB, podem ser visualizados no \autoref{lst:experiments-3a-sqlresults}, \autoref{lst:experiments-3b-sqlresults} e \autoref{lst:experiments-3c-sqlresults}, respectivamente. Suas colunas estão na mesma ordem da especificação das projeções em \autoref{tab:experiments-3-especificacao}. Os resultados das consultas \#3A, \#3B e \#3C demonstraram, nesse exemplo, que o mapeamento lógico foi mais rico do que o físico.
+As consultas \#3A, \#3B e \#3C, geradas em SQL pelo Query Preprocessor, estão listadas no \autoref{lst:experiments-3a-sql}, \autoref{lst:experiments-3b-sql} e \autoref{lst:experiments-3c-sql}, respectivamente. Os resultados das mesmas, executadas na base de dados de \(D^{\dagger}\) carregada no MonetDB, podem ser visualizados no \autoref{lst:experiments-3a-sqlresults}, \autoref{lst:experiments-3b-sqlresults} e \autoref{lst:experiments-3c-sqlresults}, respectivamente. Suas colunas estão na mesma ordem da especificação das projeções em \autoref{tab:experiments-3-especificacao}. Os resultados das consultas \#3A, \#3B e \#3C demonstraram, nesse exemplo, que o mapeamento lógico foi mais rico do que o físico.
 
 \begin{lstlisting}[language=sql,deletendkeywords={TIME},deletendkeywords={TIME},label={lst:experiments-3a-sql},caption={[Código em SQL gerado na consulta~\#3A]Código em SQL gerado na consulta~\#3A (tempo médio: 31,80~ms).}]
 SELECT osolversimulationflow.time, osolversimulationflow.flow_final_linear_residual, osolversimulationflow.flow_norm_delta_u, osolversimulationtransport.transport_final_linear_residual, osolversimulationtransport.transport_norm_delta_u, ovisualization.png, omeshwriter.xdmf

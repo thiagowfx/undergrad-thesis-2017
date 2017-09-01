@@ -5,7 +5,7 @@
 \chapter{Abordagem para análise de rastros de proveniência}%
 \label{chap:rastros-de-proveniencia}
 
-Nesse capítulo é apresentado o Processador de Consultas (Query Processor), juntamente com a sua implementação e seus algoritmos. Além disso, aborda-se a relação entre os diversos tipos de rastros de proveniência existentes e a influência da seleção de um desses tipos na execução do QP.
+Nesse capítulo é apresentado o Pré-Processador de Consultas (Query Preprocessor), juntamente com a sua implementação e seus algoritmos. Além disso, aborda-se a relação entre os diversos tipos de rastros de proveniência existentes e a influência da seleção de um desses tipos na execução do QPP.
 
 Conforme abordado na \autoref{sec:rastreamento-de-dados-de-proveniencia}, o \textbf{rastreamento de dados de proveniência} em uma simulação computacional é realizado através do \textbf{mapeamento de atributos} de dados dos conjuntos de dados, sendo indispensável para tal. Reitera-se a definição de mapeamento de atributos da \autoref{subsec:mapeamento-de-atributos}, destacando que diz-se que existe um mapeamento de atributos entre dois atributos de dados \(da_1\) de um conjunto de dados \(ds_1\) e \(da_2\) de um conjunto de dados \(ds_2\), desde que ambos os atributos apresentem \((i)\) o mesmo identificador (nome) e \((ii)\) o mesmo tipo, e desde que \((iii)\) \(ds_1\) e \(ds_2\) sejam adjacentes no mesmo fluxo de dados, \textit{i.e.}, eles devem possuir uma transformação de dados em comum, sendo um deles a entrada e o outro a saída da mesma.
 
@@ -43,7 +43,7 @@ O mapeamento de atributos de dados do \textbf{tipo físico} ocorre \emph{somente
 
 \subsection{Lógico}
 
-O mapeamento de atributos de dados do \textbf{tipo lógico} ocorre entre os \textbf{atributos de domínio} dos conjuntos de dados de uma simulação científica. Esses atributos de domínio necessariamente \emph{não} podem denotar o tipo \texttt{taskid} mencionado na subseção anterior. Sendo assim, o mapeamento lógico permite que as junções, regularmente realizadas pelos usuários ao desenvolver suas consultas, sejam expressas pelos mapeamentos lógicos de atributos. Consequentemente, assim como o mapeamento físico, o mapeamento lógico também pode reduzir o esforço necessário por parte do usuário ao desenvolver suas consultas, já que os principais relacionamentos entre conjuntos de dados poderiam ser representados~/~expressos pelos mapeamentos de atributos.
+O mapeamento de atributos de dados do \textbf{tipo lógico} ocorre entre os \textbf{atributos de domínio} dos conjuntos de dados de uma simulação científica. Esses atributos de domínio necessariamente \emph{não} podem denotar o tipo \texttt{taskid} mencionado na subseção anterior. Sendo assim, o mapeamento lógico permite que as junções, regularmente realizadas pelos usuários ao desenvolver suas consultas, sejam expressas pelos mapeamentos lógicos de atributos. Consequentemente, assim como o mapeamento físico, o mapeamento lógico também pode reduzir o esforço necessário por parte do usuário ao desenvolver suas consultas, já que os principais relacionamentos entre conjuntos de dados poderiam ser expressados pelos mapeamentos de atributos.
 
 No exemplo dessa seção, o mapeamento lógico dos atributos de \(D\ast\) existe somente entre o par de atributos de dados \(ds_1.da_1\) e \(ds_2.da_1\). Note que \emph{não} existe mapeamento lógico entre \(ds_1.da_2\) e \(ds_2.da_2\) pois, apesar de possuírem o mesmo nome, esses atributos de dados possuem tipos de dados diferentes (inteiro e booleano). Além disso, o atributo \(taskid\textup{\_}dt1\) não foi considerado por ser específico do mapeamento físico.
 
@@ -60,14 +60,14 @@ Assim, no exemplo dessa seção, esse mapeamento envolve os seguintes atributos:
     \item \(ds_1.\textup{taskid\_}dt_1\) e \(ds_2.\textup{taskid\_}dt_1\) (físico).
 \end{itemize}
 
-\section{Desenvolvimento do Processador de Consultas}
+\section{Desenvolvimento do Pré-processador de Consultas}
 
-Com o objetivo de permitir o desenvolvimento da abordagem para análise de rastros de proveniência em simulações computacionais, foi desenvolvido o \textbf{Query Processor}. Ele foi implementado na linguagem de programação Java, a qual foi escolhida pelas seguintes razões:
+Com o objetivo de permitir o desenvolvimento da abordagem para análise de rastros de proveniência em simulações computacionais, foi desenvolvido o \textbf{Query Preprocessor}. Ele foi implementado na linguagem de programação Java, a qual foi escolhida pelas seguintes razões:
 
 \begin{itemize}
     \item possui um bom suporte a orientação a objetos;
     \item está bastante consolidada no mercado e na academia, sendo uma escolha tradicional;
-    \item facilita a integração do Query Processor com os outros componentes do DfAnalyzer, uma vez que eles também foram implementados originalmente em Java.
+    \item facilita a integração do Query Preprocessor com os outros componentes do DfAnalyzer, uma vez que eles também foram implementados originalmente em Java.
 \end{itemize}
 
 O projeto foi gerenciado e compilado pelo \texttt{Apache Maven~3.5.0}, tendo sido desenvolvido no ambiente de desenvolvimento integrado \texttt{NetBeans~8.2}, com a versão~1.8 do \texttt{JDK} (\textit{kit} de desenvolvimento) do \texttt{Java}. O banco de dados utilizado foi o \texttt{MonetDB~11.25.23}. O \texttt{git~2.11} foi utilizado como sistema de controle de versão distribuído para o projeto, o qual consiste de
@@ -79,7 +79,7 @@ Além disso, para garantir a confiabilidade e a qualidade do projeto, 152~testes
 \section{Algoritmos utilizados}%
 \label{sec:algoritmos-utilizados}
 
-Nessa seção serão abordados os principais algoritmos e funções utilizadas no Query Processor. Funções auxiliares referenciadas pelos mesmos estão definidas no \autoref{app:funcoes-auxiliares}. A notação utilizada é de pseudocódigo, e as definições dos algoritmos e nomes das variáveis utilizados foram ligeiramente alterados e simplificados em relação à implementação original, visando uma melhor clarificação e apresentação do código.
+Nessa seção serão abordados os principais algoritmos e funções utilizadas no Query Preprocessor. Funções auxiliares referenciadas pelos mesmos estão definidas no \autoref{app:funcoes-auxiliares}. A notação utilizada é de pseudocódigo, e as definições dos algoritmos e nomes das variáveis utilizados foram ligeiramente alterados e simplificados em relação à implementação original, visando uma melhor clarificação e apresentação do código.
 
 \subsection{Detecção das últimas transformações de dados}
 
@@ -100,7 +100,7 @@ end function
 \end{lstlisting}
 \end{minipage}
 
-A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), isto é, proporcional ao número de dependências de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário acesso aleatório a essa estrutura de dados. Entretanto, na prática, com o objetivo de amortizar um pouco a complexidade, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QP (\textit{c.f.} \autoref{subsec:preprocessamento}).
+A complexidade de tempo do algoritmo é linear da ordem de \( O(\#(D.\Phi)) \), isto é, proporcional ao número de dependências de dados do fluxo de dados \( D \), e as transformações retornadas pelo algoritmo são armazenadas em uma simples lista encadeada, já que não é necessário acesso aleatório a essa estrutura de dados. Entretanto, na prática, com o objetivo de amortizar um pouco a complexidade, esse algoritmo é aplicado \textit{on-the-fly}, no momento em que o fluxo de dados é construído e instanciado no QPP (\textit{c.f.} \autoref{subsec:preprocessamento}).
 
 \subsection{Detecção das trilhas de transformações de dados}%
 \label{subsec:deteccao-das-trilhas-de-transformacoes}
@@ -340,17 +340,17 @@ Depois, são definidas cada uma das cláusulas fundamentais da linguagem SQL: \t
 
 Os algoritmos apresentados anteriormente possuem, \emph{em geral}, uma complexidade computacional de \textbf{ordem linear} em relação ao número de conjuntos de dados, de transformações de dados, de dependências de dados ou de atributos de dados, dependendo do algoritmo e da função auxiliar utilizada. Isso se deve ao fato de que a maioria das estruturas de dados empregadas inicialmente é do tipo lista encadeada, e os laços presentes nos algoritmos usualmente iteram sobre toda a lista em questão. Além disso, existem algumas funções como a presente no \autoref{lst:get-next-datasets-2} que possuem complexidade computacional da \textbf{ordem quadrática} em relação ao número de dependências de dados presentes no fluxo de dados.
 
-Uma vez que um dos principais interesses do Query Processor é a aplicação do mesmo em simulações computacionais de larga escala, que incluem potencialmente uma quantidade enorme de dependências de dados e de atributos de dados, torna-se necessário melhorar o seu desempenho, não se limitando por algoritmos de ordem quadrática de complexidade temporal.
+Uma vez que um dos principais interesses do Query Preprocessor é a aplicação do mesmo em simulações computacionais de larga escala, que incluem potencialmente uma quantidade enorme de dependências de dados e de atributos de dados, torna-se necessário melhorar o seu desempenho, não se limitando por algoritmos de ordem quadrática de complexidade temporal.
 
 A fim de resolver esse problema, diversas \textbf{otimizações de pré-processamento de dados e de metadados} foram empregadas e computadas, efetivamente diminuindo a complexidade computacional dos algoritmos anteriores e das funções auxiliares utilizadas neles, trocando tempo por espaço / armazenamento. Na prática, isso significa o seguinte:
 
 \begin{enumerate}
     \item as \emph{próximas} transformações de dados e os \emph{próximos} conjuntos de dados de cada conjunto de dados e de cada transformação de dados foram computadas no instante da instanciação do fluxo de dados, tendo sido armazenados em \textit{HashMultimaps}\footnote{\textit{HashMultimap} é uma estrutura de dados da biblioteca Guava da Google (\url{https://github.com/google/guava}) que provê armazenamento e consulta de pares de dados chave e valor em uma \textit{hashtable}.};
     \item analogamente, as transformações de dados \emph{anteriores} e os conjuntos de dados \emph{anteriores} também foram pré-computados;
-    \item as últimas transformações de dados (\autoref{lst:algorithm-last-transformations}), as trilhas de transformações de dados (\autoref{lst:algorithm-transformation-tracks}) e as trilhas de conjuntos de dados (\autoref{lst:algorithm-dataset-tracks}) foram computadas uma única vez, e então permanentemente armazenadas para uso posterior --- em vez de, por exemplo, serem recomputadas a cada referência às mesmas.
+    \item as últimas transformações de dados (\autoref{lst:algorithm-last-transformations}), as trilhas de transformações de dados (\autoref{lst:algorithm-transformation-tracks}) e as trilhas de conjuntos de dados (\autoref{lst:algorithm-dataset-tracks}) foram computadas uma única vez, e então permanentemente armazenadas para uso posterior --- em vez de, por exemplo, serem recomputadas a cada referência às mesmas. Foi decidido pré-processar essas transformações de dados devido ao fato delas frequentemente serem transformações de interesse em consultas.
 \end{enumerate}
 
-Os itens 1 e 2 eliminam completamente a necessidade de iteração sobre as dependências de dados, eliminando a complexidade computacional de ordem quadrática dos algoritmos, aumentando significativamente a performance dos mesmos. O item 3 emprega uma técnica chamada \textit{memoization}, que evita computar mais de uma vez o mesmo dado: os acessos após o primeiro são realizados em \(O(1)\). Essas otimizações de pré-processamento, pré-computação e \textit{memoization} foram fundamentais para garantir uma boa performance para o Query Processor.
+Os itens 1 e 2 eliminam completamente a necessidade de iteração sobre as dependências de dados, eliminando a complexidade computacional de ordem quadrática dos algoritmos, aumentando significativamente a performance dos mesmos. O item 3 emprega uma técnica chamada \textit{memoization}, que evita computar mais de uma vez o mesmo dado: os acessos após o primeiro são realizados em \(O(1)\). Essas otimizações de pré-processamento, pré-computação e \textit{memoization} foram fundamentais para garantir uma boa performance para o Query Preprocessor.
 
 \section{Um exemplo de consulta}%
 \label{sec:um-exemplo-de-consulta}
@@ -448,7 +448,7 @@ WHERE %$ds_{1}.\textup{taskid}\_dt_{1} = ds_{2}.\textup{taskid}\_dt_{1}$%;
 
 \subsection{Exemplo~\#2}
 
-Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \(ds_{4}\) como destino, especificada na \autoref{tab:example-query-arguments-1}. O caminho de conjuntos de dados obtido no fluxo de dados \(D^{\prime}\) pelo Query Processor pode ser visualizado na \autoref{fig:example-query-dataflow-1}, e o código em SQL gerado para essa consulta encontra-se no \autoref{lst:example-query-output-1}. Os resultados (elementos de dados) retornados pela consulta em SQL estão na \autoref{tab:example-query-results-1}.
+Considere a consulta envolvendo os conjuntos de dados \(ds_{1}\) como origem e \(ds_{4}\) como destino, especificada na \autoref{tab:example-query-arguments-1}. O caminho de conjuntos de dados obtido no fluxo de dados \(D^{\prime}\) pelo Query Preprocessor pode ser visualizado na \autoref{fig:example-query-dataflow-1}, e o código em SQL gerado para essa consulta encontra-se no \autoref{lst:example-query-output-1}. Os resultados (elementos de dados) retornados pela consulta em SQL estão na \autoref{tab:example-query-results-1}.
 
 \begin{table}[!htb]
     \centering

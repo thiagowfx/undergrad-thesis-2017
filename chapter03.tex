@@ -2,10 +2,15 @@
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
 
-\chapter{Trabalhos Relacionados}%
-\label{chap:trabalhos-relacionados}
+% Nota da professora Marta: O Cap 3, de trabalhos relacionados, apresenta na verdade os trabalhos relacionados à ARMFUL e não à geração de SQL para consultar dataflows. Como eu falei, vc pode manter como está, mas esse capitulo precisa de um outro nome. Por exemplo: Análise de soluções para consultas a dados científicos 
 
-Dado que o principal objetivo dessa monografia consiste no desenvolvimento de um processador de consultas integrado à arquitetura ARMFUL, que será abordada no \autoref{chap:arquitetura-armful}, esse capítulo aborda alguns trabalhos e publicações relacionados a ela, no que diz respeito às simulações computacionais, aos \textit{workflows} científicos, aos dados de proveniência e, em especial, aos tipos de consulta que podem ser realizados.
+% \chapter{Trabalhos Relacionados}%
+% \label{chap:trabalhos-relacionados}
+
+\chapter{Análise de soluções para consultas a dados científicos}%
+\label{chap:analise-solucoes-consultas-dados-cientificos}
+
+Dado que o principal objetivo dessa monografia consiste no desenvolvimento de um pré-processador de consultas integrado à arquitetura ARMFUL, que será abordada no \autoref{chap:arquitetura-armful}, esse capítulo aborda alguns trabalhos e publicações relacionados a ela, no que diz respeito às simulações computacionais, aos \textit{workflows} científicos, aos dados de proveniência e, em especial, aos tipos de consulta que podem ser realizados.
 
 \section{Tipos de consulta}%
 \label{sec:tipos-de-consulta}
@@ -44,7 +49,7 @@ Consultas do \textbf{tipo 1} são caracterizadas pela \textbf{análise de dados 
 
 Esses dados e seus respectivos arquivos podem estar ou não em formato binário; por exemplo, um arquivo em formato \abbrev{JSON}{JavaScript Object Notation} JSON (\textit{JavaScript Object Notation}) geralmente contém dados em formato de texto; enquanto que um arquivo FITS (\textit{Flexible Image Transport System})~\cite{greisen2002representations}, utilizado em astronomia, pode possuir parte de seus dados em formato binário, assim como o NetCDF (\textit{Network Common Data Form})~\cite{rew1990netcdf}, utilizado em dinâmica de fluidos computacionais, e o HDF5~\cite{folk1999hdf5}, utilizado em várias aplicações distintas.
 
-Para apoiar a extração de dados científicos, alguns trabalhos têm utilizado técnicas de indexação de dados científicos no conteúdo de arquivos e carregado tais dados em repositórios externos (arquivos com índices e dados no formato binário para proporcionar um acesso eficiente) ou uma base de dados, como o NoDB~\cite{alagiannis2012nodb}, RAW~\cite{karpathiotakis2014adaptive}, FastBit~\cite{wu2009fastbit}, FastQuery~\cite{chou2011parallel} e SDS/Q~\cite{blanas2014parallel}. Entretanto, todos esses trabalhos relacionados apresentam um processador de consultas limitado ao conteúdo de arquivos de forma isolada. Ou seja, não é possível relacionar dados de múltiplos arquivos de dados científicos.
+Para apoiar a extração de dados científicos, alguns trabalhos têm utilizado técnicas de indexação de dados científicos no conteúdo de arquivos e carregado tais dados em repositórios externos (arquivos com índices e dados no formato binário para proporcionar um acesso eficiente) ou uma base de dados, como o NoDB~\cite{alagiannis2012nodb}, RAW~\cite{karpathiotakis2014adaptive}, FastBit~\cite{wu2009fastbit}, FastQuery~\cite{chou2011parallel} e SDS/Q~\cite{blanas2014parallel}. Entretanto, todos esses trabalhos relacionados apresentam um pré-processador de consultas limitado ao conteúdo de arquivos de forma isolada. Ou seja, não é possível relacionar dados de múltiplos arquivos de dados científicos.
 
 Logo, as consultas do tipo 1 são as mais simples de serem realizadas em relação às outras, pois elas são auto-contidas no que diz respeito aos dados científicos, isto é, apenas a presença desses dados é suficiente para que esse tipo de consulta possa ser realizado: não é necessária a especificação sobre o fluxo de dados da simulação computacional.
 
@@ -68,4 +73,4 @@ O estado da arte no que diz respeito às soluções para a análise de dados cie
 
 Por exemplo, o NoWorkflow, mencionado na \autoref{sec:rastreamento-de-fluxos-de-arquivos}, também possui suporte a consultas do tipo 3, permitindo o rastreamento de elementos de dados em nível de variáveis, de funções e de classes em \textit{scripts}, porém ele se limita somente a \textit{scripts} escritos na linguagem Python~\cite{murta2014noworkflow}. Além dele, a biblioteca Tigres também permite a gerência dos elementos de dados ao relacionar os valores de atributos consumidos e produzidos por cada tarefa computacional.
 
-Outro paradigma que suporta consultas do tipo 3 é o da arquitetura ARMFUL, que é baseada em componentes e é instanciada, por exemplo, como o \textit{DfAnalyzer} em~\cite{silva2017raw}. Como esta monografia concentra-se no desenvolvimento de um processador de consultas no \textit{DfAnalyzer}, essa ferramenta é abordada detalhadamente no \autoref{chap:arquitetura-armful}.
+Outro paradigma que suporta consultas do tipo 3 é o da arquitetura ARMFUL, que é baseada em componentes e é instanciada, por exemplo, como o \textit{DfAnalyzer} em~\cite{silva2017raw}. Como esta monografia concentra-se no desenvolvimento de um pré-processador de consultas no \textit{DfAnalyzer}, essa ferramenta é abordada detalhadamente no \autoref{chap:arquitetura-armful}.
