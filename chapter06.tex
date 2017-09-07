@@ -2,7 +2,7 @@
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
 
-% metodologia para cálculo do tempo rodar 4 vezes, tomar a média das 3 últimas
+% metodologia para cálculo do tempo: executar 4 vezes, tomar a média das 3 últimas
 
 \chapter{Experimentos}%
 \label{chap:experimentos}
@@ -15,7 +15,7 @@ Nesse capítulo, analisamos uma aplicação do DfAnalyzer (\textit{c.f.} \autore
 
 Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial e rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}. Nesse cenário a análise é possibilitada pelo DfAnalyzer o qual, devido a sua arquitetura em componentes herdada da ARMFUL, permite que consultas relacionadas a proveniência e aos dados científicos de múltiplos arquivos e transformações de dados sejam realizadas \textit{on-line}, ainda durante a execução da simulação computacional.
 
-Nesse capítulo, realizamos várias consultas com um fluxo de dados \(D^{\dagger}\) baseado no \textit{solver} de \textbf{simulação de sedimentação de dinâmica de fluidos computacionais} mencionado nos parágrafos anteriores. Esse fluxo de dados \(D^{\dagger}\) está ilustrado na \autoref{fig:experiments-dataflow}, cujos dados foram obtidos da execução paralela desse \textit{solver} com 480 cores no \textit{cluster} Lobo Carneiro\footnote{\url{http://www.nacad.ufrj.br/pt/recursos/sgiicex}} e armazenados no SGBD MonetDB.
+Nesse capítulo, realizamos várias consultas com um fluxo de dados \(D^{\dagger}\) baseado no \textit{solver} de \textbf{simulação de sedimentação de dinâmica de fluidos computacionais} mencionado nos parágrafos anteriores. Esse fluxo de dados \(D^{\dagger}\) está ilustrado na \autoref{fig:experiments-dataflow}, cujos dados foram obtidos da execução paralela desse \textit{solver} com 480 \textit{cores} no \textit{cluster} Lobo Carneiro\footnote{\url{http://www.nacad.ufrj.br/pt/recursos/sgiicex}} e armazenados no SGBD MonetDB.
 
 \begin{figure}[!htb]
     \centering
