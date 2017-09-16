@@ -2,11 +2,16 @@
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
 
+% true = makes the whole document (except images) black and white, to make the document suitable for printing
+\newif\ifprint\printtrue
+
 % use coppetex style class
 \documentclass[grad,numbers,final]{coppetex/coppe}
 
 % https://tex.stackexchange.com/questions/331430/produce-a-monochrome-pure-black-and-white-pdf-using-xelatex
-% \usepackage[monochrome]{xcolor}
+\ifprint
+\usepackage[monochrome]{xcolor}
+\fi
 
 \usepackage{iftex}
 % https://tex.stackexchange.com/questions/47576/combining-ifxetex-and-ifluatex-with-the-logical-or-operation
@@ -48,6 +53,7 @@
 % required for better tables
 \usepackage{longtable}
 \usepackage{multirow}
+\usepackage{makecell}
 
 % curly brackets besides tables (\ldelim, \rdelim)
 \usepackage{bigdelim}
@@ -126,6 +132,18 @@
 
 % hyperlinks
 \usepackage{hyperref}
+
+\ifprint
+\hypersetup{%
+  portuguese,
+  pdfencoding=auto,
+  breaklinks=true,
+  bookmarksopen=true,
+  colorlinks=false,
+  hidelinks,
+  pdfborder={0 0 0},
+}
+\else
 \hypersetup{%
   portuguese,
   pdfencoding=auto,
@@ -133,16 +151,15 @@
   bookmarksopen=true,
   colorlinks=true,
 }
-
-\usepackage{makecell}
+\fi
 
 \makelosymbols{}
 \makeloabbreviations{}
 
 % include only the following chapters (faster typesetting)
 % \includeonly{%
-%  chapter06,
-%}
+%  chapter01,
+% }
 
 \begin{document}
   \title{Análise do Rastro de Proveniência em Simulações Computacionais em Larga Escala}
