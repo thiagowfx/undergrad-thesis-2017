@@ -342,7 +342,7 @@ Os algoritmos apresentados anteriormente possuem, \emph{em geral}, uma complexid
 
 Uma vez que um dos principais interesses do Query Preprocessor é a aplicação do mesmo em simulações computacionais de larga escala, que incluem potencialmente uma quantidade enorme de dependências de dados e de atributos de dados, torna-se necessário melhorar o seu desempenho, não se limitando por algoritmos de ordem quadrática de complexidade temporal.
 
-A fim de resolver esse problema, diversas \textbf{otimizações de pré-processamento de dados e de metadados} foram empregadas e computadas, efetivamente diminuindo a complexidade computacional dos algoritmos anteriores e das funções auxiliares utilizadas neles, trocando tempo por espaço / armazenamento. Na prática, isso significa o seguinte:
+A fim de solucionar esse problema, diversas \textbf{otimizações de pré-processamento de dados e de metadados} foram empregadas e computadas, efetivamente diminuindo a complexidade computacional dos algoritmos anteriores e das funções auxiliares utilizadas neles, trocando tempo por espaço / armazenamento. Na prática, isso significa o seguinte:
 
 \begin{enumerate}
     \item as \emph{próximas} transformações de dados e os \emph{próximos} conjuntos de dados de cada conjunto de dados e de cada transformação de dados foram computadas no instante da instanciação do fluxo de dados, tendo sido armazenados em \textit{HashMultimaps}\footnote{\textit{HashMultimap} é uma estrutura de dados da biblioteca Guava da Google (\url{https://github.com/google/guava}) que provê armazenamento e consulta de pares de dados chave e valor em uma \textit{hashtable}.};

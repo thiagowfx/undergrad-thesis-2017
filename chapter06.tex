@@ -13,9 +13,11 @@ Esse capítulo apresenta alguns exemplos de experimentos e de simulações compu
 
 Nesse capítulo, analisamos uma aplicação do DfAnalyzer (\textit{c.f.} \autoref{sec:dfanalyzer-uma-instancia-da-arquitetura-armful}) a qual utiliza a \textit{libMesh}, uma biblioteca \textit{open-source} implementada na linguagem C++, desenvolvida para facilitar a simulação de aplicações paralelas de refinamento de malhas e elementos finitos adaptativos~\cite{boncz2008breaking}, em um resolvedor chamado \textit{libMesh-sedimentation}. O propósito dessa aplicação é simular a turbidez e perturbação de correntes de fluidos tipicamente encontradas em processos geológicos. Os sedimentos que são transportados devido à dinâmica e ao movimento dos fluidos computacionais são descritos por um modelo matemático que resulta da equação de incompressibilidade de Navier-Stokes (fluido) combinada com uma equação de transporte dominada por advecção (concentração de sedimentos). A \textit{libMesh-sedimentation} emprega um método de elementos finitos de multi-escala variacional no qual uma abordagem escalonada é utilizada para representar e simular a evolução do tempo nas equações de acoplamento entre o fluido e os sedimentos. 
 
-Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial e rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do \textit{solver}. Nesse cenário a análise é possibilitada pelo DfAnalyzer o qual, devido a sua arquitetura em componentes herdada da ARMFUL, permite que consultas relacionadas a proveniência e aos dados científicos de múltiplos arquivos e transformações de dados sejam realizadas \textit{on-line}, ainda durante a execução da simulação computacional.
+Nessa aplicação os usuários empregam simulações complexas nas quais grandezas de interesse, tais como resíduos e estimativas de erros, são utilizadas para controlar de forma fina o êxito e a performance da execução~\cite{silva2016situ}. Por exemplo, a convergência ou divergência de valores de determinadas grandezas e atributos, ao longo do tempo, é uma potencial e rica fonte de informação sobre o andamento da simulação computacional. Contudo, em geral, não basta analisar uma única grandeza: frequentemente faz-se necessária a análise dos dados científicos de múltiplos arquivos, gerados em diferentes passos durante a execução do resolvedor. Nesse cenário a análise é possibilitada pelo DfAnalyzer o qual, devido a sua arquitetura em componentes herdada da ARMFUL, permite que consultas relacionadas a proveniência e aos dados científicos de múltiplos arquivos e transformações de dados sejam realizadas \textit{on-line}, ainda durante a execução da simulação computacional.
 
-Nesse capítulo, realizamos várias consultas com um fluxo de dados \(D^{\dagger}\) baseado no \textit{solver} de \textbf{simulação de sedimentação de dinâmica de fluidos computacionais} mencionado nos parágrafos anteriores. Esse fluxo de dados \(D^{\dagger}\) está ilustrado na \autoref{fig:experiments-dataflow}, cujos dados foram obtidos da execução paralela desse \textit{solver} com 480 \textit{cores} no \textit{cluster} Lobo Carneiro\footnote{\url{http://www.nacad.ufrj.br/pt/recursos/sgiicex}} e armazenados no SGBD MonetDB.
+Existem duas fontes de proveniência para o componente PDG do DfAnalyzer referente a esta simulação. Uma delas é a \textit{libMesh-sedimentation solver}, mencionada anteriormente, que contribui com dados de domínio obtidos diretamente do código-fonte do resolvedor de dinâmica de fluidos computacionais. A outra é o ParaView Catalyst~\cite{ayachit2015paraview}, que é uma biblioteca com o qual o DfAnalyzer pode comunicar-se para aproveitar-se dos dados em memória gerenciados por ele e relacioná-los com o banco de dados de proveniência, além de prover recursos de visualização de regiões de interesse e de processamento de dados.
+
+Nesse capítulo, realizamos várias consultas com um fluxo de dados \(D^{\dagger}\) baseado no resolvedor de \textbf{simulação de sedimentação de dinâmica de fluidos computacionais} mencionado nos parágrafos anteriores. Esse fluxo de dados \(D^{\dagger}\) está ilustrado na \autoref{fig:experiments-dataflow}, cujos dados foram obtidos da execução paralela desse resolvedor com 480 \textit{cores} no \textit{cluster} Lobo Carneiro\footnote{\url{http://www.nacad.ufrj.br/pt/recursos/sgiicex}} e armazenados no SGBD MonetDB.
 
 \begin{figure}[!htb]
     \centering
@@ -44,7 +46,7 @@ otimestepcontrolconfig                      & model\_name                & strin
     \label{tab:experiments-data-attributes}
 \end{table}
 
-% \silva{REVIEW: que tipos de arquivos ou dados são coletados na libMesh-sedimentation?. No solver, capturamos dados referentes ao resíduo do solver ao resolver as equações para o fluido e os sedimentos. Para a gerência de arquivos, consideramos os raw data files nos formatos XDMF e HDF5.}
+% \silva{REVIEW: que tipos de arquivos ou dados são coletados na libMesh-sedimentation?. No resolvedor, capturamos dados referentes ao resíduo do solver ao resolver as equações para o fluido e os sedimentos. Para a gerência de arquivos, consideramos os raw data files nos formatos XDMF e HDF5.}
 
 \section{Experimentos}
 
@@ -56,7 +58,7 @@ As consultas dos experimentos das próximas subseções, relacionadas ao Query P
     \item 8~GB de memória RAM do tipo DDR3.
 \end{itemize}
 
-Três consultas foram realizadas, cada uma das quais com diversos parâmetros para a função \texttt{generateSqlQuery} (\textit{c.f.} \autoref{subsec:geracao-da-consulta-em-sql}).
+Três consultas foram realizadas, cada uma das quais com diversos parâmetros para a função \texttt{generateSqlQuery} (\textit{c.f.} \autoref{subsec:geracao-da-consulta-em-sql}). Nota-se a distinção entre o tempo de \emph{geração} de cada consulta, referente ao tempo de processamento do QPP para gerar o código em SQL de acordo com as especificações do usuário; e o tempo de \emph{execução} de cada consulta, referente ao tempo de processamento do SGBD para retornar os resultados da consulta submetida ao mesmo.
 
 \subsection{Consulta \#1}
 
@@ -97,7 +99,7 @@ O objetivo da primeira consulta é a análise da média da concentração de sed
 
 A consulta \#1 em SQL gerada pelo Query Preprocessor está listada no \autoref{lst:experiments-1-sql}. \textbf{Observação:} uma vez que a função de média aritmética (\texttt{AVG}) é utilizada na projeção, faz-se necessária a utilização da cláusula \texttt{GROUP BY} da linguagem SQL para que a consulta \#1 fique sintaticamente válida e bem definida. Contudo, como o Query Preprocessor não suporta essa cláusula, ela foi adicionada manualmente à consulta gerada pela função \texttt{generateSqlQuery}. O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, está disponível no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
 
-\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1 (tempo médio: 40,29~ms).}]
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1. Tempo médio de geração: 40,29~ms.}]
 SELECT osolversimulationtransport.time, AVG(oline2extraction.d)
 FROM osolversimulationtransport, oline2extraction, omeshwriter
 WHERE (osolversimulationtransport.line2extraction_task_id = oline2extraction.line2extraction_task_id) 
@@ -106,7 +108,7 @@ GROUP BY osolversimulationtransport.time;
 \end{lstlisting}
 
 \begin{center}
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1 (7 tuplas, tempo médio: 4,35~ms).}]
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1. Tempo médio de execução: 4,35~ms.}]
 +--------------------------+--------------------------+
 | time                     | AVG(oline2extraction.d)  |
 +==========================+==========================+
@@ -177,7 +179,7 @@ O objetivo da segunda consulta é a análise da concentração de sedimentos em 
 A consulta \#2 em SQL gerada pelo Query Preprocessor está listada no \autoref{lst:experiments-2-sql}. \textbf{Observação:} como a cláusula \texttt{LIMIT} não é implementada pelo QPP, ela foi adicionada manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}. O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-2-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-2}.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-2-sql},caption={[Código em SQL gerado na consulta~\#2]Código em SQL gerado na consulta~\#2 (tempo médio: 15,45~ms).}]
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-2-sql},caption={[Código em SQL gerado na consulta~\#2]Código em SQL gerado na consulta~\#2. Tempo médio de geração: 15,45~ms.}]
 SELECT osolversimulationtransport.time, oline0extraction.points0, oline0extraction.points1, oline0extraction.points2, oline0extraction.d
 FROM osolversimulationtransport, oline0extraction, omeshwriter
 WHERE (osolversimulationtransport.time < 5.5) 
@@ -188,7 +190,7 @@ LIMIT 10;
 \end{lstlisting}
 \end{minipage}
 
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-2-sqlresults},caption={[Resultados da consulta \#2.]Resultados da consulta \#2 (10 tuplas, tempo médio: 5,92~ms).}]
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-2-sqlresults},caption={[Resultados da consulta \#2.]Resultados da consulta \#2. Tempo médio de execução: 5,92~ms).}]
 +--------------+-----------+---------+---------+----------+
 | time         | points0   | points1 | points2 | d        |
 +==============+===========+=========+=========+==========+
@@ -309,7 +311,7 @@ O objetivo da terceira consulta é a análise, ao longo do tempo, da evolução 
 
 As consultas \#3A, \#3B e \#3C, geradas em SQL pelo Query Preprocessor, estão listadas no \autoref{lst:experiments-3a-sql}, \autoref{lst:experiments-3b-sql} e \autoref{lst:experiments-3c-sql}, respectivamente. Os resultados das mesmas, executadas na base de dados de \(D^{\dagger}\) carregada no MonetDB, podem ser visualizados no \autoref{lst:experiments-3a-sqlresults}, \autoref{lst:experiments-3b-sqlresults} e \autoref{lst:experiments-3c-sqlresults}, respectivamente. Suas colunas estão na mesma ordem da especificação das projeções em \autoref{tab:experiments-3-especificacao}. Os resultados das consultas \#3A, \#3B e \#3C demonstraram, nesse exemplo, que o mapeamento lógico foi mais rico do que o físico.
 
-\begin{lstlisting}[language=sql,deletendkeywords={TIME},deletendkeywords={TIME},label={lst:experiments-3a-sql},caption={[Código em SQL gerado na consulta~\#3A]Código em SQL gerado na consulta~\#3A (tempo médio: 31,80~ms).}]
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},deletendkeywords={TIME},label={lst:experiments-3a-sql},caption={[Código em SQL gerado na consulta~\#3A]Código em SQL gerado na consulta~\#3A. Tempo médio de geração: 31,80~ms.}]
 SELECT osolversimulationflow.time, osolversimulationflow.flow_final_linear_residual, osolversimulationflow.flow_norm_delta_u, osolversimulationtransport.transport_final_linear_residual, osolversimulationtransport.transport_norm_delta_u, ovisualization.png, omeshwriter.xdmf
 FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter
 WHERE (osolversimulationflow.time > 2) 
@@ -320,7 +322,7 @@ AND (osolversimulationtransport.visualization_task_id = ovisualization.visualiza
 AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id);
 \end{lstlisting}
 
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-3a-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3A.]Resultados da consulta \#3A (12 tuplas, tempo médio: 5,11~ms).}]
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-3a-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3A.]Resultados da consulta \#3A. Tempo médio de execução: 5,11~ms.}]
 +-------+-------+-------+-------+---------+---------+-----+
 |3.10093|0.31609|0.00225|0.00030|. 0.00072| 9999.png|2.xmf|
 |3.10093|0.31609|0.00225|0.00030|        0| 9999.png|2.xmf|
@@ -338,7 +340,7 @@ AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task
 \end{lstlisting}
 
 
-\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-3b-sql},caption={[Código em SQL gerado na consulta~\#3B]Código em SQL gerado na consulta~\#3B (tempo médio: 34,36~ms).}]
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-3b-sql},caption={[Código em SQL gerado na consulta~\#3B]Código em SQL gerado na consulta~\#3B. Tempo médio de geração: 34,36~ms.}]
 SELECT osolversimulationflow.time, osolversimulationflow.flow_final_linear_residual, osolversimulationflow.flow_norm_delta_u, osolversimulationtransport.transport_final_linear_residual, osolversimulationtransport.transport_norm_delta_u, ovisualization.png, omeshwriter.xdmf
 FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter
 WHERE (osolversimulationflow.time > 2) 
@@ -354,7 +356,7 @@ AND (osolversimulationtransport.simulationid = omeshwriter.simulationid)
 LIMIT 6; -- esse limite foi adicionado devido ao grande número de resultados dessa consulta
 \end{lstlisting}
 
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-3b-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3B.]Resultados da consulta \#3B (6 tuplas, tempo médio: 19,85~ms).}]
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-3b-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3B.]Resultados da consulta \#3B. Tempo médio de execução: 19,85~ms.}]
 +-------+-------+-------+-------+---------+-------+-----|
 |2.00058|0.24297|0.00118|0.00034|3.404e-06|999.png|1.xmf|
 |2.00058|0.24297|0.00118|0.00034|3.404e-06|999.png|2.xmf|
@@ -365,7 +367,7 @@ LIMIT 6; -- esse limite foi adicionado devido ao grande número de resultados de
 +-------+-------+-------+-------+---------+-------+-----+
 \end{lstlisting}
 
-\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-3c-sql},caption={[Código em SQL gerado na consulta~\#3C]Código em SQL gerado na consulta~\#3C (tempo médio: 43,20~ms).}]
+\begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-3c-sql},caption={[Código em SQL gerado na consulta~\#3C]Código em SQL gerado na consulta~\#3C. Tempo médio de geração: 43,20~ms.}]
 SELECT osolversimulationflow.time, osolversimulationflow.flow_final_linear_residual, osolversimulationflow.flow_norm_delta_u, osolversimulationtransport.transport_final_linear_residual, osolversimulationtransport.transport_norm_delta_u, ovisualization.png, omeshwriter.xdmf
 FROM osolversimulationflow, osolversimulationtransport, ovisualization, omeshwriter
 WHERE (osolversimulationflow.time > 2) 
@@ -383,7 +385,7 @@ AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task
 AND (osolversimulationtransport.simulationid = omeshwriter.simulationid);
 \end{lstlisting}
 
-\begin{lstlisting}[language=sqlresults,label={lst:experiments-3c-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3C.]Resultados da consulta \#3C (6 tuplas, tempo médio: 11,88~ms).}]
+\begin{lstlisting}[language=sqlresults,label={lst:experiments-3c-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3C.]Resultados da consulta \#3C. Tempo médio de execução: 11,88~ms.}]
 +-------+-------+-------+-------+---------+---------+-----+
 |3.10093|0.31609|0.00225|0.00025|2.224e-06| 9999.png|2.xmf|
 |3.10093|0.31609|0.00225|0.00025|        0| 9999.png|2.xmf|
