@@ -99,6 +99,18 @@ O objetivo da primeira consulta é a análise da média da concentração de sed
 
 A consulta \#1 em SQL gerada pelo QPP está listada no \autoref{lst:experiments-1-sql}. \textbf{Observação:} uma vez que a função de média aritmética (\texttt{AVG}) é utilizada na projeção, faz-se necessária a utilização da cláusula \texttt{GROUP BY} da linguagem SQL para que a consulta \#1 fique sintaticamente válida e bem definida. Contudo, como o QPP não suporta essa cláusula, ela foi adicionada manualmente à consulta gerada pela função \texttt{generateSqlQuery}. O resultado da consulta \#1, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, está disponível no \autoref{lst:experiments-1-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-1}.
 
+\begin{figure}[htb]
+    \centering
+    \ifprint
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-1_bw}
+    \else
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-1}
+    \fi
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1.}%
+    \label{fig:experiments-dataflow-1}
+\end{figure}
+
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-1-sql},caption={[Código em SQL gerado na consulta~\#1]Código em SQL gerado na consulta~\#1. Tempo médio de geração: 40,29~ms.}]
 SELECT osolversimulationtransport.time, AVG(oline2extraction.d)
 FROM osolversimulationtransport, oline2extraction, omeshwriter
@@ -106,6 +118,7 @@ WHERE (osolversimulationtransport.line2extraction_task_id = oline2extraction.lin
 AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id)
 GROUP BY osolversimulationtransport.time;
 \end{lstlisting}
+\end{minipage}
 
 \begin{center}
 \begin{lstlisting}[language=sqlresults,label={lst:experiments-1-sqlresults},caption={[Resultados da consulta \#1.]Resultados da consulta \#1. Tempo médio de execução: 4,35~ms.}]
@@ -123,18 +136,7 @@ GROUP BY osolversimulationtransport.time;
 \end{lstlisting}
 \end{center}
 
-\begin{figure}[htb]
-    \centering
-    \ifprint
-    \includegraphics[width=\textwidth]{img/experiments-dataflow-1_bw}
-    \else
-    \includegraphics[width=\textwidth]{img/experiments-dataflow-1}
-    \fi
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#1.}%
-    \label{fig:experiments-dataflow-1}
-\end{figure}
-
-\clearpage
+% \clearpage
 
 \subsection{Consulta \#2}
 
@@ -182,7 +184,17 @@ O objetivo da segunda consulta é a análise da concentração de sedimentos em 
 
 A consulta \#2 em SQL gerada pelo QPP está listada no \autoref{lst:experiments-2-sql}. \textbf{Observação:} como a cláusula \texttt{LIMIT} não é implementada pelo QPP, ela foi adicionada manualmente à consulta após sua geração pela função \texttt{generateSqlQuery}. O resultado da consulta \#2, executada na base de dados de \(D^{\dagger}\) carregada no MonetDB, pode ser visualizado no \autoref{lst:experiments-2-sqlresults}. Uma representação gráfica dos conjuntos de dados de \(S^{\dagger}\) utilizados nessa consulta estão realçados em vermelho na \autoref{fig:experiments-dataflow-2}.
 
-\begin{minipage}[c]{0.95\textwidth}
+\begin{figure}[htb]
+    \centering
+    \ifprint
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-2_bw}
+    \else
+    \includegraphics[width=\textwidth]{img/experiments-dataflow-2}
+    \fi
+    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2.}%
+    \label{fig:experiments-dataflow-2}
+\end{figure}
+
 \begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-2-sql},caption={[Código em SQL gerado na consulta~\#2]Código em SQL gerado na consulta~\#2. Tempo médio de geração: 15,45~ms.}]
 SELECT osolversimulationtransport.time, oline0extraction.points0, oline0extraction.points1, oline0extraction.points2, oline0extraction.d
 FROM osolversimulationtransport, oline0extraction, omeshwriter
@@ -192,7 +204,6 @@ AND (osolversimulationtransport.line0extraction_task_id = oline0extraction.line0
 AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id)
 LIMIT 10;
 \end{lstlisting}
-\end{minipage}
 
 \begin{lstlisting}[language=sqlresults,label={lst:experiments-2-sqlresults},caption={[Resultados da consulta \#2.]Resultados da consulta \#2. Tempo médio de execução: 5,92~ms).}]
 +--------------+-----------+---------+---------+----------+
@@ -221,18 +232,7 @@ LIMIT 10;
 % |    5.4124618 |      0.54 |       1 |       0 |  0.10825 |
 % |    5.4124618 |      0.72 |       1 |       0 |  0.10825 |
 
-\begin{figure}[htb]
-    \centering
-    \ifprint
-    \includegraphics[width=\textwidth]{img/experiments-dataflow-2_bw}
-    \else
-    \includegraphics[width=\textwidth]{img/experiments-dataflow-2}
-    \fi
-    \caption[Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2]{Caminho do fluxo de dados \(D^{\dagger}\) rastreado na consulta \#2.}%
-    \label{fig:experiments-dataflow-2}
-\end{figure}
-
-\clearpage
+% \clearpage
 
 \subsection{Consulta \#3}
 
@@ -334,6 +334,7 @@ AND (osolversimulationtransport.visualization_task_id = ovisualization.visualiza
 AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task_id);
 \end{lstlisting}
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[language=sqlresults,label={lst:experiments-3a-sqlresults},caption={[Versão simplificada dos resultados da consulta \#3A.]Resultados da consulta \#3A. Tempo médio de execução: 5,11~ms.}]
 +-------+-------+-------+-------+---------+---------+-----+
 |3.10093|0.31609|0.00225|0.00030|. 0.00072| 9999.png|2.xmf|
@@ -350,6 +351,7 @@ AND (osolversimulationtransport.meshwriter_task_id = omeshwriter.meshwriter_task
 |7.86956|0.27832|0.00563|0.00026|        0|19999.png|4.xmf|
 +-------+-------+-------+-------+---------+---------+-----+
 \end{lstlisting}
+\end{minipage}
 
 
 \begin{lstlisting}[language=sql,deletendkeywords={TIME},label={lst:experiments-3b-sql},caption={[Código em SQL gerado na consulta~\#3B]Código em SQL gerado na consulta~\#3B. Tempo médio de geração: 34,36~ms.}]
