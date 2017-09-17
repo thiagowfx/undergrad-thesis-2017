@@ -368,7 +368,11 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   \vspace*{1.5mm}
   \setlength\baselineskip{0pt}
   \setlength\parskip{1mm}
+  \ifprint
+  \makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppetex/escola-politecnica_bw}}
+  \else
   \makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppetex/escola-politecnica}}
+  \fi
   \end{flushleft}
   \vspace{1.05cm}
   \begin{center}
