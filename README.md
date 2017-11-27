@@ -19,7 +19,7 @@ Installing
 ----------
 
 - Step 1. install `TextMate.app` and then install the (i) `latex` and (ii) `latex font settings` bundles
-- Step 2. install `Skim.app`, and then (i) enable synctex support, (ii) set the synctex program to textmate and (iii) enable automatic document reloading
+- Step 2. install `Skim.app`, and then (i) enable synctex support, (ii) set the synctex program to `TextMate.app` and (iii) enable automatic document reloading
 - Step 3. run `make watch`
 
 Editing
@@ -31,7 +31,7 @@ Edit your document in TextMate. The output PDF will be automatically and continu
 
 **Note**: if you opt-out of installing `texlive` on your system, you can use the `thiagowfx/texlive` docker image.
 
-Alternative text editing setup: VSCode + LaTeX extension + Built-in preview.
+Alternative text editing setup: `VSCode.app` + LaTeX extension + Built-in preview.
 
 Recommendations
 ===============
