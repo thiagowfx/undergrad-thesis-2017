@@ -4,34 +4,42 @@ About
 This repository contains Thiago Barroso Perrotta's undergrad thesis, from his
 Computer and Information Engineering Bachelor's degree.
 
-It uses the [Coppetex](http://coppetex.sourceforge.net/) standard.
+It uses the [Coppetex](http://coppetex.sourceforge.net/) standard as its template.
 
-Nice-to-have
-============
+How to build the PDF
+====================
 
-These are not really mandatory, but you might have to change some settings if
-they are not available:
+- Step 1. install `texlive` (usually through your preferred package manager, e.g. homebrew, pacman)
+- Step 2. run `make` (or, alternatively, `latexmk`)
 
-* Lualatex
-* Fira Mono monospace font installed in your system
+MacOS Workflow
+==============
 
-How to produce the PDF
-======================
+Installing
+----------
 
-- Step 1. install `texlive` (for example, through homebrew)
-- Step 2. run `make`
-
-How to edit continuously on macOS
-=================================
-
-- Step 1. install `TextMate.app`, install the `latex` and `latex font settings` bundles
-- Step 2. install `Skim.app`, enable synctex support, set the synctex program to textmate, enable automatic reloading
+- Step 1. install `TextMate.app` and then install the (i) `latex` and (ii) `latex font settings` bundles
+- Step 2. install `Skim.app`, and then (i) enable synctex support, (ii) set the synctex program to textmate and (iii) enable automatic document reloading
 - Step 3. run `make watch`
-- Step 4. for synctex, cmd + shift + click on Skim.app
 
-If you don't want to install `texlive` directly, use the pre-installed package in the `thiagowfx/latex` docker image.
+Editing
+-------
+
+Edit your document in TextMate. The output PDF will be automatically and continuously updated in the background.
+
+**Note**: for synctex support, press `cmd + shift + mouse click` on Skim.app in the desired area.
+
+**Note**: if you opt-out of installing `texlive` on your system, you can use the `thiagowfx/texlive` docker image.
 
 Alternative text editing setup: VSCode + LaTeX extension + Built-in preview.
+
+Recommendations
+===============
+
+These tips are not mandatory, however they might enhance your experience:
+
+* Use lualatex engine instead of the default latex one;
+* Use 'Fira Mono' as the default monospace font.
 
 References
 ==========
